@@ -1,3 +1,4 @@
+import { OriginsComponent } from './origins/origins.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaingenderComponent } from './maingender/maingender.component'; // Import your component here
@@ -33,6 +34,17 @@ import { TrainingsComponent } from './trainings/trainings.component';
 import { TrainingService } from './trainings/apiservice/trainings.service';
 import { DiseasesComponent } from './diseases/diseases.component';
 import { DiseaseService } from './diseases/apiservice/diseases.service';
+import { OriginService } from './origins/apiservice/origins.service';
+import { DisabilitiesComponent } from './disabilities/disabilities.component';
+import { DisabilitesService } from './disabilities/apiservice/disabilities.service';
+import { HouseholdsComponent } from './households/households.component';
+import { HouseHoldService } from './households/apiservice/households.service';
+import { AdicctionsComponent } from './adicctions/adicctions.component';
+import { AdicctionsService } from './adicctions/apiservice/adicctions.service';
+import { TypeviolenceComponent } from './typeviolence/typeviolence.component';
+import { TypeViolenceService } from './typeviolence/apiservice/typeviolence.service';
+import { FieldviolenceComponent } from './fieldviolence/fieldviolence.component';
+import { FieldViolenceService } from './fieldviolence/apiservice/fieldviolence.service';
 
 @NgModule({
   declarations: [
@@ -43,7 +55,13 @@ import { DiseaseService } from './diseases/apiservice/diseases.service';
     WorkplacesComponent,
     MedicalserviceComponent,
     TrainingsComponent,
-    DiseasesComponent, // Add your component here
+    DiseasesComponent,
+    OriginsComponent,
+    DisabilitiesComponent,
+    HouseholdsComponent,
+    AdicctionsComponent,
+    TypeviolenceComponent,
+    FieldviolenceComponent, // Add your component here
   ],
   imports: [
     CommonModule,
@@ -75,7 +93,12 @@ import { DiseaseService } from './diseases/apiservice/diseases.service';
     MedicalServiceService,
     TrainingService,
     DiseaseService,
-    
+    OriginService,
+    DisabilitesService,
+    HouseHoldService,
+    AdicctionsService,
+    TypeViolenceService,
+    FieldViolenceService,
   ],
 })
 export class CataloguesModule {}

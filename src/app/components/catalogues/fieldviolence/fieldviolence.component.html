@@ -1,0 +1,80 @@
+<div class=" row pt-2 mx-auto d-flex justify-content-center">
+    <div [className]="isLoading && 'background_loader'">
+      <span [className]="isLoading && 'loader'"></span>
+    
+    </div>
+      <div class="col-9">
+        <mat-card>
+          <mat-card-content>
+      
+      
+      
+                      <mat-label>Buscador</mat-label>
+                      <input type="text" class="form-control custom-border"  matInput (keyup)="applyFilter($event)"id="gender"formControlName="gender" aria-describedby="emailHelp">
+                      <br>
+                    <div class="mat-elevation-z8">
+                      <table mat-table [dataSource]="dataSource" matSort>
+      
+                        <ng-container matColumnDef="fieldviolence">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ambito violencia </th>
+                          <td mat-cell *matCellDef="let row"> {{row.fieldviolence}} </td>
+                        </ng-container>
+      
+                        <ng-container matColumnDef="Actions">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                          <td mat-cell *matCellDef="let row">
+                          <button mat-icon-button color="primary"(click)="updateFieldViolence(row.fieldviolence,row.id)">
+                            <mat-icon>edit</mat-icon>
+                          </button>
+                          <button mat-icon-button color="warn" (click)="deleteFieldViolence(row.id)">
+                            <mat-icon>delete</mat-icon>
+                          </button>
+                          </td>
+                        </ng-container>
+                         <!-- Fruit Column  -->
+                        <tr mat-header-row class="table-dark"  *matHeaderRowDef="displayedColumns"></tr>
+                        <tr mat-row class="table-dark" *matRowDef="let row; columns: displayedColumns;"></tr>
+                        <!-- Row shown when there is no matching data.  -->
+                        <tr class="mat-row" *matNoDataRow>
+                          <td class="mat-cell" colspan="4">No se encuentran resultados</td>
+                        </tr>
+                      </table>
+                      <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="seleccion de pagina"></mat-paginator>
+      
+                    </div>
+      
+        </mat-card-content>
+      </mat-card>
+  
+      </div>
+      <div class="col-3">
+        <mat-card>
+          <mat-card-content>
+            
+                    <form class="" [formGroup]="fieldviolence" (ngSubmit)="onsubmit()">
+                        <div class="mb-3">
+                              <label for="fieldviolence" class="form-label"><b>Nueva Ambito violencia</b></label>
+                              <input type="text" class="form-control custom-border" id="fieldviolence"formControlName="fieldviolence" [(ngModel)]="vio" aria-describedby="emailHelp">
+                              <br>
+                                    <p class="" style="color: red;" *ngIf="fieldviolence.get('fieldviolence').value=='' ">
+                                     El campo no esta lleno
+                                    </p>
+                            </div>
+        
+                            <button type="submit"
+                            *ngIf="fieldviolence.get('fieldviolence').hasError('required') && action"
+                            disabled class="btn btn-outline-primary mx-auto">Registrar Ambito violencia</button>
+                            <button type="submit" *ngIf="!fieldviolence.get('fieldviolence').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Ambito violencia</button>
+                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Ambito violencia</button>
+                          </form>
+           </mat-card-content>
+         </mat-card>
+  
+  
+  
+      </div>
+  </div>
+  
+  
+  
+  

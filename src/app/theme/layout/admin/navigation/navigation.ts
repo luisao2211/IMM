@@ -157,7 +157,55 @@ const NavigationItems = [
             url: '/catalogos/enfermedades',
             target: false,
             breadcrumbs: false
-          }
+          },
+          {
+            id: 'register',
+            title: 'Origenes',
+            type: 'item',
+            url: '/catalogos/origenes',
+            target: false,
+            breadcrumbs: false
+          },
+          {
+            id: 'register',
+            title: 'Discapacidades',
+            type: 'item',
+            url: '/catalogos/discapacidades',
+            target: false,
+            breadcrumbs: false
+          },
+          {
+            id: 'register',
+            title: 'Viviendas',
+            type: 'item',
+            url: '/catalogos/viviendas',
+            target: false,
+            breadcrumbs: false
+          },
+          {
+            id: 'register',
+            title: 'Adicciones',
+            type: 'item',
+            url: '/catalogos/adicciones',
+            target: false,
+            breadcrumbs: false
+          },
+          {
+            id: 'register',
+            title: 'Tipo de violencia',
+            type: 'item',
+            url: '/catalogos/tipoviolencia',
+            target: false,
+            breadcrumbs: false
+          },
+          {
+            id: 'register',
+            title: 'Ambito violencia',
+            type: 'item',
+            url: '/catalogos/ambitoviolencia',
+            target: false,
+            breadcrumbs: false
+          },
         ]
       },
     ]
