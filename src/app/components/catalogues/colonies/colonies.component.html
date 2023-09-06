@@ -1,0 +1,139 @@
+
+
+
+<div class=" row pt-2 mx-auto d-flex justify-content-center">
+  <div class="col-9">
+
+    <mat-card>
+      <mat-card-content>
+  
+  
+  
+                  <mat-label>Buscador</mat-label>
+                  <input type="text" class="form-control custom-border"  matInput (keyup)="applyFilter($event)"id="gender"formControlName="gender" aria-describedby="emailHelp">
+                  <br>
+                <div class="mat-elevation-z8">
+                  <table mat-table [dataSource]="dataSource" matSort>
+                    <ng-container matColumnDef="colony">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Colonia</th>
+                      <td mat-cell *matCellDef="let row"> {{row.colony}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="state">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Estado </th>
+                      <td mat-cell *matCellDef="let row"> {{row.state}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="municipy">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Municipio</th>
+                      <td mat-cell *matCellDef="let row"> {{row.municipy}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="cp">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Cp</th>
+                      <td mat-cell *matCellDef="let row"> {{row.cp}} </td>
+                    </ng-container>
+                    
+                    <ng-container matColumnDef="zone">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Zona</th>
+                      <td mat-cell *matCellDef="let row"> {{row.zone}} </td>
+                    </ng-container>
+                    <ng-container matColumnDef="Actions">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header> Acciones </th>
+                      <td mat-cell *matCellDef="let row">
+                      <button mat-icon-button color="primary"(click)="showColony(row)">
+                        <mat-icon>edit</mat-icon>
+                      </button>
+                      <button mat-icon-button color="warn" (click)="deleteColony(row.id)">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                      </td>
+                    </ng-container>
+                    <!-- Fruit Column -->
+                    <tr mat-header-row class="table-dark"  *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row class="table-dark" *matRowDef="let row; columns: displayedColumns;"></tr>
+                    <!-- Row shown when there is no matching data. -->
+                    <tr class="mat-row" *matNoDataRow>
+                      <td class="mat-cell" colspan="4">No se encuentran resultados</td>
+                    </tr>
+                  </table>
+                  <mat-paginator #paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="seleccion de pagina"></mat-paginator>
+  
+                </div>
+  
+    </mat-card-content>
+  </mat-card>
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+    <div class="col-3">
+      <mat-card>
+        <mat-card-content>
+         
+          <mat-stepper orientation="vertical" [linear]="isLinear" #stepper>
+            <mat-step [stepControl]="firstFormGroup">
+              <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Selecciona Estado</ng-template>
+
+                <mat-form-field>
+                  <mat-select  class="form-select" [(value)]="selected" 
+                   (click)="openSection() " >
+                    <mat-option *ngFor="let state of stateskeys" [value]="state.id">
+                      {{state.state}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                  <button mat-button matStepperNext (click)="selectState()">Siguiente</button>
+                  
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup">
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Selecciona Municipio</ng-template>
+                <mat-form-field>
+                  <mat-select  class="form-select" formControlName="municipieName" [(value)]="municipieSelected"   >
+                    <mat-option *ngFor="let state of municipies" [value]="state.id">
+                      {{state.state}}
+                    </mat-option>
+                  </mat-select>
+                  
+                </mat-form-field>
+                <label for="">Colonia</label>
+                <mat-form-field class="example-full-width">
+                  <input type="text" matInput class="" placeholder="" aria-label="" aria-describedby="basic-addon1"  formControlName="ColoniesName">
+                </mat-form-field>
+                <label for="">Cp</label>
+
+                <mat-form-field class="example-full-width">
+                  <input type="text" matInput class="" placeholder="" aria-label="" aria-describedby="basic-addon1"  formControlName="Cp">
+                </mat-form-field>
+                <label for="">Zona</label>
+                <mat-form-field class="example-full-width">
+                  <input type="text" matInput class="" placeholder="" aria-label="" aria-describedby="basic-addon1"  formControlName="Zone">
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Regresar</button>
+                  <button mat-button matStepperNext color="primary" (click)="newColony()">
+                    {{ acction ? 'Guardar' : 'Actualizar' }}
+                  </button>
+                </div>
+              </form>
+            </mat-step>
+           
+          </mat-stepper>
+                  
+         </mat-card-content>
+       </mat-card>
+
+
+
+    </div>
+  </div>
