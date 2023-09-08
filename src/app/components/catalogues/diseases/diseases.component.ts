@@ -53,7 +53,10 @@ export class DiseasesComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -90,6 +93,8 @@ export class DiseasesComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -127,7 +132,8 @@ export class DiseasesComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar la enfermedad o dificultad de salud`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -155,7 +161,8 @@ export class DiseasesComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar enfermedad o dificultad de salud `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

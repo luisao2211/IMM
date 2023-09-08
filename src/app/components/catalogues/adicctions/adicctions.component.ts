@@ -54,7 +54,10 @@ export class AdicctionsComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -91,6 +94,8 @@ export class AdicctionsComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -116,7 +121,7 @@ export class AdicctionsComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'success',
-            title: `Se ha registrado la nueva vivienda`,
+            title: `Se ha registrado la nueva adiccion`,
           })
          
           this.isLoading = false
@@ -126,9 +131,10 @@ export class AdicctionsComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'error',
-            title: `Se ha producido un error al intentar registrar la vivienda`,
+            title: `Se ha producido un error al intentar registrar la adiccion`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -144,7 +150,7 @@ export class AdicctionsComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'success',
-            title: `Se ha actualizado la vivienda`,
+            title: `Se ha actualizado la adiccion`,
           })
          
           this.isLoading = false
@@ -154,9 +160,10 @@ export class AdicctionsComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'error',
-            title: `Se ha producido un error al intentar actualizar vivienda `,
+            title: `Se ha producido un error al intentar actualizar adiccion `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

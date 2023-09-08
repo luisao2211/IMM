@@ -65,7 +65,8 @@
                             *ngIf="origins.get('origin').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Origen</button>
                             <button type="submit" *ngIf="!origins.get('origin').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Origen</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Origen</button>
+                            <button type="submit" *ngIf="!action && origins.get('origin').value !=''"  class="btn btn-outline-primary">Actualizar Origen</button>
+                            <button type="submit" *ngIf="!action && origins.get('origin').value ==''"  disabled class="btn btn-outline-primary">Actualizar Origen</button>
                           </form>
            </mat-card-content>
          </mat-card>

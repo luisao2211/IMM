@@ -64,7 +64,8 @@
                             *ngIf="activitys.get('activity').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Actividad</button>
                             <button type="submit" *ngIf="!activitys.get('activity').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Actividad</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Actividad</button>
+                            <button type="submit" *ngIf="!action && activitys.get('activity').value !=''"  class="btn btn-outline-primary">Actualizar Actividad</button>
+                            <button type="submit" *ngIf="!action && activitys.get('activity').value ==''"  disabled class="btn btn-outline-primary">Actualizar Actividad</button>
                           </form>
            </mat-card-content>
          </mat-card>

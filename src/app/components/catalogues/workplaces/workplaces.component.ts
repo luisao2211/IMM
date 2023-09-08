@@ -53,7 +53,10 @@ export class WorkplacesComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -90,6 +93,8 @@ export class WorkplacesComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -128,7 +133,8 @@ export class WorkplacesComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar lugar de trabajo`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -156,7 +162,8 @@ export class WorkplacesComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar el lugar de trabajo `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

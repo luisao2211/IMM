@@ -64,8 +64,10 @@
                             <button type="submit"
                             *ngIf="households.get('household').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Vivienda</button>
+
                             <button type="submit" *ngIf="!households.get('household').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Vivienda</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Vivienda</button>
+                            <button type="submit" *ngIf="!action && households.get('household').value !=''"  class="btn btn-outline-primary">Actualizar Vivienda</button>
+                            <button type="submit" *ngIf="!action && households.get('household').value ==''"  disabled class="btn btn-outline-primary">Actualizar Vivienda</button>
                           </form>
            </mat-card-content>
          </mat-card>

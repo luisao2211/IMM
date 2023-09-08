@@ -54,7 +54,10 @@ export class OriginsComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -91,6 +94,8 @@ export class OriginsComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -128,7 +133,8 @@ export class OriginsComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar origen`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -154,9 +160,10 @@ export class OriginsComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'error',
-            title: `Se ha producido un error al intentar actualizar enfermedad o dificultad de salud `,
+            title: `Se ha producido un error al intentar actualizar el origen `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

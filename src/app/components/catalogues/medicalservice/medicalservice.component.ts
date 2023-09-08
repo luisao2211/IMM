@@ -91,6 +91,8 @@ export class MedicalserviceComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -117,7 +119,7 @@ export class MedicalserviceComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'success',
-            title: `Se ha registrado el lugar de trabajo`,
+            title: `Se ha registrado el servicio médico`,
           })
          
           this.isLoading = false
@@ -127,9 +129,10 @@ export class MedicalserviceComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'error',
-            title: `Se ha producido un error al intentar registrar lugar de trabajo`,
+            title: `Se ha producido un error al intentar registrar servicio médico`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -145,7 +148,7 @@ export class MedicalserviceComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'success',
-            title: `Se ha actualizado  el lugar de trabajo `,
+            title: `Se ha actualizado  el servicio médico `,
           })
          
           this.isLoading = false
@@ -155,9 +158,10 @@ export class MedicalserviceComponent {
           this.Toast.fire({
             position: 'top-end',
             icon: 'error',
-            title: `Se ha producido un error al intentar actualizar el lugar de trabajo `,
+            title: `Se ha producido un error al intentar actualizar el servicio médico `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

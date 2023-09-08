@@ -4,57 +4,69 @@
       <div class="card mt-5">
         <div class="card-body">
           <a href="javascript:" class="d-flex justify-content-center mt-3">
-            <img src="assets/images/logo-dark.svg" />
+    <img width="170" height="150" src="https://imgs.search.brave.com/uU2Rav4yLGjmf8oZXQKIYH0buwqmUJFx3CY5cr1KTSg/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9pZW11/amVyLmR1cmFuZ28u/Z29iLm14L3dwLWNv/bnRlbnQvdXBsb2Fk/cy9zaXRlcy80NC8y/MDIzLzAyL2ltbS5w/bmc" alt="" class="logo logo-lg" />
           </a>
           <div class="row">
             <div class="d-flex justify-content-center">
               <div class="auth-header">
-                <h2 class="text-secondary mt-5"><b>Sign up</b></h2>
-                <p class="fs-4 mt-2">Enter your credentials to continue</p>
+                <h2 class="text-secondary mt-5"><b>Registro</b></h2>
+                <p class="fs-4 mt-2">Ingresa tus credenciales para continuar</p>
               </div>
             </div>
           </div>
-          <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted" style="width: 100%">
+          <!-- <button type="button" class="btn mt-2 btn-light-primary bg-light text-muted" style="width: 100%">
             <img src="assets/images/authentication/google-icon.svg" />Sign Up With Google
-          </button>
-          <div class="saprator mt-3">
+          </button> -->
+          <!-- <div class="saprator mt-3">
             <span>or</span>
-          </div>
-          <h5 class="my-4 d-flex justify-content-center"> Sign Up with Email address </h5>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" />
-                <label for="floatingInput">First Name</label>
-              </div>
+          </div> -->
+          <!-- <h5 class="my-4 d-flex justify-content-center"> Sign Up with Email address </h5> -->
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="form-floating mb-3">
+              <input type="text" class="form-control" id="floatingInput" formControlName="name" placeholder="" />
+              <label for="floatingInput">Nombre</label>
             </div>
-            <div class="col-md-6">
-              <div class="form-floating mb-3">
-                <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" />
-                <label for="floatingInput">Last Name</label>
-              </div>
+            <p class="" style="color: red;" *ngIf="registerForm.get('name').value=='' ">
+              El campo no esta lleno
+             </p>
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="floatingInput" formControlName="email" placeholder="" />
+              <label for="floatingInput">Correo</label>
             </div>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" />
-            <label for="floatingInput">Email Address / Username</label>
-          </div>
-          <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" />
-            <label for="floatingInput">Password</label>
-          </div>
-          <div class="form-check mt-3s">
+            <p class="" style="color: red;" *ngIf="registerForm.get('email').value=='' ">
+              El campo no esta lleno
+             </p>
+            <div class="form-floating mb-3">
+              <input type="password" class="form-control" id="floatingInput" formControlName="password" placeholder="" />
+              <label for="floatingInput">Contraseña</label>
+            </div>
+            <p class="" style="color: red;" *ngIf="registerForm.get('password').value=='' ">
+              El campo no esta lleno
+             </p>
+             <p class="" style="color: red;" *ngIf="registerForm.get('password').hasError('minlength') ">
+              La contraseña debe contener almenos 6 letras
+             </p>
+             <div class="d-grid mt-4">
+              <button type="submit" class="btn btn-secondary p-2" disabled  *ngIf="registerForm.get('name').value==''||
+              registerForm.get('email').value==''||
+              registerForm.get('password').value==''||registerForm.get('password').hasError('minlength')
+              ">Registrarme</button>
+              <button type="submit" class="btn btn-secondary p-2"   *ngIf="registerForm.get('name').value!=''&&
+              registerForm.get('email').value!=''&&
+              registerForm.get('password').value!='' && !registerForm.get('password').hasError('minlength')
+              ">Registrarme</button>
+            </div>
+          </form>
+          <!-- <div class="form-check mt-3s">
             <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
             <label class="form-check-label" for="customCheckc1">
               <h5>Agree with <span>Terms & Condition.</span></h5>
             </label>
-          </div>
-          <div class="d-grid mt-4">
-            <button type="button" class="btn btn-secondary p-2">Sign Up</button>
-          </div>
+          </div> -->
+         
           <hr />
           <h5 class="d-flex justify-content-center">
-            <a [routerLink]="['/guest/login']"> Already have an account? </a>
+            <a [routerLink]="['/autenticacion/iniciosesion']"> Ya tienes una cuenta? </a>
           </h5>
         </div>
       </div>

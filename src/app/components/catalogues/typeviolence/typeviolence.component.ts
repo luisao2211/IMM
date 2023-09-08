@@ -56,7 +56,10 @@ export class TypeviolenceComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -93,6 +96,8 @@ export class TypeviolenceComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -131,7 +136,8 @@ export class TypeviolenceComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar el tipo de violencia`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -159,7 +165,8 @@ export class TypeviolenceComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar el tipo de violencia`,
           })
-       
+          this.isLoading = false
+
         }
 
       });

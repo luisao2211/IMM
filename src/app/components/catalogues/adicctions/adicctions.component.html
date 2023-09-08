@@ -65,7 +65,8 @@
                             *ngIf="addictions.get('addiction').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Adicción</button>
                             <button type="submit" *ngIf="!addictions.get('addiction').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Adicción</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Adicción</button>
+                            <button type="submit" *ngIf="!action && addictions.get('addiction').value !=''"  class="btn btn-outline-primary">Actualizar Adicción</button>
+                            <button type="submit" *ngIf="!action && addictions.get('addiction').value ==''"  disabled class="btn btn-outline-primary">Actualizar Adicción</button>
                           </form>
            </mat-card-content>
          </mat-card>

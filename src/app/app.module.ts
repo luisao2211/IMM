@@ -19,6 +19,8 @@ import { SharedModule } from './theme/shared/shared.module';
 import { ConfigurationComponent } from './theme/layout/admin/configuration/configuration.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AuthService } from './demo/pages/authentication/apiservice/authentication.service';
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
 
 @NgModule({
   declarations: [
@@ -34,10 +36,11 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     NavItemComponent,
     NavCollapseComponent,
     ConfigurationComponent,
-    GuestComponent
+    GuestComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, NgbModule],
-  providers: [NavigationItem],
+  imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, NgbModule,HttpClientModule,
+  ],
+  providers: [NavigationItem,AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

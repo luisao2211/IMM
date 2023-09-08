@@ -16,7 +16,7 @@
                      <table mat-table [dataSource]="dataSource" matSort>
      
                        <ng-container matColumnDef="medicalservice">
-                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicio medico </th>
+                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Servicios médicos </th>
                          <td mat-cell *matCellDef="let row"> {{row.medicalservice}} </td>
                        </ng-container>
      
@@ -53,7 +53,7 @@
            
                    <form class="" [formGroup]="medicalServices" (ngSubmit)="onsubmit()">
                        <div class="mb-3">
-                             <label for="medicalservice" class="form-label"><b>Nuevo Servicio medico</b></label>
+                             <label for="medicalservice" class="form-label"><b>Nuevo Servicio médico</b></label>
                              <input type="text" class="form-control custom-border" id="medicalservice"formControlName="medicalservice" [(ngModel)]="service" aria-describedby="emailHelp">
                              <br>
                                    <p class="" style="color: red;" *ngIf="medicalServices.get('medicalservice').value=='' ">
@@ -63,9 +63,10 @@
        
                            <button type="submit"
                            *ngIf="medicalServices.get('medicalservice').hasError('required') && action"
-                           disabled class="btn btn-outline-primary mx-auto">Registrar Servicio medico</button>
-                           <button type="submit" *ngIf="!medicalServices.get('medicalservice').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Servicio medico</button>
-                           <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Servicio medico</button>
+                           disabled class="btn btn-outline-primary mx-auto">Registrar Servicio médico</button>
+                           <button type="submit" *ngIf="!medicalServices.get('medicalservice').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Servicio médico</button>
+                           <button type="submit" *ngIf="!action && medicalServices.get('medicalservice').value !=''"  class="btn btn-outline-primary">Actualizar Servicio médico</button>
+                            <button type="submit" *ngIf="!action && medicalServices.get('medicalservice').value ==''"  disabled class="btn btn-outline-primary">Actualizar Servicio médico</button>
                          </form>
           </mat-card-content>
         </mat-card>

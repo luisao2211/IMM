@@ -54,7 +54,10 @@ export class MaingenderComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -129,7 +132,8 @@ export class MaingenderComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar el género ${this.gender.value.gender}`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -157,7 +161,8 @@ export class MaingenderComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar el género `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

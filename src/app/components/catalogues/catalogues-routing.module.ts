@@ -15,6 +15,13 @@ import { HouseholdsComponent } from './households/households.component';
 import { AdicctionsComponent } from './adicctions/adicctions.component';
 import { TypeviolenceComponent } from './typeviolence/typeviolence.component';
 import { FieldviolenceComponent } from './fieldviolence/fieldviolence.component';
+import { LoweffectComponent } from './loweffect/loweffect.component';
+import { ServicesreferenceComponent } from './servicesreference/servicesreference.component';
+import { AxisComponent } from './axis/axis.component';
+import { AxisprogramsComponent } from './axisprograms/axisprograms.component';
+import { StatusComponent } from './status/status.component';
+import { MotiveComponent } from './motive/motive.component';
+import { ProblemsComponent } from './problems/problems.component';
 
 const routes : Routes = [
   {
@@ -34,7 +41,14 @@ const routes : Routes = [
       {path: 'adicciones',component: AdicctionsComponent},
       {path: 'tipoviolencia',component: TypeviolenceComponent},
       {path: 'ambitoviolencia',component: FieldviolenceComponent},
-      
+      {path: 'efectos',component: LoweffectComponent},
+      {path: 'serviciosreferencia',component: ServicesreferenceComponent},
+      {path: 'eje',component: AxisComponent},
+      {path: 'programas',component: AxisprogramsComponent},
+      {path: 'status',component: StatusComponent},
+      {path: 'problemas',component: ProblemsComponent},
+      {path: 'motivos',component: MotiveComponent},
+
 
     ]
   }

@@ -54,7 +54,10 @@ export class HouseholdsComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -91,6 +94,8 @@ export class HouseholdsComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -128,7 +133,8 @@ export class HouseholdsComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar la vivienda`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -156,7 +162,8 @@ export class HouseholdsComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar vivienda `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

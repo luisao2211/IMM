@@ -16,7 +16,7 @@
                       <table mat-table [dataSource]="dataSource" matSort>
       
                         <ng-container matColumnDef="fieldviolence">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ambito violencia </th>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Ambitos de violencia </th>
                           <td mat-cell *matCellDef="let row"> {{row.fieldviolence}} </td>
                         </ng-container>
       
@@ -65,7 +65,8 @@
                             *ngIf="fieldviolence.get('fieldviolence').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Ambito violencia</button>
                             <button type="submit" *ngIf="!fieldviolence.get('fieldviolence').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Ambito violencia</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Ambito violencia</button>
+                            <button type="submit" *ngIf="!action && fieldviolence.get('fieldviolence').value !=''"  class="btn btn-outline-primary">Actualizar Ambito violencia</button>
+                            <button type="submit" *ngIf="!action && fieldviolence.get('fieldviolence').value ==''"  disabled class="btn btn-outline-primary">Actualizar Ambito violencia</button>
                           </form>
            </mat-card-content>
          </mat-card>

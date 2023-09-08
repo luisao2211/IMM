@@ -16,7 +16,7 @@
                       <table mat-table [dataSource]="dataSource" matSort>
       
                         <ng-container matColumnDef="workplace">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Lugar de trabajo </th>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Lugares de trabajo </th>
                           <td mat-cell *matCellDef="let row"> {{row.workplace}} </td>
                         </ng-container>
       
@@ -65,7 +65,9 @@
                             *ngIf="workplaces.get('workplace').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Lugar de trabajo</button>
                             <button type="submit" *ngIf="!workplaces.get('workplace').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Lugar de trabajo</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Lugar de trabajo</button>
+                            
+                            <button type="submit" *ngIf="!action && workplaces.get('workplace').value !=''"  class="btn btn-outline-primary">Actualizar Lugar de trabajo</button>
+                            <button type="submit" *ngIf="!action && workplaces.get('workplace').value ==''"  disabled class="btn btn-outline-primary">Actualizar Lugar de trabajo</button>
                           </form>
            </mat-card-content>
          </mat-card>

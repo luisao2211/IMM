@@ -55,7 +55,10 @@ export class DisabilitiesComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -92,6 +95,8 @@ export class DisabilitiesComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -129,7 +134,8 @@ export class DisabilitiesComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar la discapacidad`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -157,7 +163,8 @@ export class DisabilitiesComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar discapacidad`,
           })
-       
+          this.isLoading = false
+
         }
 
       });

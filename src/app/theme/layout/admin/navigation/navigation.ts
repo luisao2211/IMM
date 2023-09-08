@@ -40,30 +40,7 @@ const NavigationItems = [
     type: 'group',
     icon: 'icon-navigation',
     children: [
-      {
-        id: 'Authentication',
-        title: 'Autenticación',
-        type: 'collapse',
-        icon: 'ti ti-key',
-        children: [
-          {
-            id: 'login',
-            title: 'Login',
-            type: 'item',
-            url: '/guest/login',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Register',
-            type: 'item',
-            url: '/guest/register',
-            target: false,
-            breadcrumbs: false
-          }
-        ]
-      },
+    
       {
         id: 'Modulo1',
         title: 'Modulo 1',
@@ -95,92 +72,12 @@ const NavigationItems = [
         icon: 'ti ti-box-multiple',
         children: [
           {
-            id: 'Generos',
-            title: 'Generos',
-            type: 'item',
-            url: '/catalogos/genero',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Colonias',
-            type: 'item',
-            url: '/catalogos/colonias',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Estado Civil',
-            type: 'item',
-            url: '/catalogos/estadosciviles',
-            target: false,
-            breadcrumbs: false
-          },
-          {
             id: 'register',
             title: 'Actividades que realiza',
             type: 'item',
             url: '/catalogos/actividades',
             target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Lugares de trabajo',
-            type: 'item',
-            url: '/catalogos/trabajos',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Servicios Medicos',
-            type: 'item',
-            url: '/catalogos/serviciosmedicos',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Formación Educativa',
-            type: 'item',
-            url: '/catalogos/formacioneducativa',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Enfermedades o dificultades de salud',
-            type: 'item',
-            url: '/catalogos/enfermedades',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Origenes',
-            type: 'item',
-            url: '/catalogos/origenes',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Discapacidades',
-            type: 'item',
-            url: '/catalogos/discapacidades',
-            target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Viviendas',
-            type: 'item',
-            url: '/catalogos/viviendas',
-            target: false,
-            breadcrumbs: false
+            breadcrumbs: false,
           },
           {
             id: 'register',
@@ -188,15 +85,7 @@ const NavigationItems = [
             type: 'item',
             url: '/catalogos/adicciones',
             target: false,
-            breadcrumbs: false
-          },
-          {
-            id: 'register',
-            title: 'Tipo de violencia',
-            type: 'item',
-            url: '/catalogos/tipoviolencia',
-            target: false,
-            breadcrumbs: false
+            breadcrumbs: false,
           },
           {
             id: 'register',
@@ -204,8 +93,161 @@ const NavigationItems = [
             type: 'item',
             url: '/catalogos/ambitoviolencia',
             target: false,
-            breadcrumbs: false
+            breadcrumbs: false,
           },
+          // {
+          //   id: 'register',
+          //   title: 'Colonias',
+          //   type: 'item',
+          //   url: '/catalogos/colonias',
+          //   target: false,
+          //   breadcrumbs: false,
+          // },
+          {
+            id: 'register',
+            title: 'Discapacidades',
+            type: 'item',
+            url: '/catalogos/discapacidades',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Estado Civil',
+            type: 'item',
+            url: '/catalogos/estadosciviles',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Ejes',
+            type: 'item',
+            url: '/catalogos/eje',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Enfermedades o dificultades de salud',
+            type: 'item',
+            url: '/catalogos/enfermedades',
+            target: false,
+            breadcrumbs: false,
+          },
+          // {
+          //   id: 'register',
+          //   title: 'Efectos de drogas o alcohol',
+          //   type: 'item',
+          //   url: '/catalogos/efectos',
+          //   target: false,
+          //   breadcrumbs: false,
+          // },
+          {
+            id: 'register',
+            title: 'Formación Educativa',
+            type: 'item',
+            url: '/catalogos/formacioneducativa',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'Generos',
+            title: 'Generos',
+            type: 'item',
+            url: '/catalogos/genero',
+            target: false,
+            breadcrumbs: false,
+          },
+         
+        
+          {
+            id: 'register',
+            title: 'Lugares de trabajo',
+            type: 'item',
+            url: '/catalogos/trabajos',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Motivos de cierre',
+            type: 'item',
+            url: '/catalogos/motivos',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Origenes',
+            type: 'item',
+            url: '/catalogos/origenes',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Problemas',
+            type: 'item',
+            url: '/catalogos/problemas',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Programas',
+            type: 'item',
+            url: '/catalogos/programas',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Servicios de referencia',
+            type: 'item',
+            url: '/catalogos/serviciosreferencia',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Servicios Médicos',
+            type: 'item',
+            url: '/catalogos/serviciosmedicos',
+            target: false,
+            breadcrumbs: false,
+          },
+         
+          
+          
+          
+        
+          {
+            id: 'register',
+            title: 'Status',
+            type: 'item',
+            url: '/catalogos/status',
+            target: false,
+            breadcrumbs: false,
+          },
+          {
+            id: 'register',
+            title: 'Tipo de violencia',
+            type: 'item',
+            url: '/catalogos/tipoviolencia',
+            target: false,
+            breadcrumbs: false,
+          },
+        
+          {
+            id: 'register',
+            title: 'Viviendas',
+            type: 'item',
+            url: '/catalogos/viviendas',
+            target: false,
+            breadcrumbs: false,
+          },
+        
         ]
       },
     ]

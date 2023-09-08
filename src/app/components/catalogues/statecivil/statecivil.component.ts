@@ -54,7 +54,10 @@ export class StatecivilComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -91,6 +94,8 @@ export class StatecivilComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -129,7 +134,8 @@ export class StatecivilComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
@@ -157,7 +163,8 @@ export class StatecivilComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar el estado civil `,
           })
-       
+          this.isLoading = false
+
         }
 
       });

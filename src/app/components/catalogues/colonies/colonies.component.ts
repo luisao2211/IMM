@@ -117,7 +117,10 @@ export class ColoniesComponent {
         this.dataSource.sort = this.sort;
         // this.isLoading = false
       },
-      error: console.log
+      error: (e)=>{
+        this.isLoading = false
+
+      }
     })
   }
   deleteColony(id:number){
@@ -130,6 +133,8 @@ export class ColoniesComponent {
           title: `Se ha eliminado la colonia`,
         })
         this.clear()
+        this.isLoading = false
+
       },
       error:(e)=>{
         this.Toast.fire({
@@ -137,6 +142,8 @@ export class ColoniesComponent {
           icon: 'error',
           title: `No se ha podido eliminar la colonia`,
         })
+                this.isLoading = false
+
       }
     })
   }
@@ -166,7 +173,8 @@ clear(){
             title: `Se ha registrado la colonia ${this.secondFormGroup.get("ColoniesName").value}`,
           })
             this.clear()
-         
+            this.isLoading = false
+
 
         },
         error:(e)=>{
@@ -175,6 +183,8 @@ clear(){
             icon: 'error',
             title: `Se ha producido un error al intentar registrar la colonia`,
           })
+          this.isLoading = false
+
         }
       })
     }
@@ -197,6 +207,7 @@ clear(){
           })
             this.clear()
             this.acction = true
+            this.isLoading = false
 
         },
         error:(e)=>{
@@ -205,6 +216,8 @@ clear(){
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar la colonia`,
           })
+          this.isLoading = false
+
         }
       })
     }

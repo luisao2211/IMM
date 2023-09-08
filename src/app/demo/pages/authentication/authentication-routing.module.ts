@@ -6,11 +6,11 @@ const routes: Routes = [
     path: '',
     children: [
       {
-        path: 'login',
+        path: 'iniciosesion',
         loadComponent: () => import('./login/login.component')
       },
       {
-        path: 'register',
+        path: 'registro',
         loadComponent: () => import('./register/register.component')
       }
     ]

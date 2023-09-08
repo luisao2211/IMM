@@ -14,7 +14,7 @@ import { TrainingService } from './apiservice/trainings.service';
 })
 export class TrainingsComponent {
   public train: string = '';
-  public updategender: Training;
+  public updatetraining: Training;
   public action: Boolean = true;
   public id: number;
   training: FormGroup;
@@ -54,7 +54,10 @@ export class TrainingsComponent {
         this.dataSource.sort = this.sort;
         this.isLoading = false
       },
-      error: console.log,
+      error: (e)=>{
+        this.isLoading = false
+
+      },
       complete() {
         
         
@@ -91,6 +94,8 @@ export class TrainingsComponent {
           icon: 'error',
           title: `Se ha producido un error`,
         })
+        this.isLoading = false
+
       },
 
     })
@@ -129,17 +134,18 @@ export class TrainingsComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar registrar la formación educativa`,
           })
-         
+          this.isLoading = false
+
         }
       });
     }
     else {
-      this.updategender = {
+      this.updatetraining = {
         id: this.id,
         training: this.train,
         active: true,
       }
-      this.TrainingService.updateTraining(this.updategender).subscribe({
+      this.TrainingService.updateTraining(this.updatetraining).subscribe({
         next: (res) => {
           this.reloaData();
           this.Toast.fire({
@@ -157,7 +163,8 @@ export class TrainingsComponent {
             icon: 'error',
             title: `Se ha producido un error al intentar actualizar la formación educativa`,
           })
-       
+          this.isLoading = false
+
         }
 
       });

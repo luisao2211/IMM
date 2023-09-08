@@ -4,3 +4,13 @@
 .avtar:not([class*='bg-']) {
   background: rgba(0, 0, 0, 0.15);
 }
+/* app.component.css (o app.component.scss si estás utilizando SCSS) */
+
+body {
+  background: #000000;
+  background-color: rgb(231, 142, 26) !important;
+  background-image: url('../../../assets/images/logo-gpd.png');
+  background-size: cover; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+  background-repeat: no-repeat; /* Evita la repetición de la imagen de fondo */
+  /* Puedes agregar más propiedades CSS para personalizar el fondo según tus necesidades */
+}

@@ -22,10 +22,11 @@ export class BreadcrumbComponent {
   constructor(
     private _router: Router,
     public nav: NavigationItem,
-    private titleService: Title
+    private titleService: Title 
   ) {
     this.navigation = this.nav.get();
     this.setBreadcrumb();
+    
   }
 
   // public method
@@ -43,7 +44,7 @@ export class BreadcrumbComponent {
 
   filterNavigation(activeLink: any) {
     let result: any;
-    let title = 'Welcome';
+    let title = 'Inicio';
     this.navigation.forEach(function (a: any) {
       if (a.type === 'item' && 'url' in a && a.url === activeLink) {
         result = [
@@ -124,6 +125,6 @@ export class BreadcrumbComponent {
       }
     });
     this.navigationList = result;
-    this.titleService.setTitle(title + ' | Berry Angular Template');
+    this.titleService.setTitle(title + ' | Instituto de la Mujer');
   }
 }

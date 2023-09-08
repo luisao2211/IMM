@@ -16,7 +16,7 @@
                       <table mat-table [dataSource]="dataSource" matSort>
       
                         <ng-container matColumnDef="diseas">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Enfermedad o dificultad de salud </th>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Enfermedades o dificultades de salud </th>
                           <td mat-cell *matCellDef="let row"> {{row.diseas}} </td>
                         </ng-container>
       
@@ -65,7 +65,8 @@
                             *ngIf="diseases.get('diseas').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Enfermedad</button>
                             <button type="submit" *ngIf="!diseases.get('diseas').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Enfermedad</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Enfermedad</button>
+                            <button type="submit" *ngIf="!action && diseases.get('diseas').value !=''"  class="btn btn-outline-primary">Actualizar Enfermedad</button>
+                            <button type="submit" *ngIf="!action && diseases.get('diseas').value ==''"  disabled class="btn btn-outline-primary">Actualizar Enfermedad</button>
                           </form>
            </mat-card-content>
          </mat-card>

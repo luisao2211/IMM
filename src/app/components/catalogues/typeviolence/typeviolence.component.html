@@ -16,7 +16,7 @@
                       <table mat-table [dataSource]="dataSource" matSort>
       
                         <ng-container matColumnDef="violence">
-                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipo de violencia </th>
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header> Tipos de violencia </th>
                           <td mat-cell *matCellDef="let row"> {{row.violence}} </td>
                         </ng-container>
       
@@ -64,8 +64,10 @@
                             <button type="submit"
                             *ngIf="violence.get('violence').hasError('required') && action"
                             disabled class="btn btn-outline-primary mx-auto">Registrar Tipo de violencia</button>
+                          
                             <button type="submit" *ngIf="!violence.get('violence').hasError('required')&& action"  class="btn btn-outline-primary">Registrar Tipo de violencia</button>
-                            <button type="submit" *ngIf="!action"  class="btn btn-outline-primary">Actualizar Tipo de violencia</button>
+                            <button type="submit" *ngIf="!action && violence.get('violence').value !=''"  class="btn btn-outline-primary">Actualizar Tipo de violencia</button>
+                            <button type="submit" *ngIf="!action && violence.get('violence').value ==''"  disabled class="btn btn-outline-primary">Actualizar Tipo de violencia</button>
                           </form>
            </mat-card-content>
          </mat-card>

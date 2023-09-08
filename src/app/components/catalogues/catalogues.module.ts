@@ -45,6 +45,20 @@ import { TypeviolenceComponent } from './typeviolence/typeviolence.component';
 import { TypeViolenceService } from './typeviolence/apiservice/typeviolence.service';
 import { FieldviolenceComponent } from './fieldviolence/fieldviolence.component';
 import { FieldViolenceService } from './fieldviolence/apiservice/fieldviolence.service';
+import { LoweffectComponent } from './loweffect/loweffect.component';
+import { LowEffectService } from './loweffect/apiservice/loweffect.service';
+import { ServicesreferenceComponent } from './servicesreference/servicesreference.component';
+import { ServicesReferenceService } from './servicesreference/apiservice/servicesreference.service';
+import { AxisComponent } from './axis/axis.component';
+import { AxisService } from './axis/apiservice/axis.service';
+import { AxisprogramsComponent } from './axisprograms/axisprograms.component';
+import { AxisProgramsService } from './axisprograms/apiservice/axisprograms.service';
+import { StatusComponent } from './status/status.component';
+import { StatusService } from './status/apiservice/status.service';
+import { ProblemsComponent } from './problems/problems.component';
+import { MotiveComponent } from './motive/motive.component';
+import { ProblemsService } from './problems/apiservice/problems.service';
+import { MotiveService } from './motive/apiservice/motive.service';
 
 @NgModule({
   declarations: [
@@ -61,7 +75,14 @@ import { FieldViolenceService } from './fieldviolence/apiservice/fieldviolence.s
     HouseholdsComponent,
     AdicctionsComponent,
     TypeviolenceComponent,
-    FieldviolenceComponent, // Add your component here
+    FieldviolenceComponent,
+    LoweffectComponent,
+    ServicesreferenceComponent,
+    AxisComponent,
+    AxisprogramsComponent,
+    StatusComponent,
+    ProblemsComponent,
+    MotiveComponent, // Add your component here
   ],
   imports: [
     CommonModule,
@@ -99,6 +120,13 @@ import { FieldViolenceService } from './fieldviolence/apiservice/fieldviolence.s
     AdicctionsService,
     TypeViolenceService,
     FieldViolenceService,
+    LowEffectService,
+    ServicesReferenceService,
+    AxisService,
+    AxisProgramsService,
+    StatusService,
+    ProblemsService,
+    MotiveService
   ],
 })
 export class CataloguesModule {}
