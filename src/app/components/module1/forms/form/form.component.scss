@@ -1,0 +1,23 @@
+.horizontal-input {
+    display: inline-block;
+    margin-right: 10px; 
+  }
+.spaceinputs{
+    margin: .4em;
+}
+.radio-group {
+  width: fit-content;
+  height: fit-content;
+  text-align: center; 
+  display: inline-block;
+  margin-left: .2em;
+  margin-right: .2em;
+  /* Centra el contenido horizontalmente */
+}
+
+.title {
+  font-weight: normal; /* Puedes ajustar el estilo del título según tus preferencias */
+  margin-bottom: 10px; /* Espacio entre el título y las opciones */
+}
+
+

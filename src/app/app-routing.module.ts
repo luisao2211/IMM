@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { AuthenticationGuard } from './authentication.guard';
+import { Module1RoutingModule } from './components/module1/module1-routing.module';
 
 const routes: Routes = [
   {
@@ -17,7 +18,8 @@ const routes: Routes = [
       {
         path: 'autenticacion',
         loadChildren: () => import('./demo/pages/authentication/authentication.module').then((m) => m.AuthenticationModule)
-      }
+      },
+   
     ]
   },
   {
@@ -35,7 +37,8 @@ const routes: Routes = [
         path: 'defecto',
         loadComponent: () => import('./demo/default/default.component')
       },
-      {path: 'catalogos', loadChildren: () => import('./components/catalogues/catalogues.module').then((m) => m.CataloguesModule)}
+      {path: 'catalogos', loadChildren: () => import('./components/catalogues/catalogues.module').then((m) => m.CataloguesModule)},
+      {path: 'modulo1', loadChildren: () => import('./components/module1/module1.module').then((m) => m.Module1Module)}
 
     ]
   },
@@ -43,7 +46,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes),
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

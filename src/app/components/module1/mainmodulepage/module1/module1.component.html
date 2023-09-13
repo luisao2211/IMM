@@ -1,0 +1,33 @@
+
+  <mat-stepper [linear]="isLinear" #stepper >
+    <mat-step  label="Generales de la usuaria">
+      <app-form [form]="generalData" (newItemEvent)="NextStepper($event)"></app-form>
+      <!-- <app-form [form]="userProfille" (newItemEvent)="NextStepper($event)"  ></app-form> -->
+
+    </mat-step>
+    <mat-step label="Perfil de la usuaria">
+      <app-form [form]="userProfille" (newItemEvent)="NextStepper($event)"  ></app-form>
+
+    </mat-step>
+    <mat-step  label="Caso de violencia">
+      <app-form [form]="violenceCase" (newItemEvent)="NextStepper($event)"  ></app-form>
+
+    </mat-step>
+    <mat-step  label="Perfil de agresor">
+      <app-form [form]="profileAggressor" (newItemEvent)="NextStepper($event)"  ></app-form>
+      
+
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Servició</ng-template>
+      <app-form [form]="services" (newItemEvent)="NextStepper($event)"  ></app-form>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
+
+
+  
+  

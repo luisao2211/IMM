@@ -25,4 +25,7 @@ export class GenderService {
   updateGender(gender: Gender) {
     return this.http.put(`${this.route}/genders/`,gender)
   }
+  allGenders(): Observable<Gender[]> {
+    return this.http.get<Gender[]>(`${this.route}/genders/selectIndex`)
+  }
 }

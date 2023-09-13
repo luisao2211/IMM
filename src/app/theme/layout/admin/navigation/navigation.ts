@@ -46,6 +46,16 @@ const NavigationItems = [
         title: 'Modulo 1',
         type: 'collapse',
         icon: 'ti ti-arrow-bar-to-right',
+        children: [
+          {
+            id: 'formulario',
+            title: 'Agregar',
+            type: 'item',
+            url: '/modulo1/formulario',
+            target: false,
+            breadcrumbs: false,
+          }
+        ]
       },
       {
         id: 'Modulo2',
