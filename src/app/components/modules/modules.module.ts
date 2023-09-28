@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Module1RoutingModule } from './module1-routing.module';
-import { Module1Service } from './services/module1.service';
+import { ModulesRoutingModule } from './modules-routing.module';
+import { ModulesService } from './services/modules.service';
 import { Module1Component } from './mainmodulepage/module1/module1.component';
-import { MovelementsComponent } from './forms/movelements/movelements.component';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatStepperModule} from '@angular/material/stepper';
@@ -11,23 +10,36 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatSelectModule} from '@angular/material/select';
 import {MatRadioModule} from '@angular/material/radio';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
+import {MatSort, MatSortModule} from '@angular/material/sort';
+import {MatTableDataSource, MatTableModule} from '@angular/material/table';
+import {MatIconModule} from '@angular/material/icon';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './forms/form/form.component';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatExpansionModule} from '@angular/material/expansion';
-
+import {MatCardModule} from '@angular/material/card';
 import {MatNativeDateModule} from '@angular/material/core';
+import { Module2Component } from './mainmodulepage/module2/module2.component';
+import { Module3Component } from './mainmodulepage/module3/module3.component';
+import { TableComponent } from './table/table.component';
 @NgModule({
   declarations: [
     Module1Component,
-    MovelementsComponent,
-    FormComponent
+    FormComponent,
+    Module2Component,
+    Module3Component,
+    TableComponent
   ],
   imports: [
     CommonModule,
-    Module1RoutingModule,
+    ModulesRoutingModule,
+    MatIconModule,
     MatInputModule,
+    MatSortModule,
+    MatTableModule,
+    MatPaginatorModule,
     MatFormFieldModule,
     MatStepperModule,
     MatButtonModule,
@@ -37,10 +49,11 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatDatepickerModule,
     MatNativeDateModule,
     MatCheckboxModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule
   ],
   providers:[
-    Module1Service
+    ModulesService
   ]
 })
 export class Module1Module { }

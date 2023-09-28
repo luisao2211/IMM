@@ -1,0 +1,79 @@
+<app-table [fields]="data"
+(idUpdate)="Update($event)"
+(idDelete)="Delete($event)">
+</app-table>
+<br>  
+<div [className]="isLoading && 'background_loader'">
+  <span [className]="isLoading && 'loader'"></span>
+
+</div>
+<mat-stepper [linear]="isLinear" #stepper >
+    <mat-step  label="Generales de la usuaria" #step1>
+      <app-form
+      [form]="generalData"
+      [infoForm]="infoData"
+      [advertice]="advertice"
+      [afterwindows]="false"
+      [clearForm]="clearForm[0]"
+      (newItemEvent)="NextStepper($event)"
+      (FormGroup)= "SetFormControlValues($event)"
+      >
+    </app-form>
+    </mat-step>
+    <mat-step label="Perfil de la usuaria" #step2>
+      <app-form
+      [form]="userProfille"
+      [infoForm]="infoForm"
+      [afterwindows]="true"
+      [clearForm]="clearForm[1]"
+      (AfterStepper)="AfterStepper()"
+      (newItemEvent)="NextStepper($event)"
+      (FormGroup)= "SetFormControlValues($event)" >
+    </app-form>
+
+    </mat-step>
+    <mat-step  label="Caso de violencia" #step3>
+      <app-form
+      [form]="violenceCase"
+      [infoForm]="infoForm"
+      [afterwindows]="true"
+      [clearForm]="clearForm[2]"
+      (AfterStepper)="AfterStepper()"
+      (newItemEvent)="NextStepper($event)"
+      (FormGroup)= "SetFormControlValues($event)" >
+    </app-form>
+
+    </mat-step>
+    <mat-step  label="Perfil de agresor" #step4>
+      <app-form
+      [advertice]="advertice"
+      [form]="profileAggressor"
+      [infoForm]="infoForm"
+      [afterwindows]="true"
+      [clearForm]="clearForm[3]"
+      (AfterStepper)="AfterStepper()"
+      (newItemEvent)="NextStepper($event)"
+      (FormGroup)= "SetFormControlValues($event)">
+    </app-form>
+
+
+    </mat-step>
+    <mat-step #step5>
+      <ng-template matStepLabel>Servició</ng-template>
+      <app-form
+      [form]="services"
+      [afterwindows]="true"
+      [infoForm]="infoForm"
+      [clearForm]="clearForm[4]"
+      (AfterStepper)="AfterStepper()"
+      (newItemEvent)="NextStepper($event)"
+      (FormGroup)= "SetFormControlValues($event)">
+    </app-form>
+      <div>
+
+      </div>
+    </mat-step>
+  </mat-stepper>
+
+
+

@@ -51,7 +51,7 @@ const NavigationItems = [
             id: 'formulario',
             title: 'Agregar',
             type: 'item',
-            url: '/modulo1/formulario',
+            url: '/modulos/formulariomodulo1',
             target: false,
             breadcrumbs: false,
           }
@@ -62,12 +62,32 @@ const NavigationItems = [
         title: 'Modulo 2',
         type: 'collapse',
         icon: 'ti ti-arrow-bar-to-right',
+        // children: [
+        //   {
+        //     id: 'formulario',
+        //     title: 'Agregar',
+        //     type: 'item',
+        //     url: '/modulos/formulariomodulo2',
+        //     target: false,
+        //     breadcrumbs: false,
+        //   }
+        // ]
       }
       ,{
         id: 'Modulo3',
         title: 'Modulo 3',
         type: 'collapse',
         icon: 'ti ti-arrow-bar-to-right',
+        // children: [
+        //   {
+        //     id: 'formulario',
+        //     title: 'Agregar',
+        //     type: 'item',
+        //     url: '/modulos/formulariomodulo3',
+        //     target: false,
+        //     breadcrumbs: false,
+        //   }
+        // ]
       }
       ,{
         id: 'Modulo4',
