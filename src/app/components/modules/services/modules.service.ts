@@ -25,6 +25,10 @@ export class ModulesService<T> {
     this.route = environment.apiUrl;
     return this.http.post(`${this.route}/${url}`, params);
   }
+  PostNotParams(url: string) {
+    this.route = environment.apiUrl;
+    return this.http.get(`${this.route}/${url}`);
+  }
   Put(url: string, params: any) {
     this.route = environment.apiUrl;
     return this.http.put(`${this.route}/${url}`, params);

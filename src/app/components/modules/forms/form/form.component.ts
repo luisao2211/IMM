@@ -70,10 +70,13 @@ export class FormComponent implements OnChanges {
 
         this._inputs = changes["inputs"].currentValue
         this.updateFormValues(this._inputs);
+        this.createFormControls();
 
       }
     }
     if (changes["infoForm"] && changes["infoForm"].currentValue) {
+      this.createFormControls();
+
       this.isLoading = true;
 
       setTimeout(() => {
@@ -166,7 +169,6 @@ export class FormComponent implements OnChanges {
   @Input("form")
   set inputs(value: Inputs[]) {
     this._inputs = value;
-    this.createFormControls();
   }
 
   get inputs(): Inputs[] {
@@ -440,17 +442,14 @@ export class FormComponent implements OnChanges {
   }
   loadDataDoubleSelect(selectValue, index, value?) {
     {
-      this.isLoading= true
       const url = this.inputs[index].urloadata
       this.modulesService.data(`${url}/${selectValue}`).subscribe({
         next: (n) => {
           this.inputs[index].secondlistitems = n["data"]["result"]
           value ? this.Form.get(this.inputs[index].secondcontrolname).setValue(value) : '';
-          this.isLoading = false
 
         },
         error:(e)=>{
-          this.isLoading = false
   
         }
       });
@@ -475,27 +474,33 @@ export class FormComponent implements OnChanges {
   }
   
   cp(event, index, value?) {
-    this.isLoading= true
+    // this.isLoading= true
     this.CpService.OtherRoute(`https://api.gomezpalacio.gob.mx/api/cp/${event.target?.value || event}`).subscribe({
       next: (n) => {
         this.inputs[index].cps = n["data"]["result"]
         this.Form.get(this.inputs[index].formcontrolmunicipy).setValue(n["data"]["result"][0].Municipio)
         this.Form.get(this.inputs[index].formcontrolstate).setValue(n["data"]["result"][0].Estado)
         value ? this.Form.get(this.inputs[index].formcontrolname).setValue(value) : '';
-        this.isLoading = false
+        // this.isLoading = false
         setTimeout(() => {
           if (!this.Form.get(this.inputs[index].formcontrolmunicipy).value) {
             this.Toast.fire({
-              position: 'top-end',
+              position: 'center',
               icon: 'warning',
               title: "No existe el código postal",
+            });
+          }
+          else{
+            this.Toast.fire({
+              position: 'center',
+              icon: 'success',
+              title: "Ingresa la colonia",
             });
           }
           
         },500)
       },
       error:(e)=>{
-        this.isLoading = false
         if (!this.Form.get(this.inputs[index].formcontrolmunicipy).value) {
           this.Toast.fire({
             position: 'top-end',

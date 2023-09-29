@@ -14,6 +14,7 @@ import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
+import {MatMenuModule} from '@angular/material/menu';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './forms/form/form.component';
@@ -24,13 +25,15 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { Module2Component } from './mainmodulepage/module2/module2.component';
 import { Module3Component } from './mainmodulepage/module3/module3.component';
 import { TableComponent } from './table/table.component';
+import { PdfComponent } from './pdf/pdf.component';
 @NgModule({
   declarations: [
     Module1Component,
     FormComponent,
     Module2Component,
     Module3Component,
-    TableComponent
+    TableComponent,
+    PdfComponent
   ],
   imports: [
     CommonModule,
@@ -50,7 +53,8 @@ import { TableComponent } from './table/table.component';
     MatNativeDateModule,
     MatCheckboxModule,
     MatExpansionModule,
-    MatCardModule
+    MatCardModule,
+    MatMenuModule
   ],
   providers:[
     ModulesService

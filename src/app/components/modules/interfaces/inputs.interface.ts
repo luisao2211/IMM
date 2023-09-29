@@ -37,7 +37,7 @@ export interface Inputs{
 /**segundo nombre por si viene con otro mas usado en el doubleselect*/                                              
   secondcontrolname?:string
   /**por el momento es la que llena el select de la descripcion del mismo dropdown de la opcion de arriba*/
-                                             
+  width?:1|2|3|4|5|6|7|8|9|10                                           
   urloadata?:string
 /**(En proceso) type de input que sera si espera algo de otro input  */                                              
   typeloadingdata?:string

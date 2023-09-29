@@ -4,6 +4,7 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { ButtonsTable } from '../interfaces/buttonsTable.interface';
 
 @Component({
   selector: 'app-table',
@@ -12,6 +13,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 })
 export class TableComponent implements OnInit, OnChanges {
   @Input() fields:any = []
+  @Input() buttons
   displayedColumns: string[] = [];
   dataSource: MatTableDataSource<any>; 
   column: string[] =[]
@@ -19,6 +21,8 @@ export class TableComponent implements OnInit, OnChanges {
   @ViewChild(MatSort) sort: MatSort;
   @Output() idUpdate = new EventEmitter<number>();
   @Output() idDelete = new EventEmitter<number>();
+  @Output() buttonClick = new EventEmitter<any>();
+  @Output() pdf = new EventEmitter<number>();
 
   constructor() {
   }
@@ -62,6 +66,13 @@ export class TableComponent implements OnInit, OnChanges {
   delete(id){
     this.idDelete.emit(id);
 
+  }
+  Pdf(id){
+    this.pdf.emit(id);
+
+  }
+  touchedButton(id,indexButton:number){
+    this.buttonClick.emit([id,indexButton])
   }
 }
 
