@@ -15,6 +15,7 @@ import {MatSort, MatSortModule} from '@angular/material/sort';
 import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './forms/form/form.component';
@@ -54,7 +55,8 @@ import { PdfComponent } from './pdf/pdf.component';
     MatCheckboxModule,
     MatExpansionModule,
     MatCardModule,
-    MatMenuModule
+    MatMenuModule,
+    MatDialogModule
   ],
   providers:[
     ModulesService

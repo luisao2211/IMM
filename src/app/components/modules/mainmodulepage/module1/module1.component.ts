@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild,Inject } from '@angular/core';
 import { Inputs, Crud } from '../../interfaces/inputs.interface';
 import { MatStepper } from '@angular/material/stepper';
 import { ModulesService } from '../../services/modules.service';
@@ -10,7 +10,8 @@ import { ButtonsTable } from '../../interfaces/buttonsTable.interface';
 import { event } from 'jquery';
 import { SelectIndex } from '../../interfaces/selects.iterface';
 import { PdfComponent } from '../../pdf/pdf.component';
-import pdfMake from 'pdfmake/build/pdfmake';
+import { MatDialog } from '@angular/material/dialog';
+import { PdfsInterface } from '../../interfaces/pdfs.interface';
 @Component({
   selector: 'app-module1',
   templateUrl: './module1.component.html',
@@ -18,7 +19,7 @@ import pdfMake from 'pdfmake/build/pdfmake';
 })
 export class Module1Component {
   @ViewChild(PdfComponent) pdfComponent: PdfComponent;
-
+  
   id: number
   action: Boolean = true;
   stepperDestroy: Boolean
@@ -26,7 +27,7 @@ export class Module1Component {
   infoForm: any
   infoData: any
   tableButtons: SelectIndex[] = [
-
+    
   ]
   contNewForm: number = 0
   generalData: Inputs[]
@@ -36,6 +37,10 @@ export class Module1Component {
   services: Inputs[]
   advertice: string
   urls = []
+  dataPdf:PdfsInterface ={
+    title: '',
+    dataInfo: []
+  }
   @ViewChild(MatStepper) stepper: MatStepper;
   isLinear = true;
   valuesFormControlNames = []
@@ -85,19 +90,19 @@ export class Module1Component {
 
     this.contLoadInfo = this.stepper.selectedIndex
     this.contNewForm = this.stepper.selectedIndex + 1
-
+    
     if (this.id > 0 && this.noupdatedata[this.contLoadInfo] !== true) {
       console.error(this.stepper.selectedIndex, this.contLoadInfo)
       this.ServiceModule1.data(`${this.loadInfoUrls[this.contLoadInfo]}/${this.id}`).subscribe({
         next: (n) => {
           if (this.stepper.selectedIndex == 0)
-            this.infoData = n["data"]["result"]
+          this.infoData = n["data"]["result"]
           this.infoForm = n["data"]["result"]
           this.noupdatedata[this.contLoadInfo] = true
           console.log(this.infoForm)
         }
       })
-
+      
     }
     if (this.contNewForm < this.methods.length && this.noupdatedata[this.contLoadInfo] !== true) {
       if (this.contNewForm > this.stepper.selectedIndex) {
@@ -108,28 +113,28 @@ export class Module1Component {
       }
       if (this.noupdatedata[this.contLoadInfo] !== true) {
         this.noupdatedata[this.contLoadInfo] = true
-
+        
         this.methods[this.contNewForm]();
       }
       this.contNewForm++
 
     }
-
+    
     if (this.stepper.selectedIndex === this.stepper.steps.length - 1) {
       this.NewProfileUser()
     }
     this.stepper.next();
-
+    
   }
   AfterStepper() {
-
+    
     console.warn(this.urls)
     if (this.stepperDestroy) {
       this.stepper.previous();
       this.stepper.previous();
       this.contNewForm = this.stepper.selectedIndex + 1
       this.contLoadInfo = this.stepper.selectedIndex + 1
-
+      
     }
     this.valuesFormControlNames.splice(this.stepper.selectedIndex - 1, 1);
     console.warn("ELIMINAR", this.valuesFormControlNames, this.urls);
@@ -142,11 +147,11 @@ export class Module1Component {
   }
 
 
-  constructor(private ServiceModule1: ModulesService<any>) {
+  constructor(private ServiceModule1: ModulesService<any>,private dialog: MatDialog) {
     this.loadDataStatus();
     this.allUsers();
     this.startCreateForm();
-
+    
   }
   loadDataStatus() {
     this.ServiceModule1.data("status/selectIndex").subscribe({
@@ -155,9 +160,8 @@ export class Module1Component {
       }
     })
   }
-
-
-  startCreateForm() {
+  
+  clearForms(){
     this.stepperDestroy = false
     this.action = true
     this.urls = []
@@ -167,14 +171,20 @@ export class Module1Component {
     for (let i = 0; i < this.clearForm.length; i++) {
       this.clearForm[i] = false;
       this.noupdatedata[i] = false
-
+      
     }
+}
+
+
+
+startCreateForm() {
+  this.clearForms()
     this.ServiceModule1.data("proceding").subscribe({
       next: (n) => {
         this.stepper.reset()
         this.methods[this.contNewForm](n["data"]["result"]);
         this.contNewForm++
-
+        
       }
     })
   }
@@ -903,7 +913,7 @@ export class Module1Component {
     })
   }
   Update(id) {
-    this.startCreateForm()
+    this.clearForms()
     this.ServiceModule1.data(`userdatageneral/${id}`).subscribe({
       next: (n) => {
         this.infoData = n["data"]["result"]
@@ -971,14 +981,67 @@ export class Module1Component {
     });
 
   }
-  GeneratePdf($event: number) {
-    const data = {
-      name: 'Ejemplo',
-      email: 'ejemplo@example.com'
-    };
-    const pdfMake = new PdfComponent();
-    pdfMake.openPDF()
+  GeneratePdf(event: number) {
+    this.ServiceModule1.data(`usereport/${event}`).subscribe({
+      next: (n) => {
+        const userData = n["data"]["result"][0]; // Datos del usuario obtenidos de la respuesta HTTP
+        this.dataPdf.title = `Reporte de la usuaria ${userData["Nombre"]}`;
+       
+
+        this.dataPdf.dataInfo = [
+          {
+            subtitule: "Datos Generales",
+            table: []
+          },
+          {
+            subtitule: "Datos del perfil",
+            table: []
+
+          },
+          {
+            subtitule: "Caso de violencia",
+            table: []
+          },
+          {
+            subtitule: "Perfil de agresor",
+            table: []
+          },
+          {
+            subtitule: "Servició",
+            table: []
+          }
+        ];
+        let id = 0
+        for (let key in userData) {
+          if (userData.hasOwnProperty(key)) {
+            const value = userData[key];
+            const cleanedKey = key.replace(/`/g, '');
+            switch(key){
+              case "`Actividad que realiza`":
+                id = 1
+              break;
+            }
+            this.dataPdf.dataInfo[id].table.push({
+              text: cleanedKey,
+              value: value
+            });
+            console.log(`Key: ${key}, Value: ${value}`);
+          }
+        }
+        
+        this.ServiceModule1.setData(this.dataPdf)
+        const dialogRef = this.dialog.open(PdfComponent, {
+          width: '60%',
+          data: this.dataPdf,
+        });
+  
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('El diálogo se cerró con resultado:', result);
+        });
+      },
+    });
   }
-}
+  
+}  
 
 

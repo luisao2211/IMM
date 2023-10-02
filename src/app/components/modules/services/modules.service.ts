@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -40,5 +40,11 @@ export class ModulesService<T> {
   OtherRoute(url:string){
     return this.http.get<T[]>(`${url}`);
 
+  }
+  private dataSubject = new BehaviorSubject<any>(null);
+  data$ = this.dataSubject.asObservable();
+
+  setData(data: any) {
+    this.dataSubject.next(data);
   }
 }
