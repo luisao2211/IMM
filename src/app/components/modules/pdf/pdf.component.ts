@@ -26,24 +26,27 @@ export class PdfComponent {
     filename: 'newfile.pdf',
     image: {
       type: 'jpeg',
-      quality: 0.90,
+      quality: 1,
     },
     html2canvas: {
-      scale: 3,
+      scale: 2,
       
     },
     jsPDF: {
-      unit: 'in',
+      unit: 'cm',
       format: 'letter',
       orientation: 'portrait',
       // Ajusta scrollY para que incluya contenido no visible
       scrollY: 0, // Puedes ajustar esto según tus necesidades
+    
     },
+    
   };
   
   downloadPDF() {
     const pEl = document.getElementById('pEl');
     const clone =pEl.innerHTML;
+    this.options.filename = this.pdf.title? `${this.pdf.title}`:'Reporte'
     html2pdf().from(clone).set(this.options).save();
   }
   

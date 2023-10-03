@@ -7,4 +7,19 @@ body {
   .pdf-page {
     page-break-after: always;
   }
+  .page-break-before {
+    page-break-before: always;
+  }
   
+  .page-break-after {
+    page-break-after: always;
+  }
+  .table {
+    page-break-inside: avoid;
+  }
+  /* pdf.component.scss */
+.pdf-content {
+  max-height: 100%;
+  overflow: auto;
+  padding: 16px; /* Agrega un espacio de relleno si es necesario */
+}

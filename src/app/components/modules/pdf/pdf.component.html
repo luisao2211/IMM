@@ -1,8 +1,8 @@
-<div id="pEl" #pdfElement style="height: 600px; overflow-y: scroll;">
+<div id="pEl" #pdfElement class="pdf-content">
   <h2 mat-dialog-title class="text-center">{{ pdf?.title }}</h2>
-  <mat-dialog-content class="mat-typography" *ngFor="let i of pdf?.dataInfo">
-    <h3 class="modal-title">{{ i.subtitule }}</h3>
-    <ng-container *ngIf="i.table.length > 0">
+  <mat-dialog-content class="mat-typography" *ngFor="let i of pdf?.dataInfo; let index=index">
+    <h3 class=" modal-title" >{{ i.subtitule }}</h3>
+    <ng-container   *ngIf="i.table.length > 0">
       <ng-container class="pdf-page" *ngFor="let chunk of chunkArray(i.table, 4); let index = index">
         <!-- Crea una tabla para cada segmento de 6 elementos -->
         <table class="table">

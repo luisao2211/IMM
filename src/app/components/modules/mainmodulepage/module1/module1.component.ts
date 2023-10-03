@@ -104,6 +104,7 @@ export class Module1Component {
       })
       
     }
+    console.log("cont load info",this.contLoadInfo)
     if (this.contNewForm < this.methods.length && this.noupdatedata[this.contLoadInfo] !== true) {
       if (this.contNewForm > this.stepper.selectedIndex) {
         this.contNewForm = this.stepper.selectedIndex + 1
@@ -872,7 +873,7 @@ startCreateForm() {
               this.Toast.fire({
                 position: 'top-end',
                 icon: 'success',
-                title: `${this.action == true ? 'Se ha insertado correctame los datos del usuario' : 'Se han actualizado correctame los datos del usuario'}`,
+                title: `${this.action == true ? 'Se ha insertado correctame los datos en el reporte' : 'Se han actualizado correctame los datos en el reporte'}`,
               });
               this.RestarModule(i)
             }
@@ -985,7 +986,7 @@ startCreateForm() {
     this.ServiceModule1.data(`usereport/${event}`).subscribe({
       next: (n) => {
         const userData = n["data"]["result"][0]; // Datos del usuario obtenidos de la respuesta HTTP
-        this.dataPdf.title = `Reporte de la usuaria ${userData["Nombre"]}`;
+        this.dataPdf.title = `Reporte de ${userData["Nombre"]}`;
        
 
         this.dataPdf.dataInfo = [
@@ -1007,7 +1008,7 @@ startCreateForm() {
             table: []
           },
           {
-            subtitule: "Servició",
+            subtitule: "Serviciós",
             table: []
           }
         ];
@@ -1015,12 +1016,87 @@ startCreateForm() {
         for (let key in userData) {
           if (userData.hasOwnProperty(key)) {
             const value = userData[key];
-            const cleanedKey = key.replace(/`/g, '');
-            switch(key){
-              case "`Actividad que realiza`":
+            let cleanedKey = key.replace(/`/g, '');
+            switch(cleanedKey){
+              case "Actividad que realiza":
                 id = 1
               break;
+              case "Efectos de violencia":
+                id = 2
+              break;
+              case "agresor":
+                id = 3
+                break;
+              case 'Subservicio':
+                id =4
+              break
             }
+            let exist = 0
+            if (cleanedKey.includes('agresor_')) {
+              cleanedKey = cleanedKey.replace(/^agresor_/, ''); 
+              exist = 1
+            }
+         
+            if (cleanedKey == 'colonies_id') {
+              let idsection = id
+              this.ServiceModule1.OtherRoute(`https://api.gomezpalacio.gob.mx/api/cp/colonia/${value}`).subscribe({
+                next: (n) => {
+                  this.dataPdf.dataInfo[idsection].table.push({
+                    text: 'Codigo Postal',
+                    value: n["data"]["result"]["CodigoPostal"]
+                  });
+                  this.dataPdf.dataInfo[idsection].table.push({
+                    text: 'Municipio',
+                    value: n["data"]["result"]["Municipio"]
+                  });
+                  this.dataPdf.dataInfo[idsection].table.push({
+                    text: 'Estado',
+                    value: n["data"]["result"]["Estado"]
+                  });
+                  this.dataPdf.dataInfo[idsection].table.push({
+                    text: 'Colonia',
+                    value: n["data"]["result"]["Colonia"]
+                  });
+                  if (exist ==1) {
+                    const dialogRef = this.dialog.open(PdfComponent, {
+                      width: '60%',
+                      maxHeight:'600px'
+                    });
+              
+                    dialogRef.afterClosed().subscribe(result => {
+                    });
+                  }
+
+                },
+                error:(e)=>{
+                },
+                
+          
+              })
+            }
+
+            if (cleanedKey == 'statebirth') {
+              let idsection = id
+              this.ServiceModule1.OtherRoute(`https://api.gomezpalacio.gob.mx/api/estados/${value}`).subscribe({
+                next: (n) => {
+                  this.dataPdf.dataInfo[idsection].table.push({
+                    text: 'Estado de nacimiento',
+                    value: n["data"]["result"]["text"]
+                  });
+                
+
+                },
+                error:(e)=>{
+                },
+                
+          
+              })
+            }
+
+
+            if (cleanedKey == 'agresor' || cleanedKey == 'colonies_id' || cleanedKey == 'statebirth') {
+              continue
+          }
             this.dataPdf.dataInfo[id].table.push({
               text: cleanedKey,
               value: value
@@ -1030,14 +1106,7 @@ startCreateForm() {
         }
         
         this.ServiceModule1.setData(this.dataPdf)
-        const dialogRef = this.dialog.open(PdfComponent, {
-          width: '60%',
-          data: this.dataPdf,
-        });
-  
-        dialogRef.afterClosed().subscribe(result => {
-          console.log('El diálogo se cerró con resultado:', result);
-        });
+     
       },
     });
   }

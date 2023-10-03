@@ -149,3 +149,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .mdc-text-field--filled:not(.mdc-text-field--disabled) {
   background-color: transparent !important;
 }
+.mat-mdc-dialog-content {
+   max-height: none !important; 
+}

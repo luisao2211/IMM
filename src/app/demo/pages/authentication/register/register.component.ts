@@ -87,7 +87,7 @@ onSubmit() {
         icon: 'success',
         title: `Bienvenida. Por favor inicia sesión.`,
       });
-      this.router.navigateByUrl('/guest/login');
+      this.router.navigateByUrl('/autenticacion/iniciosesion');
     },
     error: (e) => {
       this.Toast.fire({

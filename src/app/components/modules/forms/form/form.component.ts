@@ -70,12 +70,10 @@ export class FormComponent implements OnChanges {
 
         this._inputs = changes["inputs"].currentValue
         this.updateFormValues(this._inputs);
-        this.createFormControls();
 
       }
     }
     if (changes["infoForm"] && changes["infoForm"].currentValue) {
-      this.createFormControls();
 
       this.isLoading = true;
 
@@ -169,6 +167,8 @@ export class FormComponent implements OnChanges {
   @Input("form")
   set inputs(value: Inputs[]) {
     this._inputs = value;
+    this.createFormControls();
+
   }
 
   get inputs(): Inputs[] {
