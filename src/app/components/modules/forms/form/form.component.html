@@ -34,6 +34,20 @@
           </mat-form-field>
         </ng-container>
         <ng-container *ngSwitchCase="'select'">
+          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+            <mat-label>{{ i.label }}</mat-label>
+            <input type="text"
+                   [placeholder]="i.label"
+                   aria-label=""
+                   matInput
+                   [formControlName]="i.formcontrolname"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let item of i.listitems" [value]="item.text" (click)="onSelect(i.formcontrolname,item.value)">
+                {{ item.text }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field> -->
           <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
             <mat-select [formControlName]="i.formcontrolname" >
@@ -228,8 +242,9 @@
       <button type="button" (click)="AfterWindowsStepper()" *ngIf="afterwindows" class="btn btn-outline-secondary"  >Regresar</button>
     </ng-container>
     
-      <button class="btn btn-outline-primary " [disabled]="Form.invalid"  type="submit">Continuar</button>
-
+      <button class="btn btn-outline-primary " 
+      [disabled]="Form.invalid"
+             type="submit">Continuar</button>
     </ng-container>
   </div>
 </form>

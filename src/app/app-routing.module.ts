@@ -3,17 +3,20 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './theme/layout/admin/admin.component';
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { AuthenticationGuard } from './authentication.guard';
+import { AuthenticationloginGuard } from './authenticationlogin.guard';
+
 import { ModulesRoutingModule } from './components/modules/modules-routing.module';
 
 const routes: Routes = [
   {
     path: '',
     component: GuestComponent,
+    canActivate: [AuthenticationloginGuard],
     children: [
       {
         path: '',
         redirectTo: '/autenticacion/iniciosesion',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'autenticacion',

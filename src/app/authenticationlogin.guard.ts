@@ -4,7 +4,7 @@ import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Rout
 @Injectable({
   providedIn: 'root'
 })
-export class AuthenticationGuard implements CanActivate {
+export class AuthenticationloginGuard implements CanActivate {
   constructor(private router: Router) {}
 
   canActivate(
@@ -13,11 +13,11 @@ export class AuthenticationGuard implements CanActivate {
   ): boolean | UrlTree {
     const authToken =localStorage.getItem('token')
     if (authToken) {
-      return true;
-    } else {
-      // Si el token no existe, redirige a la página de inicio de sesión o a otra página
-      this.router.navigate(['/autenticacion/iniciosesion']); // Cambia '/login' al enrutamiento que desees
+      this.router.navigate(['/defecto']); // Cambia '/login' al enrutamiento que desees
+
       return false;
+    } else {
+      return true;
     }
   }
 }

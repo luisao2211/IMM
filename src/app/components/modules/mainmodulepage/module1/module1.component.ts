@@ -4,7 +4,7 @@ import { MatStepper } from '@angular/material/stepper';
 import { ModulesService } from '../../services/modules.service';
 import Swal from 'sweetalert2';
 import { from, concatMap, finalize, throwError } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, startWith } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { ButtonsTable } from '../../interfaces/buttonsTable.interface';
 import { event } from 'jquery';
@@ -12,6 +12,9 @@ import { SelectIndex } from '../../interfaces/selects.iterface';
 import { PdfComponent } from '../../pdf/pdf.component';
 import { MatDialog } from '@angular/material/dialog';
 import { PdfsInterface } from '../../interfaces/pdfs.interface';
+import { FormControl } from '@angular/forms';
+import {Observable} from 'rxjs';
+
 @Component({
   selector: 'app-module1',
   templateUrl: './module1.component.html',
@@ -19,7 +22,22 @@ import { PdfsInterface } from '../../interfaces/pdfs.interface';
 })
 export class Module1Component {
   @ViewChild(PdfComponent) pdfComponent: PdfComponent;
-  
+  myControl = new FormControl('');
+  options: string[] = ['One', 'Two', 'Three'];
+  filteredOptions: Observable<string[]>;
+
+  ngOnInit() {
+    this.filteredOptions = this.myControl.valueChanges.pipe(
+      startWith(''),
+      map(value => this._filter(value || '')),
+    );
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+  }
   id: number
   action: Boolean = true;
   stepperDestroy: Boolean
@@ -201,6 +219,7 @@ startCreateForm() {
     que coinciden con el mismo codigo postal
     `
     this.generalData = [
+  
       {
         label: "Expediente",
         formcontrolname: "procceding",
@@ -765,12 +784,12 @@ startCreateForm() {
     ]
   }
   SetFormControlValues(event) {
-    console.log(event.value)
-    this.valuesFormControlNames.push(event.value)
+    console.log(event)
+    this.valuesFormControlNames.push(event)
     this.contLoadInfo = this.stepper.selectedIndex + 1
     if (this.stepper.selectedIndex == 1) {
       this.stepperDestroy = false
-      if (event.value["caseviolence"] == "1") {
+      if (event["caseviolence"] == "1") {
         this.contNewForm = this.stepper.steps.length - 1
         this.stepper.next()
         this.stepper.next()
@@ -780,7 +799,6 @@ startCreateForm() {
         this.stepperDestroy = true
       }
     }
-
 
   }
   NewProfileUser() {

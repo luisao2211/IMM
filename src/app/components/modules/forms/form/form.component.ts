@@ -10,8 +10,9 @@ import Swal from 'sweetalert2';
 import { Cp } from '../../interfaces/cp.interface';
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { style } from '@angular/animations';
-import { error } from 'jquery';
-
+import { error, event } from 'jquery';
+import { Observable } from 'rxjs';
+import { startWith, map } from 'rxjs/operators';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -21,6 +22,8 @@ export class FormComponent implements OnChanges {
   private _inputs: Inputs[] = [];
   private array = []
   private objects = []
+  private selects = []
+  private listItemSelect = []
   @Input("infoForm") infoForm
   @Input() clearForm
   @Input() afterwindows
@@ -36,7 +39,7 @@ export class FormComponent implements OnChanges {
   loading = false
   matcher = new ErrorStateMatcher();
   @Output() newItemEvent = new EventEmitter<boolean>();
-  @Output() FormGroup = new EventEmitter<FormGroup>();
+  @Output() FormGroup = new EventEmitter<any>();
   @Output() AfterStepper = new EventEmitter<boolean>();
   public Toast = Swal.mixin({
     toast: true,
@@ -109,7 +112,9 @@ export class FormComponent implements OnChanges {
 
         if (this.Form.controls.hasOwnProperty(infoName)) {
           if (infoName != "colonies_id") {
-            this.Form.get(infoName).setValue(value);
+              this.Form.get(infoName).setValue(value);
+            
+            
           }
 
 
@@ -179,7 +184,7 @@ export class FormComponent implements OnChanges {
   createFormControls() {
     this.Form = new FormGroup({});
     if (this.inputs !== undefined) {
-      for (let i of this.inputs) {
+      for (let [index, i] of this.inputs.entries()) {
         let namedescription = null
         if (i.url || i.otherurl) {
           let useurl = true
@@ -192,7 +197,14 @@ export class FormComponent implements OnChanges {
 
               switch (i.type) {
                 case 'select':
-                  
+                  i.listitems = n["data"]["result"];
+                  // this.listItemSelect.push({
+                  //   select:i.formcontrolname,
+                  //   options:i.listitems
+                  // })
+                  // this.autocomplete(index,i.formcontrolname,i.listitems)
+
+                break
                 case 'doubleselect':
                   i.listitems = n["data"]["result"];
                   break;
@@ -319,6 +331,32 @@ export class FormComponent implements OnChanges {
   }
 
   onSubmit() {
+    const FormValues = {}; // Inicializamos como un objeto vacío
+
+    Object.keys(this.Form.controls).forEach(controlName => {
+      // Obtiene el valor del control
+      const controlValue = this.Form.get(controlName)?.value;
+      // Imprime el nombre del control y su valor
+      console.log(`Nombre del control: ${controlName}, Valor: ${controlValue}`);
+      let valueFromSelects = null; // Inicializamos como nulo
+      this.selects.some(item => {
+        if (item.hasOwnProperty(controlName)) {
+          valueFromSelects = item;
+          console.log(item, item[controlName]);
+          return true; // Detiene la iteración una vez que se encuentra el valor
+        }
+        return false;
+      });
+      if (valueFromSelects !== null) {
+        FormValues[Object.keys(valueFromSelects)[0]] = Object.values(valueFromSelects)[0]; // Asignamos el valor al objeto usando controlName como clave
+      }
+      else{
+        FormValues[controlName] = controlValue; // Asignamos el valor al objeto usando controlName como clave
+
+      }
+    });
+    
+    
     if (this.crud?.post && !this.AfterStepper) {
       this.modulesService.Post(this.crud.post, this.Form.value).subscribe({
         next: (n) => {
@@ -339,12 +377,13 @@ export class FormComponent implements OnChanges {
         }
       })
     } else {
-      this.FormGroup.emit(this.Form)
+      this.FormGroup.emit(FormValues)
       // this.myForm.resetForm();
       // this._inputs = []
 
     }
     this.newItemEvent.emit(true);
+    this.selects =[]
   }
   addCheckbox(name, check, namefalse?) {
     check.status = !check.status;
@@ -422,6 +461,9 @@ export class FormComponent implements OnChanges {
       }
 
     }
+  }
+  onOptionSelected(event,listitems){
+    console.log(event,listitems)
   }
   onSelectDescriptionChange(name, check, event: any): void {
     const selectedValue = event;
@@ -516,6 +558,40 @@ export class FormComponent implements OnChanges {
 
     })
   }
+  onSelect(name,id){
+    const exist = this.selects.filter(e=>e.name == name)
+    if (exist.length>0) 
+          this.selects = this.selects.filter(e=>e.name != name)
+    this.selects.push({
+      [name]: id
+    })
+  }
 
+  autocomplete(index, myControl, listitems) {
+ 
+    const textArray: string[] = Object.values(listitems).map(item => item['text']);
+    this.Form.get(myControl).valueChanges.subscribe((newValue) => {
+      this.listItemSelect.forEach(it=>{
+        if (it['select']==myControl) {
+          this.inputs[index].listitems =it['options']
+        }
+       
+      }) 
 
+      const filteredOptions = textArray.filter(option =>
+        option.toLowerCase().includes(newValue.toLowerCase())
+      );
+      this.inputs[index].listitems = this.inputs[index].listitems.filter(e =>
+        filteredOptions.includes(e.text)
+      );
+      
+  
+    });
+  
+  }
+  
+  
 }
+
+
+

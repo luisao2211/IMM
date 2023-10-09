@@ -15,7 +15,7 @@ import Swal from 'sweetalert2';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export default class LoginComponent {
+export default class LoginComponent implements OnInit {
   public email:String
   public password :String
 
@@ -32,7 +32,7 @@ export default class LoginComponent {
       }
     })
   constructor(public AuthService:AuthService,private router: Router){
-  
+
   }
   createLoginForm() {
     this.loginForm = new FormGroup(
@@ -44,7 +44,12 @@ export default class LoginComponent {
     )
   }
   ngOnInit(): void {
-    this.createLoginForm()
+   
+      this.createLoginForm()
+  
+
+    
+
   }
 
   

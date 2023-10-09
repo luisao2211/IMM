@@ -16,6 +16,7 @@ import {MatTableDataSource, MatTableModule} from '@angular/material/table';
 import {MatIconModule} from '@angular/material/icon';
 import {MatMenuModule} from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './forms/form/form.component';
@@ -56,7 +57,8 @@ import { PdfComponent } from './pdf/pdf.component';
     MatExpansionModule,
     MatCardModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatAutocompleteModule
   ],
   providers:[
     ModulesService
