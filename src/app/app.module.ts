@@ -21,7 +21,7 @@ import { GuestComponent } from './theme/layout/guest/guest.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './demo/pages/authentication/apiservice/authentication.service';
 import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
-
+import {HashLocationStrategy, LocationStrategy, registerLocaleData} from '@angular/common';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +40,7 @@ import { HttpClientModule } from '@angular/common/http'; // Import HttpClientMod
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, NgbModule,HttpClientModule,
   ],
-  providers: [NavigationItem,AuthService],
+  providers: [NavigationItem,AuthService,{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -11,8 +11,8 @@ import { Cp } from '../../interfaces/cp.interface';
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { style } from '@angular/animations';
 import { error, event } from 'jquery';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { Observable, of } from 'rxjs';
+import { startWith, map, switchMap } from 'rxjs/operators';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -21,7 +21,7 @@ import { startWith, map } from 'rxjs/operators';
 export class FormComponent implements OnChanges {
   private _inputs: Inputs[] = [];
   private array = []
-  private objects = []
+  private valuesSelects = []
   private selects = []
   private listItemSelect = []
   @Input("infoForm") infoForm
@@ -61,7 +61,6 @@ export class FormComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes["clearForm"]) {
       if (changes["clearForm"].currentValue ==true) {
-        console.log("LIMPIEZA")
           this.myForm.resetForm();
         
       }
@@ -112,9 +111,22 @@ export class FormComponent implements OnChanges {
 
         if (this.Form.controls.hasOwnProperty(infoName)) {
           if (infoName != "colonies_id") {
+              const ValuesSelectIndex = this.inputs.findIndex((e) => e.formcontrolname === infoName && e.type =='select')
+              if (ValuesSelectIndex>-1) {
+              if (this.inputs[ValuesSelectIndex].listitems) {
+                this.inputs[ValuesSelectIndex].listitems.forEach(e=>{
+                  if (e.value ==value) {
+                    this.onSelect(infoName,value)
+                    this.Form.get(infoName).setValue(e.text)
+                  }
+              })
+              }
+              else{
+                this.valuesSelects.push({name:infoName,value:value})
+              }
+              continue
+            }
               this.Form.get(infoName).setValue(value);
-            
-            
           }
 
 
@@ -185,25 +197,31 @@ export class FormComponent implements OnChanges {
     this.Form = new FormGroup({});
     if (this.inputs !== undefined) {
       for (let [index, i] of this.inputs.entries()) {
-        let namedescription = null
         if (i.url || i.otherurl) {
           let useurl = true
           if (i.otherurl) {
             useurl = false
             i.url = i.otherurl
           }
-          this.modulesService.data(i.url, useurl).subscribe({
+           this.modulesService.data(i.url, useurl).subscribe({
             next: (n) => {
-
-              switch (i.type) {
+               switch (i.type) {
                 case 'select':
                   i.listitems = n["data"]["result"];
-                  // this.listItemSelect.push({
-                  //   select:i.formcontrolname,
-                  //   options:i.listitems
-                  // })
-                  // this.autocomplete(index,i.formcontrolname,i.listitems)
-
+                  this.listItemSelect.push({
+                    select:i.formcontrolname,
+                    options:i.listitems
+                  })
+                  this.autocomplete(index,i.formcontrolname,i.listitems)
+                  const valuesIndex = this.valuesSelects.findIndex(e=>e.name == i.formcontrolname)
+                  if (valuesIndex>-1) {
+                      i.listitems.forEach(e=>{
+                          if (e.value ==this.valuesSelects[valuesIndex].value) {
+                              this.Form.get(i.formcontrolname).setValue(e.text)
+                              this.onSelect(i.formcontrolname,e.value)
+                          }
+                      })
+                  }
                 break
                 case 'doubleselect':
                   i.listitems = n["data"]["result"];
@@ -220,7 +238,6 @@ export class FormComponent implements OnChanges {
                       checkbox.status = true
                       this.addChecked(i.formcontrolname, checkbox)
                     }
-
 
                   }
                   break;
@@ -249,7 +266,6 @@ export class FormComponent implements OnChanges {
                   // }
                   break;
               }
-
             },
          
           }).unsubscribe;
@@ -313,7 +329,6 @@ export class FormComponent implements OnChanges {
           }
         }
         if (i.type == 'email') {
-          console.log("EMAILLLLLL")
           this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', [Validators.required,Validators.email]));
 
         }
@@ -337,12 +352,10 @@ export class FormComponent implements OnChanges {
       // Obtiene el valor del control
       const controlValue = this.Form.get(controlName)?.value;
       // Imprime el nombre del control y su valor
-      console.log(`Nombre del control: ${controlName}, Valor: ${controlValue}`);
       let valueFromSelects = null; // Inicializamos como nulo
       this.selects.some(item => {
         if (item.hasOwnProperty(controlName)) {
           valueFromSelects = item;
-          console.log(item, item[controlName]);
           return true; // Detiene la iteración una vez que se encuentra el valor
         }
         return false;
@@ -463,10 +476,11 @@ export class FormComponent implements OnChanges {
     }
   }
   onOptionSelected(event,listitems){
-    console.log(event,listitems)
+   
   }
   onSelectDescriptionChange(name, check, event: any): void {
     const selectedValue = event;
+    console.warn(this.Form.get(name))
     let object = this.Form.get(name).value;
     // console.log("OBJECTO", object)
     const uniqueValues = new Set();

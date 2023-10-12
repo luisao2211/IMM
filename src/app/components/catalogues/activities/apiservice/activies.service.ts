@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ActivitiesService {
-  route: string = "http://127.0.0.1:8000/api/imm";
+  route: string =  "http://127.0.0.1:8000/api/imm";
 
   constructor(private http: HttpClient) {}
 

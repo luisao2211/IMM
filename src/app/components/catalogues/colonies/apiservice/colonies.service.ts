@@ -7,7 +7,7 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class ColoniesService {
-  route: string = "http://127.0.0.1:8000/api/imm";
+  route: string =  "http://127.0.0.1:8000/api/imm";
   private reloadSubject = new Subject<void>();
 
   constructor(private http: HttpClient) {}

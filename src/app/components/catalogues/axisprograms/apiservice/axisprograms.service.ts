@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { AxisPrograms } from './axisprograms.interface';
 
 
@@ -9,7 +8,7 @@ import { AxisPrograms } from './axisprograms.interface';
   providedIn: 'root'
 })
 export class AxisProgramsService {
-  route: string = environment.apiUrl;
+  route: string =  "http://127.0.0.1:8000/api/imm";
 
   constructor(private http: HttpClient) {}
 

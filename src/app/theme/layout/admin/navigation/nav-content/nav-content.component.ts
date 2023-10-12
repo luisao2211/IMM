@@ -1,7 +1,7 @@
 // Angular import
 import { Component, EventEmitter, NgZone, OnInit, Output } from '@angular/core';
 import { Location, LocationStrategy } from '@angular/common';
-import { environment } from 'src/environments/environment';
+import {environment} from "src/environments/environment"
 
 // project import
 import { NavigationItem } from '../navigation';

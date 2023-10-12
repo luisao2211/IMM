@@ -6,8 +6,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve -o",
-    "build": "ng build",
-    "build-prod": "ng build --configuration production --base-href /angular/free/",
+    "build": "ng build --base-href=/imm/",
+    "build-prod": "ng build --configuration production --base-href ",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

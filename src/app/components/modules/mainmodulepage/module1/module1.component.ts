@@ -47,6 +47,9 @@ export class Module1Component {
   tableButtons: SelectIndex[] = [
     
   ]
+  isPdf = false
+  isDelete = false
+  isSave = false
   contNewForm: number = 0
   generalData: Inputs[]
   userProfille: Inputs[]
@@ -110,19 +113,16 @@ export class Module1Component {
     this.contNewForm = this.stepper.selectedIndex + 1
     
     if (this.id > 0 && this.noupdatedata[this.contLoadInfo] !== true) {
-      console.error(this.stepper.selectedIndex, this.contLoadInfo)
       this.ServiceModule1.data(`${this.loadInfoUrls[this.contLoadInfo]}/${this.id}`).subscribe({
         next: (n) => {
           if (this.stepper.selectedIndex == 0)
           this.infoData = n["data"]["result"]
           this.infoForm = n["data"]["result"]
           this.noupdatedata[this.contLoadInfo] = true
-          console.log(this.infoForm)
         }
       })
       
     }
-    console.log("cont load info",this.contLoadInfo)
     if (this.contNewForm < this.methods.length && this.noupdatedata[this.contLoadInfo] !== true) {
       if (this.contNewForm > this.stepper.selectedIndex) {
         this.contNewForm = this.stepper.selectedIndex + 1
@@ -147,7 +147,6 @@ export class Module1Component {
   }
   AfterStepper() {
     
-    console.warn(this.urls)
     if (this.stepperDestroy) {
       this.stepper.previous();
       this.stepper.previous();
@@ -156,7 +155,6 @@ export class Module1Component {
       
     }
     this.valuesFormControlNames.splice(this.stepper.selectedIndex - 1, 1);
-    console.warn("ELIMINAR", this.valuesFormControlNames, this.urls);
     this.contNewForm = this.stepper.selectedIndex + 1
     this.contLoadInfo = this.stepper.selectedIndex + 1
     this.urls.pop()
@@ -794,7 +792,6 @@ startCreateForm() {
         this.stepper.next()
         this.stepper.next()
         this.contLoadInfo = this.stepper.selectedIndex + 1
-        // console.log("ES",this.contLoadInfo)
         this.methods[this.contNewForm]();
         this.stepperDestroy = true
       }
@@ -819,17 +816,17 @@ startCreateForm() {
       this.urls.push(`userservice`)
 
     }
-    console.log(this.urls, this.valuesFormControlNames)
     if (this.urls.length === 0 || this.valuesFormControlNames.length === 0) {
       return;
     }
+    this.isSave = true
 
     const combinedObservables = from(this.valuesFormControlNames).pipe(
       concatMap((params, i) => {
-        console.warn(this.id, "idSSS")
         const url = `${this.urls[i]}${this.id > 0 ? '/' + this.id : ''}`;
         return this.ServiceModule1.Post(url, params).pipe(
           catchError((error) => {
+            this.isSave = false
             // Manejar errores aquí si es necesario
             switch (this.urls[i]) {
 
@@ -848,7 +845,6 @@ startCreateForm() {
 
                 break;
               case `userviolence`:
-                console.error(params)
                 this.ToastAlertDanger("Error al insertar los pasos 3,4,5")
                 this.RestarModule(i)
 
@@ -857,7 +853,6 @@ startCreateForm() {
 
                 break;
               case `profileagressor`:
-                console.error(params)
 
                 this.ToastAlertDanger("Error al insertar los pasos 4,5")
                 this.RestarModule(i)
@@ -867,7 +862,6 @@ startCreateForm() {
 
                 break;
               case `userservice`:
-                console.error(params)
                 this.ToastAlertDanger("Error al insertar el paso 5")
                 this.RestarModule(i)
 
@@ -887,7 +881,7 @@ startCreateForm() {
             }
             if (i === this.valuesFormControlNames.length - 1) {
               // Todas las solicitudes se han completado
-
+              this.isSave = false
               this.Toast.fire({
                 position: 'top-end',
                 icon: 'success',
@@ -919,7 +913,7 @@ startCreateForm() {
     this.Toast.fire({
       position: 'top-end',
       icon: 'warning',
-      title: msj + " por favor actualize en esa parte del formulario al usuario",
+      title: msj + " por favor actualize en esa parte del formulario al reporte",
     });
   }
 
@@ -973,25 +967,25 @@ startCreateForm() {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.isLoading = true
+        this.isDelete = true
         this.ServiceModule1.Delete(`users/${id}`).subscribe({
           next: (n) => {
-            this.isLoading = false
+            this.isDelete = false
 
             this.Toast.fire({
               position: 'top-end',
               icon: 'success',
-              title: `Se ha eliminado el usuario`,
+              title: `Se ha eliminado el reporte`,
             })
             this.allUsers()
           },
           error: (e) => {
-            this.isLoading = false
+            this.isDelete = false
 
             this.Toast.fire({
               position: 'top-end',
               icon: 'error',
-              title: `No se ha eliminado el usuario`,
+              title: `No se ha eliminado el reporte`,
             })
           },
 
@@ -1001,9 +995,10 @@ startCreateForm() {
 
   }
   GeneratePdf(event: number) {
+    this.isPdf = true
     this.ServiceModule1.data(`usereport/${event}`).subscribe({
       next: (n) => {
-        const userData = n["data"]["result"][0]; // Datos del usuario obtenidos de la respuesta HTTP
+        const userData = n["data"]["result"][0]; // Datos del reporte obtenidos de la respuesta HTTP
         this.dataPdf.title = `Reporte de ${userData["Nombre"]}`;
        
 
@@ -1050,43 +1045,67 @@ startCreateForm() {
               break
             }
             let exist = 0
+            let keyIf = key
             if (cleanedKey.includes('agresor_')) {
-              cleanedKey = cleanedKey.replace(/^agresor_/, ''); 
-              exist = 1
+                cleanedKey = cleanedKey.replace(/^agresor_/, ''); 
+                exist = 1
             }
+            
+            // if (cleanedKey.includes('agresor_')) {
+            //   const dialogRef = this.dialog.open(PdfComponent, {
+            //     width: '60%',
+            //     maxHeight:'600px'
+            //   });
+        
+            //   dialogRef.afterClosed().subscribe(result => {
+            //   });
+            // }
          
-            if (cleanedKey == 'colonies_id') {
+            if (cleanedKey == 'colonies_id' ) {
               let idsection = id
               this.ServiceModule1.OtherRoute(`https://api.gomezpalacio.gob.mx/api/cp/colonia/${value}`).subscribe({
                 next: (n) => {
-                  this.dataPdf.dataInfo[idsection].table.push({
-                    text: 'Codigo Postal',
-                    value: n["data"]["result"]["CodigoPostal"]
-                  });
-                  this.dataPdf.dataInfo[idsection].table.push({
-                    text: 'Municipio',
-                    value: n["data"]["result"]["Municipio"]
-                  });
-                  this.dataPdf.dataInfo[idsection].table.push({
-                    text: 'Estado',
-                    value: n["data"]["result"]["Estado"]
-                  });
-                  this.dataPdf.dataInfo[idsection].table.push({
-                    text: 'Colonia',
-                    value: n["data"]["result"]["Colonia"]
-                  });
-                  if (exist ==1) {
+                    if (value) {
+                      this.dataPdf.dataInfo[idsection].table.push({
+                        text: 'Codigo Postal',
+                        value: n["data"]["result"]["CodigoPostal"]
+                      });
+                      this.dataPdf.dataInfo[idsection].table.push({
+                        text: 'Municipio',
+                        value: n["data"]["result"]["Municipio"]
+                      });
+                      this.dataPdf.dataInfo[idsection].table.push({
+                        text: 'Estado',
+                        value: n["data"]["result"]["Estado"]
+                      });
+                      this.dataPdf.dataInfo[idsection].table.push({
+                        text: 'Colonia',
+                        value: n["data"]["result"]["Colonia"]
+                      });
+                    }
+                    if (keyIf.includes('agresor_')) {
+                      this.isPdf = false
                     const dialogRef = this.dialog.open(PdfComponent, {
                       width: '60%',
                       maxHeight:'600px'
                     });
-              
+
                     dialogRef.afterClosed().subscribe(result => {
                     });
                   }
 
                 },
                 error:(e)=>{
+                  if (keyIf.includes('agresor_')) {
+                    this.isPdf = false
+                  const dialogRef = this.dialog.open(PdfComponent, {
+                    width: '60%',
+                    maxHeight:'600px'
+                  });
+            
+                  dialogRef.afterClosed().subscribe(result => {
+                  });
+                }
                 },
                 
           
@@ -1119,13 +1138,16 @@ startCreateForm() {
               text: cleanedKey,
               value: value
             });
-            console.log(`Key: ${key}, Value: ${value}`);
           }
         }
         
         this.ServiceModule1.setData(this.dataPdf)
      
       },
+      error:(e)=>{
+        this.isPdf = true
+
+      }
     });
   }
   

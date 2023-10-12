@@ -53,7 +53,7 @@ text:string,
 value:string
  /** disabled o no disabled mas usado para los checkbox hasta ser activado para el uso del select*/ 
 
-status?:Boolean
+status?:Boolean 
 }
 export interface Crud{
   post:string,
