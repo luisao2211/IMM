@@ -58,28 +58,14 @@ export class Module2Component {
         }
       ]
       },
+      
       {
-        label:"Cp",
-        type:"number",
-        formcontrolname: "cp", 
-      },
-      {
-        label:"Colonia",
-        formcontrolname: "colonie", 
-        value:"colonia",
-        disabled: true
-      },
-      {
-        label:"Municipio",
-        formcontrolname: "municipy", 
-        value:"municipy",
-        disabled: true
-      },
-      {
-        label:"Estado",
-        formcontrolname: "state", 
-        value:"state",
-        disabled: true
+        label: "Cp",
+        type: "cp",
+        formcontrolcp: "cp",
+        formcontrolname: "colonies_id",
+        formcontrolmunicipy: "municipy",
+        formcontrolstate: "state"
       },
       {
         label:"Dependecia o Institución",
@@ -103,13 +89,13 @@ export class Module2Component {
 
       },
       {
-        label:"Eje",
-        type:"doubleselect",
-        formcontrolname: "axis", 
-        url:"axis/selectIndex",
-        secondlabel:"Programa",
-        secondcontrolname:"axisprogram",
-        urloadata:"axisprogram/types/",
+        label: "Eje",
+        type: "doubleselect",
+        formcontrolname: "axi_id",
+        url: "axis/selectIndex",
+        secondlabel: "Programa",
+        secondcontrolname: "axi_program_id",
+        urloadata: "axisprogram/types",
 
       },
     ]

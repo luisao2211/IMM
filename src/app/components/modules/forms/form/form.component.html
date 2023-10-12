@@ -60,21 +60,50 @@
         <ng-container *ngSwitchCase="'doubleselect'">
           <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
+            <input type="text"
+                   [placeholder]="i.label"
+                   aria-label=""
+                   matInput
+                   [formControlName]="i.formcontrolname"
+                   [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let item of i.listitems" [value]="item.text" (click)="loadDataDoubleSelect(item.value,index)" (click)="onSelect(i.formcontrolname,item.value)">
+                {{ item.text }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+            <mat-label>{{ i.label }}</mat-label>
             <mat-select [formControlName]="i.formcontrolname" (valueChange)="loadDataDoubleSelect($event,index)">
               <mat-option *ngFor="let item of i.listitems" [value]="item.value">
                 {{ item.text }}
               </mat-option>
             </mat-select>
-          </mat-form-field>
-          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+          </mat-form-field> -->
+          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.secondlabel }}</mat-label>
             <mat-select [formControlName]="i.secondcontrolname">
               <mat-option *ngFor="let item of i.secondlistitems" [value]="item.value">
                 {{ item.text }}
               </mat-option>
             </mat-select>
-          </mat-form-field>
+          </mat-form-field> -->
 
+          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+            <mat-label>{{ i.secondlabel }}</mat-label>
+            <input type="text"
+                   [placeholder]="i.secondlabel"
+                   aria-label=""
+                   matInput
+                   [formControlName]="i.secondcontrolname"
+                   [matAutocomplete]="auto2">
+                   <mat-autocomplete #auto2="matAutocomplete">
+              <mat-option *ngFor="let item of i.secondlistitems" [value]="item.text" (click)="onSelect(i.secondcontrolname,item.value)">
+                {{ item.text }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          
         </ng-container>
         <ng-container *ngSwitchCase="'radio'">
           <div class="radio-group">

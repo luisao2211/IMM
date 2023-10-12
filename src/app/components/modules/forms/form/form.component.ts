@@ -61,15 +61,19 @@ export class FormComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes["clearForm"]) {
       if (changes["clearForm"].currentValue ==true) {
+        console.log("HOLA")
           this.myForm.resetForm();
         
       }
     }
     if (changes["inputs"]) {
-
+      
       if (changes["inputs"].currentValue != changes["inputs"].previousValue) {
-        this.myForm.resetForm();
-
+        if(this.myForm)
+        {
+          this.myForm.resetForm();
+          
+        }
         this._inputs = changes["inputs"].currentValue
         this.updateFormValues(this._inputs);
 
@@ -149,6 +153,8 @@ export class FormComponent implements OnChanges {
           if (infoName == "axi_id") {
             const indexEncontrado = this.inputs.findIndex((elemento) => elemento.type === 'doubleselect');
             this.loadDataDoubleSelect(this.Form.get(infoName).value, indexEncontrado)
+            this.valuesSelects.push({name:infoName,value:value})
+
           }
           // delete this.infoForm[infoName]; 
         }
@@ -164,12 +170,13 @@ export class FormComponent implements OnChanges {
 
   }
   ngOnInit() {
-    this._inputs = []
+    // this._inputs = []
   }
 
 
   updateFormValues(newValues: any): void {
     this.Form.patchValue(newValues);
+    // this.createFormControls()
   }
 
   @HostListener('input', ['$event'])
@@ -207,6 +214,7 @@ export class FormComponent implements OnChanges {
             next: (n) => {
                switch (i.type) {
                 case 'select':
+                case 'doubleselect':
                   i.listitems = n["data"]["result"];
                   this.listItemSelect.push({
                     select:i.formcontrolname,
@@ -223,8 +231,6 @@ export class FormComponent implements OnChanges {
                       })
                   }
                 break
-                case 'doubleselect':
-                  i.listitems = n["data"]["result"];
                   break;
                 case 'checkbox':
                   i.checkbox = n["data"]["result"];
@@ -497,19 +503,25 @@ export class FormComponent implements OnChanges {
 
   }
   loadDataDoubleSelect(selectValue, index, value?) {
-    {
       const url = this.inputs[index].urloadata
       this.modulesService.data(`${url}/${selectValue}`).subscribe({
         next: (n) => {
           this.inputs[index].secondlistitems = n["data"]["result"]
-          value ? this.Form.get(this.inputs[index].secondcontrolname).setValue(value) : '';
-
+          if (value) {
+              this.inputs[index].secondlistitems.forEach(e=>{
+                if (value == e.value) {
+                  
+                  this.Form.get(this.inputs[index].secondcontrolname).setValue(e.text) 
+                }
+              })
+          }
+          console.warn(this.inputs[index].secondlistitems,n["data"]["result"])    
         },
         error:(e)=>{
   
         }
       });
-    }
+    
   }
   AfterWindowsStepper() {
     this.AfterStepper.emit(true);
