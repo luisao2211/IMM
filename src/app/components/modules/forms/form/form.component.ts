@@ -55,24 +55,23 @@ export class FormComponent implements OnChanges {
   public isLoading = false;
   isFormFilled = false;
   constructor(private modulesService: ModulesService<SelectIndex>, private CpService: ModulesService<Cp>, private elRef: ElementRef) {
-    
+
     this.Form = new FormGroup({});
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes["clearForm"]) {
-      if (changes["clearForm"].currentValue ==true) {
+      if (changes["clearForm"].currentValue == true) {
         console.log("HOLA")
-          this.myForm.resetForm();
-        
+        this.myForm.resetForm();
+
       }
     }
     if (changes["inputs"]) {
-      
+
       if (changes["inputs"].currentValue != changes["inputs"].previousValue) {
-        if(this.myForm)
-        {
+        if (this.myForm) {
           this.myForm.resetForm();
-          
+
         }
         this._inputs = changes["inputs"].currentValue
         this.updateFormValues(this._inputs);
@@ -88,7 +87,7 @@ export class FormComponent implements OnChanges {
 
         // this.isLoading = false;
       }, 2000);
-      
+
       this.array = []
       this.infoForm = changes["infoForm"].currentValue[0];
       for (const infoName of Object.keys(this.infoForm)) {
@@ -96,7 +95,7 @@ export class FormComponent implements OnChanges {
         const value = this.infoForm[infoName];
         if (infoName == "diseas_ids" || infoName == 'diseas_origin_id' || infoName == 'disability_ids' || infoName == 'disability_origin_id'
           || infoName == 'user_violence_fields' || infoName == 'fieldsviolence_id' || infoName == 'medicalservices' || infoName == 'adicttions'
-          || infoName == 'workplaces' 
+          || infoName == 'workplaces'
 
         ) {
           if (value) {
@@ -115,22 +114,22 @@ export class FormComponent implements OnChanges {
 
         if (this.Form.controls.hasOwnProperty(infoName)) {
           if (infoName != "colonies_id") {
-              const ValuesSelectIndex = this.inputs.findIndex((e) => e.formcontrolname === infoName && e.type =='select')
-              if (ValuesSelectIndex>-1) {
+            const ValuesSelectIndex = this.inputs.findIndex((e) => e.formcontrolname === infoName && e.type == 'select')
+            if (ValuesSelectIndex > -1) {
               if (this.inputs[ValuesSelectIndex].listitems) {
-                this.inputs[ValuesSelectIndex].listitems.forEach(e=>{
-                  if (e.value ==value) {
-                    this.onSelect(infoName,value)
+                this.inputs[ValuesSelectIndex].listitems.forEach(e => {
+                  if (e.value == value) {
+                    this.onSelect(infoName, value)
                     this.Form.get(infoName).setValue(e.text)
                   }
-              })
+                })
               }
-              else{
-                this.valuesSelects.push({name:infoName,value:value})
+              else {
+                this.valuesSelects.push({ name: infoName, value: value })
               }
               continue
             }
-              this.Form.get(infoName).setValue(value);
+            this.Form.get(infoName).setValue(value);
           }
 
 
@@ -143,7 +142,7 @@ export class FormComponent implements OnChanges {
                 this.Form.get("cp").setValue(n["data"]["result"]["CodigoPostal"]);
                 this.cp(n["data"]["result"]["CodigoPostal"], indexEncontrado, value)
               },
-              error:(e)=>{
+              error: (e) => {
                 this.isLoading = false
               }
 
@@ -153,7 +152,7 @@ export class FormComponent implements OnChanges {
           if (infoName == "axi_id") {
             const indexEncontrado = this.inputs.findIndex((elemento) => elemento.type === 'doubleselect');
             this.loadDataDoubleSelect(this.Form.get(infoName).value, indexEncontrado)
-            this.valuesSelects.push({name:infoName,value:value})
+            this.valuesSelects.push({ name: infoName, value: value })
 
           }
           // delete this.infoForm[infoName]; 
@@ -210,31 +209,53 @@ export class FormComponent implements OnChanges {
             useurl = false
             i.url = i.otherurl
           }
-           this.modulesService.data(i.url, useurl).subscribe({
+          this.modulesService.data(i.url, useurl).subscribe({
             next: (n) => {
-               switch (i.type) {
+              switch (i.type) {
                 case 'select':
                 case 'doubleselect':
                   i.listitems = n["data"]["result"];
                   this.listItemSelect.push({
-                    select:i.formcontrolname,
-                    options:i.listitems
+                    select: i.formcontrolname,
+                    options: i.listitems
                   })
-                  this.autocomplete(index,i.formcontrolname,i.listitems)
-                  const valuesIndex = this.valuesSelects.findIndex(e=>e.name == i.formcontrolname)
-                  if (valuesIndex>-1) {
-                      i.listitems.forEach(e=>{
-                          if (e.value ==this.valuesSelects[valuesIndex].value) {
-                              this.Form.get(i.formcontrolname).setValue(e.text)
-                              this.onSelect(i.formcontrolname,e.value)
-                          }
-                      })
-                  }
-                break
+
+                  break
                   break;
                 case 'checkbox':
                   i.checkbox = n["data"]["result"];
 
+
+                  break;
+                case 'checkboxdescription':
+                  i.checkbox = n["data"]["result"];
+
+
+                  //   for (const controlName in this.Form.controls) {
+                  //     const control = this.Form.get(controlName);
+                  //     console.log(`Nombre del control: ${controlName}`);
+                  //     console.error(`Valor del control: ${control.value}`);
+                  //     // Puedes imprimir más propiedades del control según tus necesidades.
+                  // }
+                  break;
+              }
+            },
+            complete: () => {
+              switch (i.type) {
+                case 'select':
+                case 'doubleselect':
+                  this.autocomplete(index, i.formcontrolname, i.listitems)
+                  const valuesIndex = this.valuesSelects.findIndex(e => e.name == i.formcontrolname)
+                  if (valuesIndex > -1) {
+                    i.listitems.forEach(e => {
+                      if (e.value == this.valuesSelects[valuesIndex].value) {
+                        this.Form.get(i.formcontrolname).setValue(e.text)
+                        this.onSelect(i.formcontrolname, e.value)
+                      }
+                    })
+                  }
+                  break;
+                case 'checkbox':
                   for (let checkbox of i.checkbox) {
                     // console.warn(checkbox.text + checkbox.value,this.array)
                     this.Form.addControl(checkbox.text + checkbox.value, new FormControl());
@@ -248,75 +269,84 @@ export class FormComponent implements OnChanges {
                   }
                   break;
                 case 'checkboxdescription':
-                  i.checkbox = n["data"]["result"];
+                  new Promise((resolve,reject)=>{
+                    for (let [index, checkbox] of i.checkbox.entries()) {
+                      checkbox.status = false
+                      this.Form.addControl(checkbox.text + checkbox.value, new FormControl());
+                      this.Form.addControl(checkbox.text + checkbox.value + "_description", new FormControl());
+                      if (this.array.includes(checkbox.text + checkbox.value)) {
+                        this.Form.get(checkbox.text + checkbox.value).setValue(true)
+                        // console.log(checkbox.text + checkbox.value, this.array)
+                        checkbox.status = true
+                        this.addCheckbox(i.formcontrolname, checkbox)
+  
+                      }
+  
+                      if (index == i.checkbox.length-1) {
+                          resolve("Resuleto");
+                      }
+                    }  
+                  }).then(e=>{
+                    if (i.urloadata && !i.secondcontrolname) {
+                      this.modulesService.data(i.urloadata).subscribe({
+                        next:  (n) => {
+  
+                          switch (i.type) {
+                            case 'checkboxdescription':
+  
+                              i.itemsdescription =  n["data"]["result"]
+  
+  
+                              // this.Form.get("").setValue(1);
+                              // console.log("entre")
+  
+                              break;
+                          }
+  
+                        },
+                        complete: () => {
+                          switch (i.type) {
+                            case 'checkboxdescription':
+                              console.log(i.formcontrolname, i.itemsdescription, i.type, i.checkbox)
+                              for (let checkbox of i.checkbox) {
+                                checkbox.status = true;
+                                if (this.array.includes(checkbox.text + checkbox.value)) {
+                                  const index = this.array.indexOf(checkbox.text + checkbox.value + "_description");
+                                  this.Form.get(checkbox.text + checkbox.value + "_description").setValue(parseInt(this.array[index + 1]))
+                                  checkbox.status = false;
+                                  this.onSelectDescriptionChange(i.formcontrolname, checkbox, parseInt(this.array[index + 1]))
+                                  // this.objects.push({ "groupName": checkbox.text, "value": checkbox.value, "option": true, "origin_id": parseInt(this.array[index +1]) })
+                                }
+                                else {
+                                  console.error
+                                }
+  
+                              }
+                              break;
+                          }
+                        }
+                      });
+  
+  
+                    }
+                  })
                   
-                  for (let checkbox of i.checkbox) {
-                    checkbox.status = false
-                    this.Form.addControl(checkbox.text + checkbox.value, new FormControl());
-                    this.Form.addControl(checkbox.text + checkbox.value + "_description", new FormControl());
-                    if (this.array.includes(checkbox.text + checkbox.value)) {
-                      this.Form.get(checkbox.text + checkbox.value).setValue(true)
-                      // console.log(checkbox.text + checkbox.value, this.array)
-                      checkbox.status = true
-                      this.addCheckbox(i.formcontrolname, checkbox)
-
-                    }
-
-
-                  }
-                  //   for (const controlName in this.Form.controls) {
-                  //     const control = this.Form.get(controlName);
-                  //     console.log(`Nombre del control: ${controlName}`);
-                  //     console.error(`Valor del control: ${control.value}`);
-                  //     // Puedes imprimir más propiedades del control según tus necesidades.
-                  // }
+                 
                   break;
+
               }
-            },
-         
-          }).unsubscribe;
+            }
+
+
+          })
         }
-        if (i.urloadata && !i.secondcontrolname) {
-          this.modulesService.data(i.urloadata).subscribe({
-            next: async (n) => {
-              
-              switch (i.type) {
-                case 'checkboxdescription':
 
-                  i.itemsdescription = await n["data"]["result"]
-
-
-                  // this.Form.get("").setValue(1);
-                  // console.log("entre")
-                  for (let checkbox of i.checkbox) {
-                    checkbox.status = true;
-                    if (this.array.includes(checkbox.text + checkbox.value)) {
-                      const index = this.array.indexOf(checkbox.text + checkbox.value + "_description");
-                      this.Form.get(checkbox.text + checkbox.value + "_description").setValue(parseInt(this.array[index + 1]))
-                      checkbox.status = false;
-                      this.onSelectDescriptionChange(i.formcontrolname, checkbox, parseInt(this.array[index + 1]))
-                      // this.objects.push({ "groupName": checkbox.text, "value": checkbox.value, "option": true, "origin_id": parseInt(this.array[index +1]) })
-                    }
-                    else {
-                      console.error
-                    }
-
-                  }
-                  break;
-              }
-
-            },
-
-          });
-
-
-        }
 
         if (i.event) {
           this.addEvent(i.formcontrolname)
         }
 
-        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription'&& i.type !== 'email') {
+        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription' && i.type !== 'email') {
           this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
           if (i.secondcontrolname) {
             this.Form.addControl(i.secondcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
@@ -335,7 +365,7 @@ export class FormComponent implements OnChanges {
           }
         }
         if (i.type == 'email') {
-          this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', [Validators.required,Validators.email]));
+          this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', [Validators.required, Validators.email]));
 
         }
 
@@ -369,13 +399,13 @@ export class FormComponent implements OnChanges {
       if (valueFromSelects !== null) {
         FormValues[Object.keys(valueFromSelects)[0]] = Object.values(valueFromSelects)[0]; // Asignamos el valor al objeto usando controlName como clave
       }
-      else{
+      else {
         FormValues[controlName] = controlValue; // Asignamos el valor al objeto usando controlName como clave
 
       }
     });
-    
-    
+
+
     if (this.crud?.post && !this.AfterStepper) {
       this.modulesService.Post(this.crud.post, this.Form.value).subscribe({
         next: (n) => {
@@ -402,7 +432,7 @@ export class FormComponent implements OnChanges {
 
     }
     this.newItemEvent.emit(true);
-    this.selects =[]
+    this.selects = []
   }
   addCheckbox(name, check, namefalse?) {
     check.status = !check.status;
@@ -415,7 +445,7 @@ export class FormComponent implements OnChanges {
     } else {
       if (this.Form.get(name)) {
         const currentArray = this.Form.get(name).value;
-        this.Form.get(check.text +check.value +"_description").setValue(null)
+        this.Form.get(check.text + check.value + "_description").setValue(null)
         const newArray = currentArray.filter(item => item.groupName !== check.text && item.value !== check.value);
         this.Form.get(name).setValue(newArray);
         // console.log(this.Form.value)
@@ -430,20 +460,20 @@ export class FormComponent implements OnChanges {
   formatPhoneNumber(event: Event) {
     // Obtén el valor actual del campo de entrada
     let phoneNumber = (event.target as HTMLInputElement).value;
-  
+
     // Elimina caracteres no numéricos
     phoneNumber = phoneNumber.replace(/\D/g, '');
-  
+
     // Aplica el formato (xxx) xxx xxxx
     if (phoneNumber.length >= 10) {
       phoneNumber = `(${phoneNumber.substr(0, 3)}) ${phoneNumber.substr(3, 3)} ${phoneNumber.substr(6, 4)}`;
     }
-  
+
     // Actualiza el valor del campo de entrada con el formato
     (event.target as HTMLInputElement).value = phoneNumber;
   }
-  
-  
+
+
   addChecked(name, check) {
 
     if (!this.Form.get(name)) {
@@ -481,8 +511,8 @@ export class FormComponent implements OnChanges {
 
     }
   }
-  onOptionSelected(event,listitems){
-   
+  onOptionSelected(event, listitems) {
+
   }
   onSelectDescriptionChange(name, check, event: any): void {
     const selectedValue = event;
@@ -503,25 +533,25 @@ export class FormComponent implements OnChanges {
 
   }
   loadDataDoubleSelect(selectValue, index, value?) {
-      const url = this.inputs[index].urloadata
-      this.modulesService.data(`${url}/${selectValue}`).subscribe({
-        next: (n) => {
-          this.inputs[index].secondlistitems = n["data"]["result"]
-          if (value) {
-              this.inputs[index].secondlistitems.forEach(e=>{
-                if (value == e.value) {
-                  
-                  this.Form.get(this.inputs[index].secondcontrolname).setValue(e.text) 
-                }
-              })
-          }
-          console.warn(this.inputs[index].secondlistitems,n["data"]["result"])    
-        },
-        error:(e)=>{
-  
+    const url = this.inputs[index].urloadata
+    this.modulesService.data(`${url}/${selectValue}`).subscribe({
+      next: (n) => {
+        this.inputs[index].secondlistitems = n["data"]["result"]
+        if (value) {
+          this.inputs[index].secondlistitems.forEach(e => {
+            if (value == e.value) {
+
+              this.Form.get(this.inputs[index].secondcontrolname).setValue(e.text)
+            }
+          })
         }
-      });
-    
+        console.warn(this.inputs[index].secondlistitems, n["data"]["result"])
+      },
+      error: (e) => {
+
+      }
+    });
+
   }
   AfterWindowsStepper() {
     this.AfterStepper.emit(true);
@@ -530,17 +560,17 @@ export class FormComponent implements OnChanges {
   validatePostalCode(event: Event) {
     // Obtén el valor actual del campo de entrada
     let postalCode = (event.target as HTMLInputElement).value;
-  
+
     // Elimina caracteres no numéricos
     postalCode = postalCode.replace(/\D/g, '');
-  
+
     // Limita la entrada a un máximo de 5 números
     postalCode = postalCode.substr(0, 5);
-  
+
     // Actualiza el valor del campo de entrada con el CP formateado
     (event.target as HTMLInputElement).value = postalCode;
   }
-  
+
   cp(event, index, value?) {
     // this.isLoading= true
     this.CpService.OtherRoute(`https://api.gomezpalacio.gob.mx/api/cp/${event.target?.value || event}`).subscribe({
@@ -558,17 +588,17 @@ export class FormComponent implements OnChanges {
               title: "No existe el código postal",
             });
           }
-          else{
+          else {
             this.Toast.fire({
               position: 'center',
               icon: 'success',
               title: "Ingresa la colonia",
             });
           }
-          
-        },500)
+
+        }, 500)
       },
-      error:(e)=>{
+      error: (e) => {
         if (!this.Form.get(this.inputs[index].formcontrolmunicipy).value) {
           this.Toast.fire({
             position: 'top-end',
@@ -578,31 +608,31 @@ export class FormComponent implements OnChanges {
         }
       },
       complete() {
-        
-       
+
+
       },
 
     })
   }
-  onSelect(name,id){
-    const exist = this.selects.filter(e=>e.name == name)
-    if (exist.length>0) 
-          this.selects = this.selects.filter(e=>e.name != name)
+  onSelect(name, id) {
+    const exist = this.selects.filter(e => e.name == name)
+    if (exist.length > 0)
+      this.selects = this.selects.filter(e => e.name != name)
     this.selects.push({
       [name]: id
     })
   }
 
   autocomplete(index, myControl, listitems) {
- 
+
     const textArray: string[] = Object.values(listitems).map(item => item['text']);
     this.Form.get(myControl).valueChanges.subscribe((newValue) => {
-      this.listItemSelect.forEach(it=>{
-        if (it['select']==myControl) {
-          this.inputs[index].listitems =it['options']
+      this.listItemSelect.forEach(it => {
+        if (it['select'] == myControl) {
+          this.inputs[index].listitems = it['options']
         }
-       
-      }) 
+
+      })
 
       const filteredOptions = textArray.filter(option =>
         option.toLowerCase().includes(newValue.toLowerCase())
@@ -610,13 +640,13 @@ export class FormComponent implements OnChanges {
       this.inputs[index].listitems = this.inputs[index].listitems.filter(e =>
         filteredOptions.includes(e.text)
       );
-      
-  
+
+
     });
-  
+
   }
-  
-  
+
+
 }
 
 

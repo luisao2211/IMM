@@ -29,7 +29,7 @@ export class PdfComponent {
       quality: 1,
     },
     html2canvas: {
-      scale: 2,
+      scale: 2, 
       
     },
     jsPDF: {

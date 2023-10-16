@@ -14,90 +14,24 @@ export class Module2Component {
   createComunnity(){
     this.comunity=
     [
-      {
-        label:"Fecha",
-        formcontrolname:"date",
-        type:'date'     
-      },
-      {
-        label:"Lugar",
-        formcontrolname:"location",
-      },
-      {
-        label:"agente",
-        formcontrolname:"agent"
-      },
-      {
-        label:"En colaboración",
-        formcontrolname:"colaboration",
-      },
-      {
-        label:"Ponente(s)",
-        formcontrolname:"ponts"
-      },
-      {
-        label:"speakers",
-        formcontrolname:"issue"
-      },
-      {
-        label:"nombre",
-        formcontrolname: "name",
-      },
-     
-      {
-        label:"Sexo",
-        type:"radio",
-        formcontrolname: "sex",
-        radiobutton:[{
-          text:"Hombre",
-          value:"0"
-        },
-        {
-          text:"Mujer",
-          value:"1"
-        }
-      ]
-      },
+     {
+      label:"Nombre",
+      formcontrolname:"Nombre",
+      width: 2
+
+     },
+     {
+      label:"Nombre",
+      formcontrolname:"Nombre"
       
-      {
-        label: "Cp",
-        type: "cp",
-        formcontrolcp: "cp",
-        formcontrolname: "colonies_id",
-        formcontrolmunicipy: "municipy",
-        formcontrolstate: "state"
-      },
-      {
-        label:"Dependecia o Institución",
-        formcontrolname:"depence"
-      },
-      {
-        label:"telefono",
-        formcontrolname: "telephone",
-        type:'number',
-
-      },
-      {
-        label:"Córreo electrónico",
-        formcontrolname: "email",
-        type:'email',
-
-      },
-      {
-        label:"observación",
-        formcontrolname: "axis", 
-
-      },
-      {
-        label: "Eje",
-        type: "doubleselect",
-        formcontrolname: "axi_id",
-        url: "axis/selectIndex",
-        secondlabel: "Programa",
-        secondcontrolname: "axi_program_id",
-        urloadata: "axisprogram/types",
-
-      },
+     },
+     {
+      label: "Estado Civil",
+      type: "checkbox",
+      formcontrolname: "civil_status_id",
+      url: "civilstatus/selectIndex"
+    },
+     
     ]
   }
 }
