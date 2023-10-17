@@ -31,9 +31,13 @@ export class TableComponent implements OnInit, OnChanges {
         this.fields = changes["fields"].currentValue
         this.dataSource = new MatTableDataSource<any>(this.fields);
         this.fields = this.fields.map(row => {
-          const { id, ...rest } = row;
-          return rest;
-        });        
+          if (row.id || row.idviolence) {
+            const { id, idviolence, ...rest } = row;
+            return rest;
+          }
+          return row;
+        });
+        
         this.displayedColumns = [...Object.keys(this.fields[0]), "Actions"];
         this.column = [...this.fields, "Actions"]
         this.dataSource.paginator = this.paginator;
@@ -71,8 +75,8 @@ export class TableComponent implements OnInit, OnChanges {
     this.pdf.emit(id);
 
   }
-  touchedButton(id,indexButton:number){
-    this.buttonClick.emit([id,indexButton])
+  touchedButton(id,indexButton:number,idviolence){
+    this.buttonClick.emit([id,indexButton,idviolence])
   }
 }
 

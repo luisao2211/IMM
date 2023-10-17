@@ -8,7 +8,7 @@ import { AxisPrograms } from './axisprograms.interface';
   providedIn: 'root'
 })
 export class AxisProgramsService {
-  route: string =  "http://127.0.0.1:8000/api/imm";
+  route: string =  "https://api.gomezpalacio.gob.mx/api/imm";
 
   constructor(private http: HttpClient) {}
 

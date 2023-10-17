@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
+import { Component, Inject, Input, OnChanges, OnDestroy, SimpleChanges, ViewChild } from '@angular/core';
 import { Crud, Inputs } from '../../interfaces/inputs.interface';
 import { FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormGroup, FormControl, FormGroupDirective } from '@angular/forms';
 import { ModulesService } from '../../services/modules.service';
@@ -13,6 +13,7 @@ import { style } from '@angular/animations';
 import { error, event } from 'jquery';
 import { Observable, of } from 'rxjs';
 import { startWith, map, switchMap } from 'rxjs/operators';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
@@ -54,14 +55,13 @@ export class FormComponent implements OnChanges {
   })
   public isLoading = false;
   isFormFilled = false;
-  constructor(private modulesService: ModulesService<SelectIndex>, private CpService: ModulesService<Cp>, private elRef: ElementRef) {
+  constructor(private modulesService: ModulesService<SelectIndex>, private CpService: ModulesService<Cp>, private elRef: ElementRef,public dialog: MatDialog) {
 
     this.Form = new FormGroup({});
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes && changes["clearForm"]) {
       if (changes["clearForm"].currentValue == true) {
-        console.log("HOLA")
         this.myForm.resetForm();
 
       }
@@ -81,17 +81,25 @@ export class FormComponent implements OnChanges {
     if (changes["infoForm"] && changes["infoForm"].currentValue) {
 
       this.isLoading = true;
-
+      let timeLoadSpinner = Object.values(this.infoForm[0]).length
+      let time = timeLoadSpinner * 200
       setTimeout(() => {
         this.isLoading = false;
 
         // this.isLoading = false;
-      }, 2000);
+      }, time);
 
       this.array = []
       this.infoForm = changes["infoForm"].currentValue[0];
-      for (const infoName of Object.keys(this.infoForm)) {
+      let indice = 0
+      // {
+      // 
+      //   "disability_ids": "Motriz1",
+      //   "disability_origin_id": "Motriz1_description,5"
+      // }
 
+      
+      for (const infoName of Object.keys(this.infoForm)) {
         const value = this.infoForm[infoName];
         if (infoName == "diseas_ids" || infoName == 'diseas_origin_id' || infoName == 'disability_ids' || infoName == 'disability_origin_id'
           || infoName == 'user_violence_fields' || infoName == 'fieldsviolence_id' || infoName == 'medicalservices' || infoName == 'adicttions'
@@ -100,13 +108,82 @@ export class FormComponent implements OnChanges {
         ) {
           if (value) {
             let checkbox = value.split(",");
-            // console.warn(checkbox)
-            if (Array.isArray(checkbox)) {
-              checkbox.forEach(item => {
-                this.array.push(item)
+            //ANGEL
+            checkbox.forEach((it, i) => {
+              if (this.Form.controls.hasOwnProperty(it)) {
+                // console.warn(it)
+                
+                this.inputs.forEach((item, inputindex) => {
+                 
+                  if (item.type === "checkboxdescription" || item.type == "checkbox") {
+                   
+                    item.checkbox.forEach((element, index) => {
+                      if (element.text + element.value == it && item.type == "checkboxdescription") {
+                        // this.Form.removeControl(it)
+                        element.status =true
+                        this.addCheckbox(item.formcontrolname, element)
+                        
+                        let contador = 0
+                        let namekey = null
+                          for (const name of Object.keys(this.infoForm)) {
+                            if (name ==infoName) {
+                              contador =1
+                              continue
+                            }
+                            if (contador ==1) {
+                              namekey = name
+                              break;
+                            }
+
+                            
+                          }    
+                           let valuesNameKey = this.infoForm[namekey]  
+                           valuesNameKey= valuesNameKey.split(",");
+                           let valor = valuesNameKey.findIndex((e) => e === element.text + element.value+"_description")
+                          // if (indice <= this.infoForm.length) {
+                          
+                          // "diseas_ids": ["Gastrointestinales3,Infecciosas6"],
+                          //   "diseas_origin_id": "Gastrointestinales3_description,2,Infecciosas6_description,2",
+                        
+                        // }
+                        // console.error(this.infoForm[indice + 1])
+
+                        this.Form.get(element.text + element.value + "_description").setValue(parseInt(valuesNameKey[valor +1]))
+
+                        this.onSelectDescriptionChange(item.formcontrolname, element, parseInt(valuesNameKey[valor +1]))
+                      }
+                       if (element.text + element.value == it && item.type == "checkbox") {
+                        element.status = true
+                        this.addChecked(item.formcontrolname, element)
+
+                      }
+
+
+
+
+
+
+
+                    });
+
+
+                    // this.addChecked(item.formcontrolname,)
+                    // this.onSelectDescriptionChange(it,)
+                  }
+                });
               }
-              )
-            }
+
+            });
+            const ValuesSelectIndex = this.inputs.findIndex((e) => e.formcontrolname === infoName)
+            //  console.error(this.inputs,this.Form.controls.hasOwnProperty(infoName),ValuesSelectIndex,this.inputs[ValuesSelectIndex])
+            //this.addChecked(infoName, checkbox)
+
+            // if (Array.isArray(checkbox)) {
+            //   checkbox.forEach(item => {
+            //     this.array.push(item)
+            //   }
+            //   )
+            // }
 
           }
 
@@ -114,21 +191,21 @@ export class FormComponent implements OnChanges {
 
         if (this.Form.controls.hasOwnProperty(infoName)) {
           if (infoName != "colonies_id") {
-            const ValuesSelectIndex = this.inputs.findIndex((e) => e.formcontrolname === infoName && e.type == 'select')
-            if (ValuesSelectIndex > -1) {
-              if (this.inputs[ValuesSelectIndex].listitems) {
-                this.inputs[ValuesSelectIndex].listitems.forEach(e => {
-                  if (e.value == value) {
-                    this.onSelect(infoName, value)
-                    this.Form.get(infoName).setValue(e.text)
-                  }
-                })
-              }
-              else {
-                this.valuesSelects.push({ name: infoName, value: value })
-              }
-              continue
-            }
+            // const ValuesSelectIndex = this.inputs.findIndex((e) => e.formcontrolname === infoName && e.type == 'select')
+            // if (ValuesSelectIndex > -1) {
+            //   if (this.inputs[ValuesSelectIndex].listitems) {
+            //     this.inputs[ValuesSelectIndex].listitems.forEach(e => {
+            //       if (e.value == value) {
+            //         this.onSelect(infoName, value)
+            //         this.Form.get(infoName).setValue(e.text)
+            //       }
+            //     })
+            //   }
+            //   else {
+            //     this.valuesSelects.push({ name: infoName, value: value })
+            //   }
+            //   continue
+            // }
             this.Form.get(infoName).setValue(value);
           }
 
@@ -157,6 +234,7 @@ export class FormComponent implements OnChanges {
           }
           // delete this.infoForm[infoName]; 
         }
+        indice++
       }
 
 
@@ -260,78 +338,77 @@ export class FormComponent implements OnChanges {
                     // console.warn(checkbox.text + checkbox.value,this.array)
                     this.Form.addControl(checkbox.text + checkbox.value, new FormControl());
                     checkbox.status = false
-                    if (this.array.includes(checkbox.text + checkbox.value)) {
-                      this.Form.get(checkbox.text + checkbox.value).setValue(true)
-                      checkbox.status = true
-                      this.addChecked(i.formcontrolname, checkbox)
-                    }
+                    // if (this.array.includes(checkbox.text + checkbox.value)) {
+                    //   this.Form.get(checkbox.text + checkbox.value).setValue(true)
+                    //   checkbox.status = true
+                    //   this.addChecked(i.formcontrolname, checkbox)
+                    // }
 
                   }
                   break;
                 case 'checkboxdescription':
-                  new Promise((resolve,reject)=>{
+                  new Promise((resolve, reject) => {
                     for (let [index, checkbox] of i.checkbox.entries()) {
                       checkbox.status = false
                       this.Form.addControl(checkbox.text + checkbox.value, new FormControl());
                       this.Form.addControl(checkbox.text + checkbox.value + "_description", new FormControl());
-                      if (this.array.includes(checkbox.text + checkbox.value)) {
-                        this.Form.get(checkbox.text + checkbox.value).setValue(true)
-                        // console.log(checkbox.text + checkbox.value, this.array)
-                        checkbox.status = true
-                        this.addCheckbox(i.formcontrolname, checkbox)
-  
+                      // if (this.array.includes(checkbox.text + checkbox.value)) {
+                      //   this.Form.get(checkbox.text + checkbox.value).setValue(true)
+                      //   // console.log(checkbox.text + checkbox.value, this.array)
+                      //   checkbox.status = true
+                      //   this.addCheckbox(i.formcontrolname, checkbox)
+
+                      // }
+
+                      if (index == i.checkbox.length - 1) {
+                        resolve("Resuleto");
                       }
-  
-                      if (index == i.checkbox.length-1) {
-                          resolve("Resuleto");
-                      }
-                    }  
-                  }).then(e=>{
+                    }
+                  }).then(e => {
                     if (i.urloadata && !i.secondcontrolname) {
                       this.modulesService.data(i.urloadata).subscribe({
-                        next:  (n) => {
-  
+                        next: (n) => {
+
                           switch (i.type) {
                             case 'checkboxdescription':
-  
-                              i.itemsdescription =  n["data"]["result"]
-  
-  
+
+                              i.itemsdescription = n["data"]["result"]
+
+
                               // this.Form.get("").setValue(1);
                               // console.log("entre")
-  
+
                               break;
                           }
-  
+
                         },
                         complete: () => {
                           switch (i.type) {
                             case 'checkboxdescription':
-                              console.log(i.formcontrolname, i.itemsdescription, i.type, i.checkbox)
                               for (let checkbox of i.checkbox) {
                                 checkbox.status = true;
-                                if (this.array.includes(checkbox.text + checkbox.value)) {
-                                  const index = this.array.indexOf(checkbox.text + checkbox.value + "_description");
-                                  this.Form.get(checkbox.text + checkbox.value + "_description").setValue(parseInt(this.array[index + 1]))
-                                  checkbox.status = false;
-                                  this.onSelectDescriptionChange(i.formcontrolname, checkbox, parseInt(this.array[index + 1]))
-                                  // this.objects.push({ "groupName": checkbox.text, "value": checkbox.value, "option": true, "origin_id": parseInt(this.array[index +1]) })
-                                }
-                                else {
-                                  console.error
-                                }
-  
+                                // if (this.array.includes(checkbox.text + checkbox.value)) {
+                                //   const index = this.array.indexOf(checkbox.text + checkbox.value + "_description");
+                                //   this.Form.get(checkbox.text + checkbox.value + "_description").setValue(parseInt(this.array[index + 1]))
+                                //   checkbox.status = false;
+                                //   this.onSelectDescriptionChange(i.formcontrolname, checkbox, parseInt(this.array[index + 1]))
+                                //   // this.objects.push({ "groupName": checkbox.text, "value": checkbox.value, "option": true, "origin_id": parseInt(this.array[index +1]) })
+                                // }
+                                // else {
+                                //   console.error
+                                // }
+
                               }
                               break;
                           }
                         }
                       });
-  
-  
+
+
                     }
                   })
-                  
-                 
+
+
                   break;
 
               }
@@ -382,7 +459,73 @@ export class FormComponent implements OnChanges {
   }
 
   onSubmit() {
+    let stop = false
+    let contenidoHtml = `
+    <h2>Errores del Formulario</h2>
+    `
+    let html = ''
+    const optionNoSelected = []
     const FormValues = {}; // Inicializamos como un objeto vacío
+    console.warn(this.inputs)
+    this.inputs.forEach(e=>{
+      let exist = false
+
+      if (e.type =="checkboxdescription") {
+        html +=`
+        <div class="alert alert-warning" role="alert">
+
+          <ul class="list-group">
+          <li class="list-group-item active" aria-current="true">${e.label} no contienen una descripcion y estan seleccionadas</li>
+
+  
+          `
+          e.checkbox.forEach(c=>{
+            if (this.Form.controls.hasOwnProperty(e.formcontrolname) && !c.status) {
+              const control = this.Form.get(e.formcontrolname);
+              if (control && control.value) {
+                console.log("entramos",control.value)
+                
+                const isExistSelection = control.value.find(value => {
+                  return value.groupName === c.text 
+                });
+               
+                if (!isExistSelection) {
+                  exist = true
+                  html += `
+                   <li class="list-group-item text-start ">                   
+                    ${c.text} 
+                  </li>
+                `;
+                // Abre el cuadro de diálogo y pasa el contenido HTML como datos
+               
+              
+                  
+                  stop = true
+                }
+              }
+            }
+            
+          })
+          html += `
+          </ul>
+          </div>
+          `;
+          if (exist) {
+            contenidoHtml += html
+            html = ''
+          }
+      }
+
+
+    })
+    if (stop) {
+      this.dialog.open(HtmlDialogComponent, {
+        width: '60%',
+        maxHeight: '600px',
+        data: { contenidoHtml },
+      });
+      return
+    }
 
     Object.keys(this.Form.controls).forEach(controlName => {
       // Obtiene el valor del control
@@ -445,7 +588,7 @@ export class FormComponent implements OnChanges {
     } else {
       if (this.Form.get(name)) {
         const currentArray = this.Form.get(name).value;
-        this.Form.get(check.text + check.value + "_description").setValue(null)
+        this.Form.get(check.text + check.value + "_description").setValue(true)
         const newArray = currentArray.filter(item => item.groupName !== check.text && item.value !== check.value);
         this.Form.get(name).setValue(newArray);
         // console.log(this.Form.value)
@@ -473,13 +616,44 @@ export class FormComponent implements OnChanges {
     (event.target as HTMLInputElement).value = phoneNumber;
   }
 
+  updateChecked(name, check, control, i, index) {
+    this.inputs[i].checkbox[index].status = true
+    if (!this.Form.get(name)) {
+      this.Form.get(control).setValue(true)
+      this.Form.addControl(name, new FormControl());
+      this.Form.get(name).setValue([{ "groupName": check.text, "value": check.value, "option": true }])
+    }
+    else {
+      const currentArray = this.Form.get(name).value;
+      let newArray = []
+      newArray.push(...currentArray)
+      this.Form.get(control).setValue(true)
+
+      let position = newArray.findIndex(item => item.groupName === check.text);
+      if (position !== -1) {
+        newArray.splice(position, 1)
+        // console.log("array", newArray)
+        this.Form.get(name).setValue(newArray);
+        return
+      }
+      newArray.push({ "groupName": check.text, "value": check.value, "option": true });
+      const uniqueValues = new Set();
+      newArray = newArray.filter(item => {
+        if (!uniqueValues.has(item.value)) {
+          uniqueValues.add(item.value);
+          return true;
+        }
+        return false;
+      });
+      this.Form.get(name).setValue(newArray);
+    }
+  }
 
   addChecked(name, check) {
 
     if (!this.Form.get(name)) {
       this.Form.addControl(name, new FormControl());
       this.Form.get(name).setValue([{ "groupName": check.text, "value": check.value, "option": true }])
-      // console.log("ENTREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE", this.Form.get(name).value)
     }
     else {
       if (this.Form.get(name)) {
@@ -507,6 +681,7 @@ export class FormComponent implements OnChanges {
         if (this.Form.get(name).value.lenght == 0) {
           this.Form.removeControl(name);
         }
+
       }
 
     }
@@ -515,11 +690,21 @@ export class FormComponent implements OnChanges {
 
   }
   onSelectDescriptionChange(name, check, event: any): void {
+    check.status = false
     const selectedValue = event;
-    console.warn(this.Form.get(name))
-    let object = this.Form.get(name).value;
     // console.log("OBJECTO", object)
     const uniqueValues = new Set();
+    let object = null
+    const control = this.Form.get(name);
+
+    if (!control.value) {
+      this.Form.get(name).setValue([])
+      object = this.Form.get(name).value;
+    }
+    else {
+      object = this.Form.get(name).value;
+
+    }
     object = object.filter(item => {
       if (!uniqueValues.has(item.value)) {
         uniqueValues.add(item.value);
@@ -545,7 +730,6 @@ export class FormComponent implements OnChanges {
             }
           })
         }
-        console.warn(this.inputs[index].secondlistitems, n["data"]["result"])
       },
       error: (e) => {
 
@@ -651,3 +835,45 @@ export class FormComponent implements OnChanges {
 
 
 
+@Component({
+  template: `
+  <div class="dialog-container alert alert-warning">
+    <div class="content" [innerHTML]="data.contenidoHtml"></div>
+    <!-- <button type="button" class="btn btn-primary close-button" (click)="closeDialog()">Cerrar</button> -->
+
+  </div>
+`,
+styles: [`
+ .dialog-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 100;
+  background: white;
+  text-align: center;
+  height: 100%; /* Permite que el contenido determine la altura */
+}
+
+
+.close-button {
+      position:fixed;
+      bottom:0;
+      right:0;
+      margin:1em;
+    }
+
+  .content {
+    margin: auto;
+  }
+`]
+})
+export class HtmlDialogComponent {
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<HtmlDialogComponent>
+  ) {}
+
+  closeDialog() {
+    this.dialogRef.close();
+  }
+}

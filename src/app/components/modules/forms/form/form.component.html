@@ -34,7 +34,7 @@
           </mat-form-field>
         </ng-container>
         <ng-container *ngSwitchCase="'select'">
-          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
             <input type="text"
                    [placeholder]="i.label"
@@ -47,18 +47,18 @@
                 {{ item.text }}
               </mat-option>
             </mat-autocomplete>
-          </mat-form-field>
-          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+          </mat-form-field> -->
+          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
             <mat-select [formControlName]="i.formcontrolname" >
               <mat-option *ngFor="let item of i.listitems" [value]="item.value">
                 {{ item.text }}
               </mat-option>
             </mat-select>
-          </mat-form-field> -->
+          </mat-form-field>
         </ng-container>
         <ng-container *ngSwitchCase="'doubleselect'">
-          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
             <input type="text"
                    [placeholder]="i.label"
@@ -71,25 +71,25 @@
                 {{ item.text }}
               </mat-option>
             </mat-autocomplete>
-          </mat-form-field>
-          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+          </mat-form-field> -->
+          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
             <mat-select [formControlName]="i.formcontrolname" (valueChange)="loadDataDoubleSelect($event,index)">
               <mat-option *ngFor="let item of i.listitems" [value]="item.value">
                 {{ item.text }}
               </mat-option>
             </mat-select>
-          </mat-form-field> -->
-          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+          </mat-form-field>
+          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.secondlabel }}</mat-label>
             <mat-select [formControlName]="i.secondcontrolname">
               <mat-option *ngFor="let item of i.secondlistitems" [value]="item.value">
                 {{ item.text }}
               </mat-option>
             </mat-select>
-          </mat-form-field> -->
+          </mat-form-field>
 
-          <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
+          <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.secondlabel }}</mat-label>
             <input type="text"
                    [placeholder]="i.secondlabel"
@@ -102,7 +102,7 @@
                 {{ item.text }}
               </mat-option>
             </mat-autocomplete>
-          </mat-form-field>
+          </mat-form-field> -->
           
         </ng-container>
         <ng-container *ngSwitchCase="'radio'">
@@ -166,7 +166,7 @@
 
                     <li class="list-group-item col-5">
 
-                      <mat-checkbox [formControlName]="check.text+check.value" class="example-margin text-start col-4"  (change)="addCheckbox(i.formcontrolname,check)"
+                      <mat-checkbox [formControlName]="check.text+check.value" [checked]="check.status == false"  class="example-margin text-start col-4"  (change)="addCheckbox(i.formcontrolname,check)"
                         [value]="check.value">{{ check.text }}</mat-checkbox>
                         <mat-form-field class="example-full-width spaceinputs col-12" appearance="outline">
                           <mat-label>{{ i.description }}</mat-label>
@@ -271,7 +271,7 @@
       <button type="button" (click)="AfterWindowsStepper()" *ngIf="afterwindows" class="btn btn-outline-secondary"  >Regresar</button>
     </ng-container>
     
-      <button class="btn btn-outline-primary " 
+      <button class="btn btn-outline-primary" 
       [disabled]="Form.invalid"
              type="submit">Continuar</button>
     </ng-container>

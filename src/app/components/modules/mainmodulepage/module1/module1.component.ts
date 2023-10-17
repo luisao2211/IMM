@@ -73,7 +73,7 @@ export class Module1Component {
     this.CreateServices.bind(this),
   ];
   loadInfoUrls = [
-    // "",
+    "userdatageneral",
     "userprofile",
     "userviolence",
     "profileagressor",
@@ -109,56 +109,82 @@ export class Module1Component {
   })
   NextStepper(event: boolean) {
 
-    this.contLoadInfo = this.stepper.selectedIndex
     this.contNewForm = this.stepper.selectedIndex + 1
     
-    if (this.id > 0 && this.noupdatedata[this.contLoadInfo] !== true) {
-      this.ServiceModule1.data(`${this.loadInfoUrls[this.contLoadInfo]}/${this.id}`).subscribe({
-        next: (n) => {
-          if (this.stepper.selectedIndex == 0)
-          this.infoData = n["data"]["result"]
-          this.infoForm = n["data"]["result"]
-          this.noupdatedata[this.contLoadInfo] = true
-        }
-      })
+    // if (this.id > 0 && this.noupdatedata[this.contLoadInfo] !== true) {
+   
       
-    }
-    if (this.contNewForm < this.methods.length && this.noupdatedata[this.contLoadInfo] !== true) {
-      if (this.contNewForm > this.stepper.selectedIndex) {
-        this.contNewForm = this.stepper.selectedIndex + 1
-      }
-      if (this.contNewForm < 0) {
-        this.contNewForm = 0
-      }
-      if (this.noupdatedata[this.contLoadInfo] !== true) {
-        this.noupdatedata[this.contLoadInfo] = true
-        
-        this.methods[this.contNewForm]();
-      }
-      this.contNewForm++
-
-    }
+    // }
+      // if (this.action) {
+      //   if (this.contNewForm < this.methods.length && this.noupdatedata[this.contLoadInfo] !== true) {
+      //     if (this.contNewForm > this.stepper.selectedIndex) {
+      //       this.contNewForm = this.stepper.selectedIndex + 1
+      //     }
+      //     if (this.contNewForm < 0) {
+      //       this.contNewForm = 0
+      //     }
+      //     if (this.noupdatedata[this.contLoadInfo] !== true) {
+      //       this.noupdatedata[this.contLoadInfo] = true
+            
+      //       this.methods[this.contNewForm]();
+      //     }
+      //     this.contNewForm++
+    
+      //   }
+      // }
     
     if (this.stepper.selectedIndex === this.stepper.steps.length - 1) {
       this.NewProfileUser()
     }
-    this.stepper.next();
+    if (this.action) {
+      
+      this.stepper.next();
+    }
+    else{
+      this.isSave = true
+
+      this.ServiceModule1.Post(`${this.loadInfoUrls[this.contLoadInfo ]}/${this.id}`,this.valuesFormControlNames[0]).subscribe({
+        next: (n) => {
+          this.Toast.fire({
+            position: 'top-end',
+            icon: 'success',
+            title: `Se ha actualizado el reporte`,
+          })  
+          this.isSave = false
+
+          this.allUsers() 
+          this.startCreateForm()  
+         },
+        error: (e) => {
+          this.Toast.fire({
+            position: 'top-end',
+            icon: 'warning',
+            title: `No se ha actualizado si esta ingresando agresor verifique de tener caso de violencia`,
+          })  
+          this.allUsers() 
+          this.startCreateForm() 
+          this.isSave = false
+        }
+
+      })
+      return
+    }
     
   }
   AfterStepper() {
-    
-    if (this.stepperDestroy) {
-      this.stepper.previous();
-      this.stepper.previous();
-      this.contNewForm = this.stepper.selectedIndex + 1
-      this.contLoadInfo = this.stepper.selectedIndex + 1
+    if (this.action) {
       
-    }
-    this.valuesFormControlNames.splice(this.stepper.selectedIndex - 1, 1);
+  if (this.stepperDestroy) {
+    this.stepper.previous();
+    this.stepper.previous();
     this.contNewForm = this.stepper.selectedIndex + 1
-    this.contLoadInfo = this.stepper.selectedIndex + 1
-    this.urls.pop()
-    this.stepper.previous()
+    
+  }
+  this.valuesFormControlNames.splice(this.stepper.selectedIndex - 1, 1);
+  this.contNewForm = this.stepper.selectedIndex + 1
+  this.urls.pop()
+  this.stepper.previous()
+    }
     // this.contNewForm = this.stepper.selectedIndex.length-1
     // this.contLoadInfo = this.stepper.steps.length -2
   }
@@ -174,21 +200,48 @@ export class Module1Component {
     this.ServiceModule1.data("status/selectIndex").subscribe({
       next: (n) => {
         this.tableButtons = n["data"]["result"]
+        this.tableButtons.push({
+          text:"Actualizar Generales de la usuaria",
+          value:"101"
+        })
+        this.tableButtons.push({
+          text:"Actualizar Perfil de la usuaria",
+          value:"102"
+        })
+        this.tableButtons.push({
+          text:"Actualizar Caso de violencia",
+          value:"103"
+        })
+
+        this.tableButtons.push({
+          text:"Actualizar Perfil de Agresor",
+          value:"104"
+        })
+
+        this.tableButtons.push({
+          text:"Actualizar Servicios",
+          value:"105"
+        })
+
       }
     })
   }
   
   clearForms(){
+    this.valuesFormControlNames = []
     this.stepperDestroy = false
     this.action = true
     this.urls = []
-    this.contLoadInfo = 1;
     this.contNewForm = 0;
     this.id = 0;
     for (let i = 0; i < this.clearForm.length; i++) {
       this.clearForm[i] = false;
       this.noupdatedata[i] = false
       
+    }
+    for (let i = 1; i < this.methods.length; i++) {
+      this.methods[i]();
+
     }
 }
 
@@ -782,17 +835,14 @@ startCreateForm() {
     ]
   }
   SetFormControlValues(event) {
-    console.log(event)
     this.valuesFormControlNames.push(event)
-    this.contLoadInfo = this.stepper.selectedIndex + 1
     if (this.stepper.selectedIndex == 1) {
       this.stepperDestroy = false
       if (event["caseviolence"] == "1") {
         this.contNewForm = this.stepper.steps.length - 1
         this.stepper.next()
         this.stepper.next()
-        this.contLoadInfo = this.stepper.selectedIndex + 1
-        this.methods[this.contNewForm]();
+        // this.methods[this.contNewForm]();
         this.stepperDestroy = true
       }
     }
@@ -927,6 +977,11 @@ startCreateForm() {
   }
   Update(id) {
     this.clearForms()
+    for (let i = 1; i < this.methods.length; i++) {
+      this.methods[i]();
+      this.action = false
+
+    }
     this.ServiceModule1.data(`userdatageneral/${id}`).subscribe({
       next: (n) => {
         this.infoData = n["data"]["result"]
@@ -939,8 +994,57 @@ startCreateForm() {
 
   }
   ButtonEvents(event: any) {
+    
     const iduser = event[0]
     const idstatus = event[1]
+    const idagrresor = event[2]
+
+    this.id =iduser
+    if (idstatus === "100" || idstatus === "101" ||idstatus === "102"||idstatus === "103"||idstatus === "104"||idstatus === "105") {
+    this.action = false
+      this.stepper.reset()
+      switch(idstatus){
+      case "101":
+        this.contLoadInfo = 0
+        this.loadInfo(0,iduser)
+      break
+      case "102":
+        this.contLoadInfo = 1
+        this.stepper.next();
+        this.loadInfo(1,iduser)
+
+      break
+      case "103":
+        this.contLoadInfo = 2
+        this.stepper.next();
+        this.stepper.next();
+        this.loadInfo(2,iduser)
+
+      break
+      case "104":
+        this.contLoadInfo = 3
+        this.id =idagrresor
+
+        this.stepper.next();
+    this.stepper.next();
+    this.stepper.next();
+    this.loadInfo(3,iduser)
+
+      break
+      case "105":
+        this.contLoadInfo = 4
+        this.stepper.next();
+    this.stepper.next();
+    this.stepper.next();
+    this.stepper.next();
+    this.stepper.next();
+    this.loadInfo(4,iduser)
+
+      break
+     }
+
+      return
+    }
     this.ServiceModule1.PostNotParams(`updatestatus/${iduser}/${idstatus}`).subscribe({
       next: (n) => {
         this.allUsers();
@@ -957,6 +1061,23 @@ startCreateForm() {
     })
     alert(this.tableButtons[event].text)
   }
+loadInfo(i,id){
+  this.ServiceModule1.data(`${this.loadInfoUrls[i]}/${id}`).subscribe({
+    next: (n) => {
+      if (this.stepper.selectedIndex == 0)
+      this.infoData = n["data"]["result"]
+      this.infoForm = n["data"]["result"]
+      // this.noupdatedata[this.contLoadInfo] = true
+    },
+    error:(e)=>{
+      // alert("no")
+    }
+  })
+}
+
+
+
+
   Delete(id) {
     Swal.fire({
       title: '¿Estás seguro?',

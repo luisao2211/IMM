@@ -85,8 +85,8 @@
     
     
         </mat-step>
-        <mat-step #step5>
-          <ng-template matStepLabel>Serviciós</ng-template>
+        
+        <mat-step  label="Serviciós" #step6>
           <app-form
           [form]="services"
           [afterwindows]="true"
@@ -96,9 +96,7 @@
           (newItemEvent)="NextStepper($event)"
           (FormGroup)= "SetFormControlValues($event)">
         </app-form>
-          <div>
-    
-          </div>
+        
         </mat-step>
       </mat-stepper>
 
