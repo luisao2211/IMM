@@ -291,7 +291,7 @@ startCreateForm() {
         disabled: true
       },
       {
-        label: "nombre",
+        label: "Nombre",
         formcontrolname: "name",
       },
       {
@@ -412,6 +412,12 @@ startCreateForm() {
         otherurl: "https://api.gomezpalacio.gob.mx/api/estados"
 
       },
+      {
+        label:"hidden",
+        formcontrolname:"module",
+        type:"hidden",
+        value:1
+      }
     ]
   }
   CreateUserProfile() {
@@ -588,7 +594,7 @@ startCreateForm() {
       // },
 
       {
-        label: "Naración de hechos",
+        label: "Narración de hechos",
         formcontrolname: "narrationfacts",
         width: 10
       },
@@ -635,13 +641,14 @@ startCreateForm() {
         description: "Ambito de violencia",
         urloadata: "fieldviolence/selectIndex"
       },
+      
     ]
   }
   CreateProfileAggresor() {
 
     this.profileAggressor = [
       {
-        label: "nombre",
+        label: "Nombre",
         formcontrolname: "name",
       },
       {

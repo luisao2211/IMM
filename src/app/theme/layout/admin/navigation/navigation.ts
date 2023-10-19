@@ -52,20 +52,14 @@ const NavigationItems = [
       
       },
       {
-        id: 'Modulo2',
+        id: 'Modulo1',
         title: 'Modulo 2',
-        type: 'collapse',
+        type: 'item',
+        classes: 'nav-item',
         icon: 'ti ti-arrow-bar-to-right',
-        children: [
-          {
-            id: 'formulario',
-            title: 'Agregar',
-            type: 'item',
-            url: '/modulos/formulariomodulo2',
-            target: false,
-            breadcrumbs: false,
-          }
-        ]
+        url: '/modulos/formulariomodulo2',
+        breadcrumbs: false
+       
       }
       ,{
         id: 'Modulo3',

@@ -6,7 +6,7 @@ export interface Inputs{
       /**informacion del segundo type mas usado en doubleselect */
   secondlabel?:string,                              
     /**informacion del type */
-  type?:'text'|'number'|'radio'|'email'|'checkbox'|'select'|'date'|'time'|'checkboxdescription'|'doubleselect'|'cp'|'phone',
+  type?:'text'|'number'|'radio'|'email'|'checkbox'|'select'|'date'|'time'|'checkboxdescription'|'doubleselect'|'cp'|'phone'|'file'|'hidden',
       /**nombre en el formulario */                                                      
   formcontrolname:string,   
   formcontrolcp?:string
@@ -26,6 +26,9 @@ export interface Inputs{
   radiobutton?:ArrayList[]
  /** lista  cargados no es necesario que lo pongas se carga desde la urloadata*/                                              
   checkbox?:ArrayList[]
+   /** Si usas files agregar como vacio el array y tambien el contador de files en 0*/                                              
+  files?:any
+  fileCont?:number
  /** url desde donde seran cargados*/                                              
   url?:string,
    /** url alterna a otros servicios*/                                              

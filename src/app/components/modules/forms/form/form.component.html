@@ -3,7 +3,7 @@
   <span [className]="isLoading && 'loader'"></span>
 
 </div>
-<form [formGroup]="Form" (ngSubmit)="onSubmit()">
+<form [formGroup]="Form" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
   <div class="form-row">
     <ng-container *ngIf="advertice">
       <div class="alert alert-warning" role="alert">
@@ -27,11 +27,17 @@
           </mat-form-field>
         </ng-container>
         <ng-container *ngSwitchCase="'file'">
-          <mat-form-field class="example-full-width spaceinputs" appearance="outline">
-            <mat-label>{{ i.label }}</mat-label>
-            <input type="file" matInput placeholder="" [formControlName]="i.formcontrolname" 
-              [disabled]="!i.disabled && true" >
-          </mat-form-field>
+          <ngx-dropzone (change)="filesSelect($event,index)" >
+              <ngx-dropzone-label>{{ i.label }}</ngx-dropzone-label>
+             
+              <ngx-dropzone-image-preview ngProjectAs="ngx-dropzone-preview" (removed)="onRemove(f, index)" [removable]="true" *ngFor="let f of i.files" [file]="f">
+                <!-- <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label> -->
+              </ngx-dropzone-image-preview>
+              
+          </ngx-dropzone>
+          <br>
+          <mat-progress-bar mode="determinate" color="accent" [value]="i.fileCont === 1 ? 20 : (i.fileCont === 2 ? 40 : (i.fileCont === 3 ? 60 : (i.fileCont === 4 ? 80 : (i.fileCont === 5 ? 100 : i.fileCont))))"></mat-progress-bar>
+          <mat-hint>Archivos cargados limite 5</mat-hint>
         </ng-container>
         <ng-container *ngSwitchCase="'select'">
           <!-- <mat-form-field [ngClass]="i.width ? 'col-' + i.width : ''" class="example-full-width spaceinputs" appearance="outline">
@@ -251,6 +257,9 @@
             <input matInput placeholder="" [formControlName]="i.formcontrolstate"  readonly >
           </mat-form-field>
         </ng-container>
+        <ng-container *ngSwitchCase="'hidden'">
+         
+        </ng-container>
         <ng-container *ngSwitchDefault>
           <mat-form-field class="example-full-width spaceinputs" appearance="outline"  
           [ngClass]="i.width ? 'col-' + i.width : ''">
@@ -272,7 +281,6 @@
     </ng-container>
     
       <button class="btn btn-outline-primary" 
-      [disabled]="Form.invalid"
              type="submit">Continuar</button>
     </ng-container>
   </div>

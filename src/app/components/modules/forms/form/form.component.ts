@@ -14,12 +14,24 @@ import { error, event } from 'jquery';
 import { Observable, of } from 'rxjs';
 import { startWith, map, switchMap } from 'rxjs/operators';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { NgxDropzoneChangeEvent } from 'ngx-dropzone';
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.scss']
 })
 export class FormComponent implements OnChanges {
+
+  //         this.onSelect(infoName, value)
+  //         this.Form.get(infoName).setValue(e.text)
+  //       }
+  //     })
+  //   }
+  //   else {
+  //     this.valuesSelects.push({ name: infoName, value: value })
+  //   }
+  //   continue
+  // }
   private _inputs: Inputs[] = [];
   private array = []
   private valuesSelects = []
@@ -29,6 +41,8 @@ export class FormComponent implements OnChanges {
   @Input() clearForm
   @Input() afterwindows
   @Input() advertice
+  @Input() ErrorLoadInfo
+
   @Input() crud: Crud
   @ViewChild('inputColonies') inputColonies: ElementRef;
   @ViewChild('inputElement') inputElement: ElementRef; // Referencia al elemento input
@@ -55,7 +69,7 @@ export class FormComponent implements OnChanges {
   })
   public isLoading = false;
   isFormFilled = false;
-  constructor(private modulesService: ModulesService<SelectIndex>, private CpService: ModulesService<Cp>, private elRef: ElementRef,public dialog: MatDialog) {
+  constructor(private modulesService: ModulesService<SelectIndex>, private CpService: ModulesService<Cp>, private elRef: ElementRef, public dialog: MatDialog) {
 
     this.Form = new FormGroup({});
   }
@@ -80,7 +94,18 @@ export class FormComponent implements OnChanges {
     }
     if (changes["infoForm"] && changes["infoForm"].currentValue) {
 
+      if (Array.isArray(this.infoForm) && this.infoForm.length === 0 && !changes["infoForm"].firstChange) {
+        this.Toast.fire({
+          position: 'top-end',
+          icon: 'warning',
+          title: `
+          No se tiene informacion en este apartado
+          `,
+        });
+        return; // Agrega un return para detener la ejecución
+      }
       this.isLoading = true;
+
       let timeLoadSpinner = Object.values(this.infoForm[0]).length
       let time = timeLoadSpinner * 200
       setTimeout(() => {
@@ -98,7 +123,7 @@ export class FormComponent implements OnChanges {
       //   "disability_origin_id": "Motriz1_description,5"
       // }
 
-      
+
       for (const infoName of Object.keys(this.infoForm)) {
         const value = this.infoForm[infoName];
         if (infoName == "diseas_ids" || infoName == 'diseas_origin_id' || infoName == 'disability_ids' || infoName == 'disability_origin_id'
@@ -112,47 +137,47 @@ export class FormComponent implements OnChanges {
             checkbox.forEach((it, i) => {
               if (this.Form.controls.hasOwnProperty(it)) {
                 // console.warn(it)
-                
+
                 this.inputs.forEach((item, inputindex) => {
-                 
+
                   if (item.type === "checkboxdescription" || item.type == "checkbox") {
-                   
+
                     item.checkbox.forEach((element, index) => {
                       if (element.text + element.value == it && item.type == "checkboxdescription") {
                         // this.Form.removeControl(it)
-                        element.status =true
+                        element.status = true
                         this.addCheckbox(item.formcontrolname, element)
-                        
+
                         let contador = 0
                         let namekey = null
-                          for (const name of Object.keys(this.infoForm)) {
-                            if (name ==infoName) {
-                              contador =1
-                              continue
-                            }
-                            if (contador ==1) {
-                              namekey = name
-                              break;
-                            }
+                        for (const name of Object.keys(this.infoForm)) {
+                          if (name == infoName) {
+                            contador = 1
+                            continue
+                          }
+                          if (contador == 1) {
+                            namekey = name
+                            break;
+                          }
 
-                            
-                          }    
-                           let valuesNameKey = this.infoForm[namekey]  
-                           valuesNameKey= valuesNameKey.split(",");
-                           let valor = valuesNameKey.findIndex((e) => e === element.text + element.value+"_description")
-                          // if (indice <= this.infoForm.length) {
-                          
-                          // "diseas_ids": ["Gastrointestinales3,Infecciosas6"],
-                          //   "diseas_origin_id": "Gastrointestinales3_description,2,Infecciosas6_description,2",
-                        
+
+                        }
+                        let valuesNameKey = this.infoForm[namekey]
+                        valuesNameKey = valuesNameKey.split(",");
+                        let valor = valuesNameKey.findIndex((e) => e === element.text + element.value + "_description")
+                        // if (indice <= this.infoForm.length) {
+
+                        // "diseas_ids": ["Gastrointestinales3,Infecciosas6"],
+                        //   "diseas_origin_id": "Gastrointestinales3_description,2,Infecciosas6_description,2",
+
                         // }
                         // console.error(this.infoForm[indice + 1])
 
-                        this.Form.get(element.text + element.value + "_description").setValue(parseInt(valuesNameKey[valor +1]))
+                        this.Form.get(element.text + element.value + "_description").setValue(parseInt(valuesNameKey[valor + 1]))
 
-                        this.onSelectDescriptionChange(item.formcontrolname, element, parseInt(valuesNameKey[valor +1]))
+                        this.onSelectDescriptionChange(item.formcontrolname, element, parseInt(valuesNameKey[valor + 1]))
                       }
-                       if (element.text + element.value == it && item.type == "checkbox") {
+                      if (element.text + element.value == it && item.type == "checkbox") {
                         element.status = true
                         this.addChecked(item.formcontrolname, element)
 
@@ -466,12 +491,30 @@ export class FormComponent implements OnChanges {
     let html = ''
     const optionNoSelected = []
     const FormValues = {}; // Inicializamos como un objeto vacío
-    console.warn(this.inputs)
-    this.inputs.forEach(e=>{
+    this.inputs.forEach(e => {
       let exist = false
+     if (e.type === 'file') {
+    const reader = new FileReader();
+    const imageArray = [];
 
-      if (e.type =="checkboxdescription") {
-        html +=`
+    // Leer y convertir cada archivo en base64
+    const formData = new FormData();
+
+      for (const file of e.files) {
+          formData.append(file.name, file);
+      }
+    
+
+    this.Form.addControl(e.formcontrolname, new FormControl());
+    this.Form.get(e.formcontrolname).setValue(formData);
+   
+}
+
+
+
+
+      if (e.type == "checkboxdescription") {
+        html += `
         <div class="alert alert-warning" role="alert">
 
           <ul class="list-group">
@@ -479,41 +522,41 @@ export class FormComponent implements OnChanges {
 
   
           `
-          e.checkbox.forEach(c=>{
-            if (this.Form.controls.hasOwnProperty(e.formcontrolname) && !c.status) {
-              const control = this.Form.get(e.formcontrolname);
-              if (control && control.value) {
-                console.log("entramos",control.value)
-                
-                const isExistSelection = control.value.find(value => {
-                  return value.groupName === c.text 
-                });
-               
-                if (!isExistSelection) {
-                  exist = true
-                  html += `
+        e.checkbox.forEach(c => {
+          if (this.Form.controls.hasOwnProperty(e.formcontrolname) && !c.status) {
+            const control = this.Form.get(e.formcontrolname);
+            if (control && control.value) {
+              console.log("entramos", control.value)
+
+              const isExistSelection = control.value.find(value => {
+                return value.groupName === c.text
+              });
+
+              if (!isExistSelection) {
+                exist = true
+                html += `
                    <li class="list-group-item text-start ">                   
                     ${c.text} 
                   </li>
                 `;
                 // Abre el cuadro de diálogo y pasa el contenido HTML como datos
-               
-              
-                  
-                  stop = true
-                }
+
+
+
+                stop = true
               }
             }
-            
-          })
-          html += `
+          }
+
+        })
+        html += `
           </ul>
           </div>
           `;
-          if (exist) {
-            contenidoHtml += html
-            html = ''
-          }
+        if (exist) {
+          contenidoHtml += html
+          html = ''
+        }
       }
 
 
@@ -806,7 +849,30 @@ export class FormComponent implements OnChanges {
       [name]: id
     })
   }
+  filesSelect(event, index) {
+    if (this.inputs[index].fileCont>=5) {
+      this.Toast.fire({
+        position: 'top-end',
+        icon: 'warning',
+        title: `
+        Has excedido el limite de archivos
+        `,
+      });
+      return
+    }
+    this.inputs[index].files.push(...event.addedFiles)
+    this.inputs[index].fileCont = this.inputs[index].files.length
+    
+    // this.files.push(...event.addedFiles);
+  }
 
+  onRemove(event, index) {
+    
+    this.inputs[index].files.splice(this.inputs[index].files.indexOf(event), 1)
+    this.inputs[index].fileCont = this.inputs[index].files.length
+
+    // this.files.splice(this.files.indexOf(event), 1);
+  }
   autocomplete(index, myControl, listitems) {
 
     const textArray: string[] = Object.values(listitems).map(item => item['text']);
@@ -843,7 +909,7 @@ export class FormComponent implements OnChanges {
 
   </div>
 `,
-styles: [`
+  styles: [`
  .dialog-container {
   position: fixed;
   top: 0;
@@ -871,7 +937,7 @@ export class HtmlDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<HtmlDialogComponent>
-  ) {}
+  ) { }
 
   closeDialog() {
     this.dialogRef.close();

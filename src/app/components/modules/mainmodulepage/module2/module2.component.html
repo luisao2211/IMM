@@ -1,5 +1,8 @@
+<div [className]=" isSave &&'background_loader'">
+    <span [className]=" isSave &&'post'"></span>
+  
+  </div>
 <app-table 
-
 >
 </app-table>
 <mat-card>
@@ -7,7 +10,11 @@
         <mat-stepper [linear]="" #stepper >
             <mat-step  label="Población beneficiada - talleres / pláticas / conferencias / actividades" #step1>
 
-        <app-form [form]="comunity" [afterwindows]="false"></app-form>
+        <app-form [form]="comunity"
+         [afterwindows]="false"
+         (FormGroup)= "Submit($event)"
+
+         ></app-form>
             </mat-step>
         </mat-stepper>
     </mat-card-content>
