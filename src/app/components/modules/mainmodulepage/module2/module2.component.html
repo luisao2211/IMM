@@ -3,16 +3,26 @@
   
   </div>
 <app-table 
->
+[fields]="data"
+[buttons]="tableButtons"
+(buttonClick)="ButtonEvents($event)"
+(pdf)="GeneratePdf($event)"
+(idDelete)="Delete($event)">
+
+
 </app-table>
 <mat-card>
     <mat-card-content>
         <mat-stepper [linear]="" #stepper >
             <mat-step  label="Población beneficiada - talleres / pláticas / conferencias / actividades" #step1>
 
-        <app-form [form]="comunity"
-         [afterwindows]="false"
-         (FormGroup)= "Submit($event)"
+        <app-form 
+          [form]="comunity"
+          [infoForm]="infoData"
+          [advertice]="'Las memorias fotograficas se remplazaran siempre y cuando insertes nuevas al actualizar si no agregas ninguna se quedara con las ya insertadas'"
+
+          [afterwindows]="false"
+          (FormGroup)= "Submit($event)"
 
          ></app-form>
             </mat-step>

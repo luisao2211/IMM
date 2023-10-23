@@ -43,7 +43,7 @@
                                 </button>
                                 <mat-menu #menu="matMenu">
                                   <ng-container *ngFor="let btn of buttons; let i = index">
-                                    <button mat-menu-item (click)="touchedButton(row.id, btn.value, row.idviolence)" *ngIf="(row.caso_violencia !== '1' || (btn.text !== 'Actualizar Caso de violencia' && btn.text !== 'Actualizar Perfil de Agresor'))">
+                                    <button mat-menu-item (click)="touchedButton(row.id, btn.value,row.idviolence || row.id_taller)" *ngIf="(row.caso_violencia !== '1' || (btn.text !== 'Actualizar Caso de violencia' && btn.text !== 'Actualizar Perfil de Agresor'))">
                                       {{ btn.text }}
                                     </button>
                                   </ng-container>

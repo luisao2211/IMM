@@ -31,8 +31,8 @@ export class TableComponent implements OnInit, OnChanges {
         this.fields = changes["fields"].currentValue
         this.dataSource = new MatTableDataSource<any>(this.fields);
         this.fields = this.fields.map(row => {
-          if (row.id || row.idviolence || row.caso_violencia) {
-            const { id, idviolence,caso_violencia, ...rest } = row;
+          if (row.id || row.idviolence || row.caso_violencia || row.id_taller) {
+            const { id, idviolence,caso_violencia,id_taller, ...rest } = row;
             return rest;
           }
           return row;

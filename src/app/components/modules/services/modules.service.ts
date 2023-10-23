@@ -47,4 +47,7 @@ export class ModulesService<T> {
   setData(data: any) {
     this.dataSubject.next(data);
   }
+  downloadImage(url: string) {
+    return this.http.get(`${this.route}/${url}`, { responseType: 'blob' });
+  }
 }

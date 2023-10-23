@@ -448,7 +448,7 @@ export class FormComponent implements OnChanges {
           this.addEvent(i.formcontrolname)
         }
 
-        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription' && i.type !== 'email') {
+        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription' && i.type !== 'email' && i.type !== 'file') {
           this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
           if (i.secondcontrolname) {
             this.Form.addControl(i.secondcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
@@ -538,10 +538,11 @@ export class FormComponent implements OnChanges {
                    <li class="list-group-item text-start ">                   
                     ${c.text} 
                   </li>
+                  
                 `;
                 // Abre el cuadro de diálogo y pasa el contenido HTML como datos
 
-
+                // {1,2,3,4,5,6}
 
                 stop = true
               }
@@ -646,18 +647,23 @@ export class FormComponent implements OnChanges {
   formatPhoneNumber(event: Event) {
     // Obtén el valor actual del campo de entrada
     let phoneNumber = (event.target as HTMLInputElement).value;
-
+  
     // Elimina caracteres no numéricos
     phoneNumber = phoneNumber.replace(/\D/g, '');
-
+  
     // Aplica el formato (xxx) xxx xxxx
+    if (phoneNumber.length > 10) {
+      phoneNumber = phoneNumber.substring(0, 10); // Recorta a 10 dígitos
+    }
+  
     if (phoneNumber.length >= 10) {
       phoneNumber = `(${phoneNumber.substr(0, 3)}) ${phoneNumber.substr(3, 3)} ${phoneNumber.substr(6, 4)}`;
     }
-
+  
     // Actualiza el valor del campo de entrada con el formato
     (event.target as HTMLInputElement).value = phoneNumber;
   }
+  
 
   updateChecked(name, check, control, i, index) {
     this.inputs[i].checkbox[index].status = true
