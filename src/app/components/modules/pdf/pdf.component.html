@@ -22,9 +22,7 @@
     
     <ng-container   *ngIf="i.img && i.img.length > 0" >
           <ng-container *ngFor="let i of i.img">
-              <!-- <img src="https://api.gomezpalacio.gob.mx/gpCenter/sinImagen.jpg"/> -->
-              <!-- <img src="https://imgs.search.brave.com/ITSfpSGDmQZxKORuAUwwvDIYh0ODKjXp5CS0iTyrK7Q/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTM1/NTAzNjY2MC9lcy92/ZWN0b3IvYW5pbWFs/ZXMtcXVlLXZpdmVu/LWVuLWJvbGl2aWEu/anBnP3M9NjEyeDYx/MiZ3PTAmaz0yMCZj/PTN5U2xyV3F4VHdS/R1RWb0hCUk5kcDhN/OFo2MTAtMlNDTnhh/b3EzdUM4SkE9" alt=""> -->
-              <img  [src]="i.url">
+              <img  [src]="i.url" crossOrigin="anonymous">
         </ng-container>
     </ng-container>
 

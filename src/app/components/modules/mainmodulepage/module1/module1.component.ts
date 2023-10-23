@@ -799,6 +799,12 @@ startCreateForm() {
         urloadata: "origin/selectIndex",
 
       },
+      {
+        label:"hidden",
+        formcontrolname:"module",
+        type:"hidden",
+        value:1
+      }
 
     ]
   }
