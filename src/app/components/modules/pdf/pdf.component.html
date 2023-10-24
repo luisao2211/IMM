@@ -22,7 +22,7 @@
     
     <ng-container   *ngIf="i.img && i.img.length > 0" >
           <ng-container *ngFor="let i of i.img">
-              <img  [src]="i.url" crossOrigin="anonymous">
+              <img class="w-75 h-100" style="max-width: 200px; max-height: 200px; height: 200px; width: 200px;"  [src]="i.url" crossOrigin="anonymous">
         </ng-container>
     </ng-container>
 

@@ -15,7 +15,9 @@ import { PdfComponent } from '../../pdf/pdf.component';
 })
 export class Module2Component {
   comunity:Inputs[]
-  isSave:false
+  isSave :Boolean= false
+  isPdf:Boolean= false
+  isDelete:Boolean= false
   id:number
   data:any
   infoData:any
@@ -177,12 +179,10 @@ export class Module2Component {
     ]
   }
   Submit(event){
-    console.error(event.files)
+    this.isSave = true
     const files = event.files
   
-    for (const [formDataKey, formDataValue] of files.entries()) {
-      console.log(formDataKey, formDataValue);
-    }
+    
     this.ServiceModule2.Post(`userdatageneral${this.id ? '/' + this.id : ''}`, event).subscribe({
       next:(n)=>{
         this.id = n["data"]["result"];
@@ -196,6 +196,8 @@ export class Module2Component {
           title: `No se ha podido insertar`,
         })  
         this.restartForm()
+        this.isSave = false
+
       },
       complete :()=>{
         if (!files.entries().next().done) {
@@ -208,6 +210,8 @@ export class Module2Component {
                 title: `Se ha insertado el reporte`,
               })  
               this.restartForm()
+              this.isSave = false
+
             },
             error:(e)=>{
               this.Toast.fire({
@@ -216,6 +220,7 @@ export class Module2Component {
                 title: `No se ha podido insertar las evidencias`,
               })  
               this.restartForm()
+              this.isSave = false
             },
             complete :()=>{
               this.id = null
@@ -230,6 +235,8 @@ export class Module2Component {
             icon: 'success',
             title: `Se ha insertado el reporte`,
           }) 
+          this.isSave = false
+
         }
       }
     })
@@ -293,7 +300,7 @@ export class Module2Component {
   
   }    
   GeneratePdf(event: number) {
-    // this.isPdf = true
+    this.isPdf = true
     this.ServiceModule2.data(`usereportmodule2/${event}`).subscribe({
       next: (n) => {
         const userData = n["data"]["result"][0]; 
@@ -361,7 +368,7 @@ export class Module2Component {
                         value: n["data"]["result"]["Colonia"]
                       });
                     }
-                      // this.isPdf = false
+                      this.isPdf = false
                     const dialogRef = this.dialog.open(PdfComponent, {
                       width: '60%',
                       maxHeight:'600px'
@@ -393,7 +400,7 @@ export class Module2Component {
      
       },
       error:(e)=>{
-        // this.isPdf = true
+        this.isPdf = false
 
       }
     });
@@ -408,10 +415,11 @@ export class Module2Component {
       cancelButtonText: 'Cancelar'
     }).then((result) => {
       if (result.isConfirmed) {
-        // this.isDelete = true
+        this.isDelete =true
+
         this.ServiceModule2.Delete(`users/${id}`).subscribe({
           next: (n) => {
-            // this.isDelete = false
+            this.isDelete = false
 
             this.Toast.fire({
               position: 'top-end',
@@ -421,7 +429,7 @@ export class Module2Component {
             this.allUsers()
           },
           error: (e) => {
-            // this.isDelete = false
+            this.isDelete = false
 
             this.Toast.fire({
               position: 'top-end',
