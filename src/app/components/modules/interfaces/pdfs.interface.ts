@@ -5,6 +5,7 @@ export interface PdfsInterface{
 interface Format{
     subtitule?: string
     table?: Tables[]
+    titleimg?:string
     img?:Img[]
 }
 interface Tables{

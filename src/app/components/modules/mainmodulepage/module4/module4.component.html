@@ -1,0 +1,45 @@
+<mat-card>
+    <mat-card-content>
+
+<mat-tab-group>
+    <mat-tab label="Expendiente de la usuaria (Modulo 4)">
+        <app-table
+        [fields]="module4"
+        
+        ></app-table>
+
+    </mat-tab>
+    <mat-tab label="Generales de la usuaria (Modulo 1)">
+        <app-table
+        [disablebuttons]="true"
+        [fields]="module1"
+        [buttons]="btnmodules1"
+        (buttonClick)="ButtonEventsModule1($event)"
+        ></app-table>
+
+    </mat-tab>
+  </mat-tab-group>
+</mat-card-content>
+</mat-card>
+<mat-card>
+    <mat-card-content>
+        <mat-stepper [linear]="" #stepper >
+            <mat-step  label="EXPEDIENTE DE USUARIAS PSICOLOGÍA IMM" #step1>
+                <ng-container *ngIf="!disabled">
+                    <div class="alert alert-danger" role="alert">
+                        Se requiere un reporte del modulo 1 seleciona en la tabla de arriba del apartado derecha (modulo 1)
+                      </div>
+                    <div class="hidden"></div>
+
+                </ng-container>
+             
+                <app-form [afterwindows]="false" [form]="expendent" [style.opacity]="disabled ? '1' : '0.5'" [style.pointer-events]="disabled ? 'auto' : 'none'"
+                (FormGroup)= "Submit($event)"
+
+                ></app-form>
+
+       
+            </mat-step>
+        </mat-stepper>
+    </mat-card-content>
+  </mat-card>

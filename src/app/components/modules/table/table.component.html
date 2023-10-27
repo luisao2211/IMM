@@ -20,23 +20,17 @@
                     <ng-template #notActions>
                         <th mat-header-cell *matHeaderCellDef mat-sort-header style="flex: 1;"> Acciones </th>
                         <td mat-cell class="custom-cell-width" *matCellDef="let row"style="flex: 1;">
-                          <button mat-icon-button color="primary"
-                          (click)="Pdf(row.id)"
-                          
-                          >
-                          <mat-icon class="icon-red icon-large">picture_as_pdf</mat-icon>
-                        </button>
-                          <!-- <button mat-icon-button color="primary"
-                            (click)="update(row.id)"
-                            >
-                              <mat-icon>edit</mat-icon>
-                            </button> -->
-
-                            <button mat-icon-button color="warn"
-                            (click)="delete(row.id)"
-                            >
-                              <mat-icon>delete</mat-icon>
-                            </button>
+                          <ng-container *ngIf="!disablebuttons">
+                            <button mat-icon-button color="primary"
+                            (click)="Pdf(row.id)" >
+                            <mat-icon class="icon-red icon-large">picture_as_pdf</mat-icon>
+                          </button>
+  
+                              <button mat-icon-button color="warn"
+                              (click)="delete(row.id)">
+                                <mat-icon>delete</mat-icon>
+                              </button>
+                          </ng-container>
                               <ng-container *ngIf="buttons">
                                 <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
                                   <mat-icon>more_vert</mat-icon>

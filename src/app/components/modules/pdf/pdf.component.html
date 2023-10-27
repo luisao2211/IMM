@@ -4,7 +4,6 @@
     <h3 class=" modal-title" >{{ i.subtitule }}</h3>
     <ng-container   *ngIf="i.table.length > 0">
       <ng-container class="pdf-page" *ngFor="let chunk of chunkArray(i.table, 4); let index = index">
-        <!-- Crea una tabla para cada segmento de 6 elementos -->
         <table class="table">
           <thead>
             <tr>
@@ -19,13 +18,18 @@
         </table>
       </ng-container>
     </ng-container>
-    
-    <ng-container   *ngIf="i.img && i.img.length > 0" >
-          <ng-container *ngFor="let i of i.img">
-              <img class="w-75 h-100" style="max-width: 200px; max-height: 200px; height: 200px; width: 200px;"  [src]="i.url" crossOrigin="anonymous">
-        </ng-container>
-    </ng-container>
+    <ng-container   *ngIf="i.titleimg" >
+    <h2 mat-dialog-title class="text-center">{{ i.titleimg }}</h2>
+  </ng-container>
 
+  <ng-container *ngIf="i.img && i.img.length > 0">
+    <div  class="center-container"> 
+      <ng-container *ngFor="let img of i.img">
+        <img class="centered-image" [src]="img.url" crossOrigin="anonymous">
+    </ng-container>
+    </div>
+        
+</ng-container>
   </mat-dialog-content>
 </div>
 

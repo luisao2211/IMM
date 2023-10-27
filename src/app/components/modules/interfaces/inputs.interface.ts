@@ -6,7 +6,7 @@ export interface Inputs{
       /**informacion del segundo type mas usado en doubleselect */
   secondlabel?:string,                              
     /**informacion del type */
-  type?:'text'|'number'|'radio'|'email'|'checkbox'|'select'|'date'|'time'|'checkboxdescription'|'doubleselect'|'cp'|'phone'|'file'|'hidden',
+  type?:'text'|'number'|'radio'|'email'|'checkbox'|'select'|'date'|'time'|'checkboxdescription'|'doubleselect'|'cp'|'phone'|'file'|'hidden'|'session',
       /**nombre en el formulario */                                                      
   formcontrolname:string,   
   formcontrolcp?:string
@@ -39,6 +39,7 @@ export interface Inputs{
   itemsdescription?:ArrayList[]
 /**segundo nombre por si viene con otro mas usado en el doubleselect*/                                              
   secondcontrolname?:string
+  treeformcontrolname?:string
   /**por el momento es la que llena el select de la descripcion del mismo dropdown de la opcion de arriba*/
   width?:1|2|3|4|5|6|7|8|9|10                                           
   urloadata?:string
@@ -53,7 +54,7 @@ export interface ArrayList{
  /** texto de la opcion*/                                               
 text:string,
  /** valor de la opcion*/ 
-value:string
+value:string 
  /** disabled o no disabled mas usado para los checkbox hasta ser activado para el uso del select*/ 
 
 status?:Boolean 

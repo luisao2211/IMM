@@ -60,28 +60,25 @@ const NavigationItems = [
         url: '/modulos/formulariomodulo2',
         breadcrumbs: false
        
-      }
-      ,{
+      },
+      {
         id: 'Modulo3',
         title: 'Modulo 3',
-        type: 'collapse',
+        type: 'item',
+        classes: 'nav-item',
         icon: 'ti ti-arrow-bar-to-right',
-        // children: [
-        //   {
-        //     id: 'formulario',
-        //     title: 'Agregar',
-        //     type: 'item',
-        //     url: '/modulos/formulariomodulo3',
-        //     target: false,
-        //     breadcrumbs: false,
-        //   }
-        // ]
-      }
-      ,{
+        url: '/modulos/formulariomodulo3',
+        breadcrumbs: false
+       
+      },
+      {
         id: 'Modulo4',
         title: 'Modulo 4',
-        type: 'collapse',
+        type: 'item',
+        classes: 'nav-item',
         icon: 'ti ti-arrow-bar-to-right',
+        url: '/modulos/formulariomodulo4',
+        breadcrumbs: false
       },
       {
         id: 'Catalogos',

@@ -15,14 +15,39 @@
         <ng-container *ngSwitchCase="'number'">
           <mat-form-field class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
-            <input type="" matInput placeholder="" [formControlName]="i.formcontrolname" class="numbers" appNumeric
+            <input type="" matInput placeholder="" [formControlName]="i.formcontrolname" [readonly]="i.disabled && true" class="numbers" appNumeric
               [disabled]="!i.disabled && true" >
           </mat-form-field>
         </ng-container>
+
+        <ng-container *ngSwitchCase="'session'">
+          <mat-form-field appearance="outline" class="col-2">
+            <mat-label>{{ i.label }}</mat-label>
+            <input matInput [matDatepicker]="picker" [formControlName]="i.formcontrolname">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          
+          <div class="radio-group">
+            <p class="title">Acudio</p>
+          <mat-radio-group [formControlName]="i.secondcontrolname">
+              <mat-radio-button value="1">Si</mat-radio-button>
+              <mat-radio-button value="0">No</mat-radio-button>
+          </mat-radio-group>
+          </div>
+          <mat-form-field class="example-full-width spaceinputs" appearance="outline"  
+          class="col-7">
+            <mat-label>            Comentario
+            </mat-label>
+            <input matInput placeholder="" [formControlName]="i.treeformcontrolname" [readonly]="i.disabled && true"
+            >
+          </mat-form-field>
+        </ng-container>
+
         <ng-container *ngSwitchCase="'phone'">
           <mat-form-field class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
-            <input type="" matInput placeholder="" [formControlName]="i.formcontrolname" (input)="formatPhoneNumber($event)" appNumeric
+            <input type="" matInput placeholder="" [formControlName]="i.formcontrolname" [readonly]="i.disabled && true" (input)="formatPhoneNumber($event)" appNumeric
               [disabled]="!i.disabled && true" >
           </mat-form-field>
         </ng-container>

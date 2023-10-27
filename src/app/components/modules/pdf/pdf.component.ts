@@ -44,7 +44,6 @@ export class PdfComponent {
   downloadPDF() {
     const pEl = document.getElementById('pEl');
     const clone =pEl.innerHTML;
-    console.warn(clone)
     this.options.filename = this.pdf.title? `${this.pdf.title}`:'Reporte'
     html2pdf().from(clone).set(this.options).save();
   }

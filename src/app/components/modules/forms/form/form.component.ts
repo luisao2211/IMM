@@ -347,7 +347,7 @@ export class FormComponent implements OnChanges {
               switch (i.type) {
                 case 'select':
                 case 'doubleselect':
-                  this.autocomplete(index, i.formcontrolname, i.listitems)
+                  // this.autocomplete(index, i.formcontrolname, i.listitems)
                   const valuesIndex = this.valuesSelects.findIndex(e => e.name == i.formcontrolname)
                   if (valuesIndex > -1) {
                     i.listitems.forEach(e => {
@@ -448,7 +448,7 @@ export class FormComponent implements OnChanges {
           this.addEvent(i.formcontrolname)
         }
 
-        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription' && i.type !== 'email' && i.type !== 'file') {
+        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription' && i.type !== 'email' && i.type !== 'file' && i.type !=="session") {
           this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
           if (i.secondcontrolname) {
             this.Form.addControl(i.secondcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
@@ -468,6 +468,12 @@ export class FormComponent implements OnChanges {
         }
         if (i.type == 'email') {
           this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', [Validators.required, Validators.email]));
+
+        }
+        if (i.type=="session") {
+          this.Form.addControl(i.formcontrolname, new FormControl());
+          this.Form.addControl(i.secondcontrolname, new FormControl());
+          this.Form.addControl(i.treeformcontrolname, new FormControl());
 
         }
 
@@ -771,6 +777,7 @@ export class FormComponent implements OnChanges {
     this.modulesService.data(`${url}/${selectValue}`).subscribe({
       next: (n) => {
         this.inputs[index].secondlistitems = n["data"]["result"]
+        console.warn(this.inputs[index].secondlistitems,value)
         if (value) {
           this.inputs[index].secondlistitems.forEach(e => {
             if (value == e.value) {

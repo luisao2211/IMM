@@ -291,6 +291,7 @@ export class Module2Component {
     this.ServiceModule2.data(`userworkshop/${idUser}`).subscribe({
       next:(n)=>{
         this.infoData=n["data"]["result"]
+
       }
     })
 
@@ -328,6 +329,7 @@ export class Module2Component {
           
             console.warn(cleanedKey)
             if (cleanedKey.includes('imagenes')) {
+              this.dataPdf.dataInfo[id].titleimg ="Banco de memorias fotograficas"
               const img = value.split(",")
               img.forEach(element => {
                 this.dataPdf.dataInfo[id].img.push({
@@ -384,7 +386,9 @@ export class Module2Component {
           
               })
             }
-
+            if (cleanedKey == 'colonies_id' ) {
+              continue
+            }
          
 
 

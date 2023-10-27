@@ -7,7 +7,7 @@ import { Origin } from './intefaceorigins';
   providedIn: 'root'
 })
 export class OriginService {
-  route: string =  "https://api.gomezpalacio.gob.mx/api/imm";
+  route: string =  "http://127.0.0.1:8000/api/imm";
 
   constructor(private http: HttpClient) {}
 

@@ -14,6 +14,8 @@ import { ButtonsTable } from '../interfaces/buttonsTable.interface';
 export class TableComponent implements OnInit, OnChanges {
   @Input() fields:any = []
   @Input() buttons
+  @Input() disablebuttons
+
   displayedColumns: string[] = [];
   dataSource: MatTableDataSource<any>; 
   column: string[] =[]
@@ -25,6 +27,7 @@ export class TableComponent implements OnInit, OnChanges {
   @Output() pdf = new EventEmitter<number>();
 
   constructor() {
+    console.log(this.fields)
   }
   ngOnChanges(changes: SimpleChanges): void {
     if (changes["fields"] && changes["fields"].currentValue) {

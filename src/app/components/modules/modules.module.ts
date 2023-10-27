@@ -19,6 +19,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import {MatTabsModule} from '@angular/material/tabs';
 
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormComponent } from './forms/form/form.component';
@@ -30,6 +31,7 @@ import { Module2Component } from './mainmodulepage/module2/module2.component';
 import { Module3Component } from './mainmodulepage/module3/module3.component';
 import { TableComponent } from './table/table.component';
 import { PdfComponent } from './pdf/pdf.component';
+import { Module4Component } from './mainmodulepage/module4/module4.component';
 @NgModule({
   declarations: [
     Module1Component,
@@ -37,7 +39,8 @@ import { PdfComponent } from './pdf/pdf.component';
     Module2Component,
     Module3Component,
     TableComponent,
-    PdfComponent
+    PdfComponent,
+    Module4Component
   ],
   imports: [
     CommonModule,
@@ -62,7 +65,8 @@ import { PdfComponent } from './pdf/pdf.component';
     MatDialogModule,
     MatAutocompleteModule,
     NgxDropzoneModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatTabsModule
   ],
   providers:[
     ModulesService
