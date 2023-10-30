@@ -31,7 +31,7 @@ export class Module2Component {
       value:"1"
     },
     {
-      text:"Actualizar Población beneficiada - talleres / pláticas / conferencias / actividades",
+      text:"Editar Población beneficiada - talleres / pláticas / conferencias / actividades",
       value:"100"
     }
   ]

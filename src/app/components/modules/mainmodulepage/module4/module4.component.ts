@@ -4,6 +4,9 @@ import { ModulesService } from '../../services/modules.service';
 import { SelectIndex } from '../../interfaces/selects.iterface';
 import { event } from 'jquery';
 import Swal from 'sweetalert2';
+import { PdfComponent } from '../../pdf/pdf.component';
+import { MatDialog } from '@angular/material/dialog';
+import { PdfsInterface } from '../../interfaces/pdfs.interface';
 
 @Component({
   selector: 'app-module4',
@@ -22,22 +25,39 @@ export class Module4Component {
       toast.addEventListener('mouseleave', Swal.resumeTimer)
     }
   })
+  id:number
+  infoData:any
   expendent:Inputs[]
   module1:any
   module4:any
+  isPdf:boolean
+  isDelete:boolean
+  isSave:boolean
   disabled:boolean
+  dataPdf:PdfsInterface ={
+    title: '',
+    dataInfo: []
+  } 
   btnmodules1:SelectIndex[] = [
     {
       text:"Seleccionar",
       value:"100"
     }
   ]
-  constructor(public ServiceModule4:ModulesService<any>){
+  btnmodules4:SelectIndex[] = [
+    {
+      text:"Editar Expediente de usuaria psicologia imm ",
+      value:"100"
+    }
+  ]
+  constructor(public ServiceModule4:ModulesService<any>,public dialog: MatDialog){
     this.disabled = true
+    this.allExpendets()
     this.allUsers()
     this.infoUser()
     this.createExpendent()
   }
+
   infoUser(id?){
     if (!id) {
       this.disabled = false
@@ -65,7 +85,7 @@ export class Module4Component {
         
       },
       error:(e)=>{
-        this.disabled = false
+        this.disabled = true
       },
       complete:()=>{
 
@@ -118,7 +138,7 @@ export class Module4Component {
         formcontrolname: "name",
         value:name??name,
         disabled: true,
-
+        width:5
       },
       {
         label: "Edad",
@@ -133,7 +153,7 @@ export class Module4Component {
         formcontrolname: "street",
         value:street??street,
         disabled: true,
-
+        width:2
 
       },
       {
@@ -159,7 +179,7 @@ export class Module4Component {
         type:'phone',
         value:telephone??telephone,
         disabled: true,
-
+        width:2
 
       },
       {
@@ -175,24 +195,6 @@ export class Module4Component {
         width:2,
         type:'select',
         url:"expendentviolence"
-      },
-      {
-        label:"Diagnostico de cierre",
-        formcontrolname:"diagnostic",
-        width:2
-      },
-      {
-        label:"Motivo de cierre",
-        formcontrolname:"motive_closed_id",
-      width:2,
-      type:'select',
-        url:"expendentclose"
-      },
-      {
-        label:"Fecha de cierre",
-        formcontrolname:"dateclosed",
-        type:"date",
-        width:2
       },
       {
         label:"Sesión 1",
@@ -320,6 +322,27 @@ export class Module4Component {
         treeformcontrolname:"comment18",
         type:"session"
       },
+      {
+        label:"Diagnostico de cierre",
+        formcontrolname:"diagnostic",
+        optional:true,
+        width:2
+      },
+      {
+        label:"Motivo de cierre",
+        formcontrolname:"motive_closed_id",
+        optional:true,
+      width:2,
+      type:'select',
+        url:"expendentclose"
+      },
+      {
+        label:"Fecha de cierre",
+        formcontrolname:"dateclosed",
+        optional:true,
+        type:"date",
+        width:2
+      },
 
     ]
   }
@@ -330,25 +353,81 @@ export class Module4Component {
       }
     })
   }
+  allExpendets(){
+    this.ServiceModule4.data("expendents").subscribe({
+      next: (n) => {
+
+        this.module4 = n["data"]["result"]
+      },
+    
+    })
+  }
+
   ButtonEventsModule1(event){
     const id = event[0]
     this.infoUser(id)
 
   }
-  Submit(event){
-    this.ServiceModule4.Post("expendent",event).subscribe({
+  ButtonEventsModule4(event){
+    const id = event[0]
+    this.id = id
+    this.ServiceModule4.data(`expendent/${id}`).subscribe({
+      next:(n)=>{
+        this.infoData = n["data"]["result"]
+      },
+      complete:()=>{
+        this.disabled =true
+      }
+    })
+  }
+  Delete(event){
+    this.isDelete = true
+    this.ServiceModule4.Delete(`expendent/${event}`).subscribe({
       next:(n)=>{
         this.Toast.fire({
           position: 'top-end',
           icon: 'success',
-          title: `Se ha creado el expediente`,
+          title: `Se ha eliminado el expediente`,
         })
+        this.restartForm()
+        this.isDelete = false
+
       },
       error:(e)=>{
         this.Toast.fire({
           position: 'top-end',
+          icon: 'success',
+          title: `No se a podido eliminar el expediente`,
+        })
+        this.isDelete = false
+
+      }
+    })
+  }
+  Submit(event){
+    this.isSave = true
+    let route = `expendent`
+    let msj = `insertado`
+    if (this.id) {
+        route =`expendentupdate/${this.id}`
+        msj = "actualizado"
+      
+    }
+    this.ServiceModule4.Post(route,event).subscribe({
+      next:(n)=>{
+        this.isSave = false
+        this.Toast.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: `Se ha ${msj} el expediente`,
+        })
+      },
+      error:(e)=>{
+        this.isSave = false
+        this.Toast.fire({
+          position: 'top-end',
           icon: 'error',
-          title: `No se ha podido crear el expediente`,
+          title: `No se pudo ${msj} el expediente`,
         })
         
       },
@@ -358,8 +437,63 @@ export class Module4Component {
     })
   }
   restartForm(){
+    this.disabled = false
     this.expendent =[]
     this.allUsers();
+    this.allExpendets()
     this.createExpendent()
+  }
+  GeneratePdf(event: number) {
+    this.isPdf = true
+    this.ServiceModule4.data(`expendentpdf/${event}`).subscribe({
+      next: (n) => {
+        const userData = n["data"]["result"][0]; 
+        
+        // Datos del reporte obtenidos de la respuesta HTTP
+        this.dataPdf.title = `Reporte de ${userData["Nombre"]}`;
+       
+
+        this.dataPdf.dataInfo = [
+          {
+            subtitule: "1 Expediente de usuarias psicologicas del IMM",
+            table: [],
+            sessions:[]
+
+          },
+          
+        ];
+        let id = 0
+        for (let key in userData) {
+          if (userData.hasOwnProperty(key)) {
+            const value = userData[key];
+            let cleanedKey = key.replace(/`/g, '');
+            
+            let exist = 0
+            let keyIf = key
+          
+             cleanedKey = cleanedKey.replace(/\d/g, '');
+
+            this.dataPdf.dataInfo[id].table.push({
+              text: cleanedKey,
+              value: value
+            });
+          }
+        }
+        this.isPdf = false
+
+        this.ServiceModule4.setData(this.dataPdf)
+        const dialogRef = this.dialog.open(PdfComponent, {
+          width: '60%',
+          maxHeight:'600px'
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+        });
+      },
+      error:(e)=>{
+        this.isPdf = false
+
+      }
+    });
   }
 }

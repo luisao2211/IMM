@@ -26,7 +26,7 @@ export class Module3Component {
   })
   dataPdf:PdfsInterface ={
     title: '',
-    dataInfo: []
+    dataInfo: [],
   }
   idActivity :number
   infoData:any
@@ -37,7 +37,7 @@ export class Module3Component {
   isSave:boolean
   tableButtons: SelectIndex[] = [
     {
-      text:"Actividades IMM - captura de actividades",
+      text:"Editar Actividades IMM - captura de actividades",
       value:"100"
     }
   ]
@@ -212,7 +212,6 @@ export class Module3Component {
               let exist = 0
               let keyIf = key
             
-              console.warn(cleanedKey)
              
               this.dataPdf.dataInfo[id].table.push({
                 text: cleanedKey,

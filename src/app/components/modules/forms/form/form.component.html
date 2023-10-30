@@ -30,7 +30,7 @@
           
           <div class="radio-group">
             <p class="title">Acudio</p>
-          <mat-radio-group [formControlName]="i.secondcontrolname">
+          <mat-radio-group [formControlName]="i.secondcontrolname" >
               <mat-radio-button value="1">Si</mat-radio-button>
               <mat-radio-button value="0">No</mat-radio-button>
           </mat-radio-group>
@@ -304,7 +304,8 @@
       <ng-container>
       <button type="button" (click)="AfterWindowsStepper()" *ngIf="afterwindows" class="btn btn-outline-secondary"  >Regresar</button>
     </ng-container>
-    
+    <!-- <button (click)="logInvalidRequiredFields()">Mostrar campos inválidos en la consola</button> -->
+
       <button class="btn btn-outline-primary" 
              [disabled]="Form.invalid"
              type="submit">Continuar</button>

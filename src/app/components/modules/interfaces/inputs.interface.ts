@@ -3,10 +3,11 @@ import { Cp } from "./cp.interface"
 export interface Inputs{
   /**informacion del label */
   label:string, 
+  optional?:boolean
       /**informacion del segundo type mas usado en doubleselect */
   secondlabel?:string,                              
     /**informacion del type */
-  type?:'text'|'number'|'radio'|'email'|'checkbox'|'select'|'date'|'time'|'checkboxdescription'|'doubleselect'|'cp'|'phone'|'file'|'hidden'|'session',
+  type?:'text'|'number'|'radio'|'email'|'checkbox'|'select'|'date'|'time'|'checkboxdescription'|'doubleselect'|'cp'|'phone'|'file'|'hidden'|'session'|'optional',
       /**nombre en el formulario */                                                      
   formcontrolname:string,   
   formcontrolcp?:string
@@ -15,10 +16,12 @@ export interface Inputs{
 
   /**valor que tendra el input */                    
   value?:string|number, 
+  sessionradio?:string
   /** estara habilitado el input */                       
   disabled?:true|false,
   /** lista  cargados no es necesario que lo pongas se carga desde la url */                            
   listitems?:ArrayList[]
+   
    /** lista  cargados no es necesario que lo pongas se carga desde la urloadata */                            
    secondlistitems?:ArrayList[]
    cps?:Cp[],

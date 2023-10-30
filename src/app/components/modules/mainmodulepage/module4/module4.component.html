@@ -1,3 +1,15 @@
+<div [className]=" isPdf &&'background_loader'">
+    <span [className]=" isPdf &&'file'"></span>
+  
+  </div>
+  <div [className]=" isDelete &&'background_loader'">
+    <span [className]=" isDelete &&'delete'"></span>
+  
+  </div>
+  <div [className]=" isSave &&'background_loader'">
+    <span [className]=" isSave &&'post'"></span>
+  
+  </div>
 <mat-card>
     <mat-card-content>
 
@@ -5,7 +17,11 @@
     <mat-tab label="Expendiente de la usuaria (Modulo 4)">
         <app-table
         [fields]="module4"
-        
+        [buttons]="btnmodules4"
+        (buttonClick)="ButtonEventsModule4($event)"
+        (idDelete)="Delete($event)"
+        (pdf)="GeneratePdf($event)"
+
         ></app-table>
 
     </mat-tab>
@@ -35,6 +51,7 @@
              
                 <app-form [afterwindows]="false" [form]="expendent" [style.opacity]="disabled ? '1' : '0.5'" [style.pointer-events]="disabled ? 'auto' : 'none'"
                 (FormGroup)= "Submit($event)"
+                [infoForm]="infoData"
 
                 ></app-form>
 

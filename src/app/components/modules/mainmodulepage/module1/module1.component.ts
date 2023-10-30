@@ -201,25 +201,25 @@ export class Module1Component {
       next: (n) => {
         this.tableButtons = n["data"]["result"]
         this.tableButtons.push({
-          text:"Actualizar Generales de la usuaria",
+          text:"Editar Generales de la usuaria",
           value:"101"
         })
         this.tableButtons.push({
-          text:"Actualizar Perfil de la usuaria",
+          text:"Editar Perfil de la usuaria",
           value:"102"
         })
         this.tableButtons.push({
-          text:"Actualizar Caso de violencia",
+          text:"Editar Caso de violencia",
           value:"103"
         })
 
         this.tableButtons.push({
-          text:"Actualizar Perfil de Agresor",
+          text:"Editar Perfil de Agresor",
           value:"104"
         })
 
         this.tableButtons.push({
-          text:"Actualizar Servicios",
+          text:"Editar Servicios",
           value:"105"
         })
 

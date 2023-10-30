@@ -125,13 +125,14 @@ export class FormComponent implements OnChanges {
 
 
       for (const infoName of Object.keys(this.infoForm)) {
-        const value = this.infoForm[infoName];
+        let value = this.infoForm[infoName];
         if (infoName == "diseas_ids" || infoName == 'diseas_origin_id' || infoName == 'disability_ids' || infoName == 'disability_origin_id'
           || infoName == 'user_violence_fields' || infoName == 'fieldsviolence_id' || infoName == 'medicalservices' || infoName == 'adicttions'
           || infoName == 'workplaces'
 
         ) {
           if (value) {
+         
             let checkbox = value.split(",");
             //ANGEL
             checkbox.forEach((it, i) => {
@@ -216,6 +217,29 @@ export class FormComponent implements OnChanges {
 
         if (this.Form.controls.hasOwnProperty(infoName)) {
           if (infoName != "colonies_id") {
+
+
+            // Expresión regular para verificar el formato 'YYYY-MM-DD'
+            const formatoValido = /^\d{4}-\d{2}-\d{2}$/;
+            
+            if (formatoValido.test(value)) {
+              // La cadena tiene el formato válido, ahora la convertimos
+              const fecha = new Date(value);
+              
+              // Sumar un día
+              fecha.setDate(fecha.getDate() + 1);
+            
+              // Formatear la fecha como una cadena en el mismo formato
+               value = fecha.toISOString().split('T')[0];
+            
+            }
+            this.Form.get(infoName).setValue(value);
+
+              if (infoName.includes("came")) {
+                const indexEncontrado = this.inputs.findIndex((elemento) => elemento.secondcontrolname === infoName);
+                this.inputs[indexEncontrado].sessionradio = String(value)
+                this.Form.get(infoName).setValue(String(value))
+              }
             // const ValuesSelectIndex = this.inputs.findIndex((e) => e.formcontrolname === infoName && e.type == 'select')
             // if (ValuesSelectIndex > -1) {
             //   if (this.inputs[ValuesSelectIndex].listitems) {
@@ -231,7 +255,6 @@ export class FormComponent implements OnChanges {
             //   }
             //   continue
             // }
-            this.Form.get(infoName).setValue(value);
           }
 
 
@@ -274,6 +297,16 @@ export class FormComponent implements OnChanges {
   ngOnInit() {
     // this._inputs = []
   }
+  logInvalidRequiredFields() {
+    Object.keys(this.Form.controls).forEach(controlName => {
+      const control = this.Form.get(controlName);
+  
+      if (control.invalid && control.hasError('required')) {
+        console.log(`Campo requerido inválido: ${controlName}`);
+      }
+    });
+  }
+  
 
 
   updateFormValues(newValues: any): void {
@@ -447,8 +480,11 @@ export class FormComponent implements OnChanges {
         if (i.event) {
           this.addEvent(i.formcontrolname)
         }
+        if (i.optional) {
+          this.Form.addControl(i.formcontrolname,  new FormControl(i.value ? i.value : ''));
 
-        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription' && i.type !== 'email' && i.type !== 'file' && i.type !=="session") {
+        }else{
+        if (i.type !== 'checkbox' && i.type !== 'checkboxdescription' && i.type !== 'email' && i.type !== 'file' && i.type !=="session" && i.type !=="hidden"&& i.type!=="optional") {
           this.Form.addControl(i.formcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
           if (i.secondcontrolname) {
             this.Form.addControl(i.secondcontrolname, new FormControl(i.value ? i.value : '', Validators.required));
@@ -477,7 +513,11 @@ export class FormComponent implements OnChanges {
 
         }
 
-
+        if (i.type=="hidden" ) {
+          this.Form.addControl(i.formcontrolname,  new FormControl(i.value ? i.value : ''));
+        
+        }
+      }
 
       }
 

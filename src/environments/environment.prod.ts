@@ -3,5 +3,5 @@ import packageInfo from '../../package.json';
 export const environment = {
   appVersion: packageInfo.version,
   production: true,
-  apiUrl: '"http://127.0.0.1:8000/api/imm"' 
+  apiUrl: '"https://api.gomezpalacio.gob.mx/api/imm"' 
 };
