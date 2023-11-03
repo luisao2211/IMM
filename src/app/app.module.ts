@@ -20,8 +20,9 @@ import { ConfigurationComponent } from './theme/layout/admin/configuration/confi
 import { GuestComponent } from './theme/layout/guest/guest.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from './demo/pages/authentication/apiservice/authentication.service';
-import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+import { HttpClientModule,HTTP_INTERCEPTORS } from '@angular/common/http'; // Import HttpClientModule
 import {HashLocationStrategy, LocationStrategy, registerLocaleData} from '@angular/common';
+import { AuthInterceptor } from './auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +41,13 @@ import {HashLocationStrategy, LocationStrategy, registerLocaleData} from '@angul
   ],
   imports: [BrowserModule, AppRoutingModule, SharedModule, BrowserAnimationsModule, NgbModule,HttpClientModule,
   ],
-  providers: [NavigationItem,AuthService,{provide: LocationStrategy, useClass: HashLocationStrategy}],
+  providers: [NavigationItem,AuthService,{provide: LocationStrategy, useClass: HashLocationStrategy},
+  {
+    provide:HTTP_INTERCEPTORS,
+    useClass:AuthInterceptor,
+    multi:true
+  }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

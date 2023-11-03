@@ -6,7 +6,7 @@ import {Motive} from './motive.interface'
   providedIn: 'root'
 })
 export class MotiveService {
-  route: string =  "https://api.gomezpalacio.gob.mx/api/imm";
+  route: string =  "http://127.0.0.1:8000/api/imm";
 
   constructor(private http: HttpClient) {}
 

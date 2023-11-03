@@ -47,7 +47,7 @@
         <ng-container *ngSwitchCase="'phone'">
           <mat-form-field class="example-full-width spaceinputs" appearance="outline">
             <mat-label>{{ i.label }}</mat-label>
-            <input type="" matInput placeholder="" [formControlName]="i.formcontrolname" [readonly]="i.disabled && true" (input)="formatPhoneNumber($event)" appNumeric
+            <input type="" matInput placeholder="" [formControlName]="i.formcontrolname" [readonly]="i.disabled && true" (input)="formatPhoneNumber($event,i.formcontrolname)" appNumeric
               [disabled]="!i.disabled && true" >
           </mat-form-field>
         </ng-container>

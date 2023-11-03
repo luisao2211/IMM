@@ -690,7 +690,7 @@ export class FormComponent implements OnChanges {
     }
   }
 
-  formatPhoneNumber(event: Event) {
+  formatPhoneNumber(event: Event,name) {
     // Obtén el valor actual del campo de entrada
     let phoneNumber = (event.target as HTMLInputElement).value;
   
@@ -703,7 +703,8 @@ export class FormComponent implements OnChanges {
     }
   
     if (phoneNumber.length >= 10) {
-      phoneNumber = `(${phoneNumber.substr(0, 3)}) ${phoneNumber.substr(3, 3)} ${phoneNumber.substr(6, 4)}`;
+      phoneNumber = `(${phoneNumber.substr(0,   3)}) ${phoneNumber.substr(3, 3)} ${phoneNumber.substr(6, 4)}`;
+      this.Form.get(name).setValue(phoneNumber)
     }
   
     // Actualiza el valor del campo de entrada con el formato
